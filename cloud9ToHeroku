@@ -1,0 +1,14 @@
+１：git remote add heroku-target git@heroku.com:deploy.git
+heroku-target:何でもいい remote名
+deploy.git:デプロイでcloud9上から作った名前
+
+２：ファイルを用意
+package.json
+Procfile：中身は　web: node app.js　だけでいい
+
+３：あとはgitと同じ
+git add .  -> 全部追加 git add -u は差分のみ
+git commit -m "コミット名"
+git push heroku-target master
+
+これで終わり
