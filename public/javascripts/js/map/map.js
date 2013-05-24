@@ -26,8 +26,8 @@
 		init: function (pad) {
 			// マップの自動生成
             var mapSize = Math.rand(20, 31);
-            // var mapSize = 10;
-			var map = ns.GenerateMap(20, 20);
+            var mapSize = 15;
+			var map = ns.GenerateMap(mapSize, mapSize);
 
             // 水の部分をオートタイル化する
             var autotile = ns.AutoTile(map.map);
@@ -238,7 +238,7 @@
             }
             // プレイヤーの移動
             if (this.isPlayer) {
-                this.velocity = this._playerMove();
+                this.velocity = this._playerMove(app);
             }
             // 敵の移動
             if (this.isEnemy) {
@@ -273,7 +273,7 @@
             }
         },
 
-        _playerMove: function () {
+        _playerMove: function (app) {
             var playerVelocity = this.velocity.clone();
             playerVelocity.x *= -1;
             playerVelocity.y *= -1;
@@ -289,6 +289,12 @@
 
             // プレイやーの位置を更新
             this.playerPosition.add(tm.geom.Vector2.mul(playerVelocity, this.speed));
+
+            // プレイヤーの位置情報をサーバへ送信
+            var messagePlayerPosition = this.mapLeftTopToMapCenter(this.playerPosition.x, this.playerPosition.y);
+            var player = app.currentScene.player;
+
+            ns.gameEvent.movePlayer(messagePlayerPosition, player.angle, player.paused);
 
             // プレイヤーがいたらマップチップとのヒット判定を行うので、マップ移動用に移動量を返す
             playerVelocity.x *= -1;
@@ -343,7 +349,7 @@
                         app.currentScene.windows.add(getItem.name + " を手に入れた");
 
                         // プレイヤーにアイテム追加(このままの処理だったらドロップアイテムインスタンスが生き続ける)
-                        var player = app.currentScene.getChildByName("player");
+                        var player = app.currentScene.player;
                         player.addItem(getItem);
 
                         // 音
@@ -355,15 +361,15 @@
 
         // プレイヤーと階段とのヒット判定
         _isHitStairs: function (app) {
-            if (this.isPlayer) {
-                var playerPosition = this.mapLeftTopToMapCenter(this.playerPosition.x, this.playerPosition.y);
-                this.playerElement.position.set(playerPosition.x, playerPosition.y);
+            // if (this.isPlayer) {
+            //     var playerPosition = this.mapLeftTopToMapCenter(this.playerPosition.x, this.playerPosition.y);
+            //     this.playerElement.position.set(playerPosition.x, playerPosition.y);
 
-                if (this.stairs.isHitElementCircle(this.playerElement)) {
-                    // 次のステージへの遷移処理はOpeningSceneクラスで行う
-                    this._isNextStage = true;
-                }
-            }
+            //     if (this.stairs.isHitElementCircle(this.playerElement)) {
+            //         // 次のステージへの遷移処理はOpeningSceneクラスで行う
+            //         this._isNextStage = true;
+            //     }
+            // }
         },
 
 	});

@@ -1,9 +1,9 @@
 /**
- * Player
+ * AnotherPlayer
  */
 (function(ns) {
 
-	ns.Player = tm.createClass({
+	ns.AnotherPlayer = tm.createClass({
 		superClass : ns.AnimationCharactor,
 
 		init: function () {
@@ -13,8 +13,7 @@
 				count:  24,
 			}, 3);
 			// プレイヤーなので操作を受け付けるように設定
-			this.isInput = true;
-			this._isGameOver = false;
+			this.isInput = false;
 
 			// ダメージ= [[[最終ATK * スキル倍率 ] * (4000 + 除算Def) / (4000 + 除算DEF * 10)] * 種族耐性] - 減算DEF
 
@@ -59,97 +58,8 @@
 		getDEX: function ()			{ return this._dex; },
 		getEXP: function ()			{ return this.exp; },
 		getNextLevel: function ()	{ return this.nextLevelExp; },
-		isGameOver: function ()		{ return this._isGameOver; },
+		// isGameOver: function ()		{ return this._isGameOver; },
 
-		/**
-		 * セーブ時に使えるようにデータを変換
-		 */
-		cloneToSave: function () {
-			// アイテムデータを値だけにする
-			var parseItem = function (item) {
-				if (item === null) {
-					return null;
-				}
-
-				var result = {
-					name: item.name,
-					type: item.type,
-					summary: item.summary,
-					dropImage: item.dropImage,
-					status: {
-						hp: item.status.hp,
-
-						dis: item.status.dis,
-						agi: item.status.agi,
-						def: item.status.def,
-						dex: item.status.dex,
-						luk: item.status.luk,
-						str: item.status.str,
-						vit: item.status.vit,
-					},
-				}
-				return result;
-			};
-
-
-			var result = {
-				level: this.level,
-				maxhp: this.maxhp,
-				hp   : this.hp,
-				maxmp: this.maxmp,
-				mp   : this.mp,
-				_str:  this._str, // 攻撃力
-				_def:  this._def, // 防御力
-				// _int: 40, // 魔力
-				_agi:  this._agi, // 素早さ
-				_luk:  this._luk, // 運
-				_vit:  this._vit, // 体力
-				_dex:  this._dex, // 器用さ
-				_aspd: this._aspd, // 攻撃スピード
-				speed: this.speed,
-				exp:   this.exp, // 取得経験値
-				nextLevelExp: this.nextLevelExp,
-
-				item: [],
-				equipedWeapon: parseItem(this.equipedWeapon),
-				equipedArmor : parseItem(this.equipedArmor),
-			};
-
-			for (var i = 0; i < this.item.length; ++i) {
-				result.item.push(parseItem(this.item[i]));
-			}
-
-			return result;
-		},
-
-		/**
-		 * ロード時に使えるようにデータを変換
-		 */
-		dataLoad: function (saveData) {
-			this.level = saveData.level;
-			this.maxhp = saveData.maxhp;
-			this.hp    = saveData.hp;
-			this.maxmp = saveData.maxmp;
-			this.mp    = saveData.mp;
-			this._str  = saveData._str; // 攻撃力
-			this._def  = saveData._def; // 防御力
-			// this._int = 40; // 魔力
-			this._agi  = saveData._agi; // 素早さ
-			this._luk  = saveData._luk; // 運
-			this._vit  = saveData._vit; // 体力
-			this._dex  = saveData._dex; // 器用さ
-			this._aspd = saveData._aspd; // 攻撃スピード
-			this.speed = saveData.speed;
-
-			this.exp          = saveData.exp; // 取得経験値
-			this.nextLevelExp = saveData.nextLevelExp;
-
-			this.item          = saveData.item;
-			this.equipedWeapon = saveData.equipedWeapon;
-			this.equipedArmor  = saveData.equipedArmor;
-
-			console.dir(this);
-		},
 
 		getSpeed: function () {
 			return this.speed + (this.getLastAGI()/2 |0);
@@ -314,7 +224,7 @@
 
 			// hpが0になったら死亡
 			if (this.hp <= 0) {
-				this._isGameOver = true;
+				// this._isGameOver = true;
 				tm.asset.AssetManager.get("playerdown").clone().play();
 			}
 

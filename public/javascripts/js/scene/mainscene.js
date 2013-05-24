@@ -219,6 +219,11 @@
                 e.app.pushScene(ns.StatusScene(player));
             });
 
+            // ゲームに関するイベント管理
+            var messagePlayerPosition = this.map.mapLeftTopToMapCenter(map.playerPosition.x, map.playerPosition.y);
+            ns.gameEvent = ns.gameEvent || ns.GameEventManager(this.player, messagePlayerPosition, this.map);
+            // ns.gameEvent.gameStart(map.playerPosition);
+
             // 画面に追加
             this.addChild(map);
             this.windows = ns.ManageSimpleWindows(this); // ウィンドウ
@@ -259,6 +264,9 @@
 
             // ステータスの描画
             this.drawStatus();
+
+            // イベント処理
+            ns.gameEvent.update();
 
             // 次のステージに進むフラグがたったらマップ更新
             if (this.map.isNextStage()) {

@@ -6,7 +6,7 @@
     var STAGE_MAKING = [
         // 1-10
         [
-            {enemy: ns.SlimeGreen,      num: 15},
+            {enemy: ns.SlimeGreen,      num: 1},
         ],[
             {enemy: ns.SlimeGreen,      num: 20},
             {enemy: ns.SmallBatBlack,   num: 5},
