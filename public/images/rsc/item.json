@@ -1,0 +1,39 @@
+[
+	{
+		name: "ダガー",
+		type: "shortsword",
+		summary: "諸刃の短刀。",
+		status: {
+			str: 2,
+			def: 0,
+			agi: 0,
+			luk: 0,
+			vit: 0,
+			dex: 0
+		}
+	},{
+		name: "ボウイナイフ",
+		type: "shortsword",
+		summary: "片刃の短刀。多目的に使用するナイフ。",
+		status: {
+			str: 1,
+			def: 0,
+			agi: 0,
+			luk: 0,
+			vit: 0,
+			dex: 0
+		}
+	},{
+		name: "ジャンビーヤ",
+		type: "shortsword",
+		summary: "刀身が湾曲しており、刀身の幅が広い。",
+		status: {
+			str: 1,
+			def: 0,
+			agi: 1,
+			luk: 0,
+			vit: 0,
+			dex: 0
+		}
+	}
+]
