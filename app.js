@@ -54,7 +54,7 @@ server.listen(app.get('port'), function(){
  */
 var fs = require("fs");
 var socketio = require("socket.io");
-var io = socketio.listen(server);
+var io = socketio.listen(server, {'log level': 1});
 // var mongodb = require("mongodb");
 
 // /**
@@ -130,9 +130,20 @@ var io = socketio.listen(server);
  * メンバーデータ
  */
 var MEMBER = [];
+var getName = function (id) {
+    for (var i = 0; i < MEMBER.length; ++i) {
+		if (MEMBER[i].id === id) {
+			return MEMBER[i].name;
+		}
+	}
+    return null;
+};
 var setMember = function (id, data) {
-	MEMBER.push({"id": id, "data": data});
-	// console.dir(MEMBER);
+    if (getName(id) === null) {
+        MEMBER.push({"id": id, "data": data});
+        console.log("setMember");
+    	console.dir(MEMBER);
+    }
 };
 var deleteMember = function (id) {
 	for (var i = 0; i < MEMBER.length; ++i) {
@@ -140,6 +151,7 @@ var deleteMember = function (id) {
 			MEMBER.splice(i, 1);
 		}
 	}
+    console.log("deleteMember");
 };
 var modifyMember = function (id, data) {
 	for (var i = 0; i < MEMBER.length; ++i) {
@@ -148,6 +160,8 @@ var modifyMember = function (id, data) {
 			MEMBER[i].data.angle    = data.angle;
 		}
 	}
+    console.log("modifyMember");
+    console.dir(MEMBER);
 };
 var getMember = function (id) {
 	var result = [];
@@ -159,13 +173,6 @@ var getMember = function (id) {
 		}
 	}
 	return result;
-};
-var getName = function (id) {
-	for (var i = 0; i < MEMBER.length; ++i) {
-		if (MEMBER[i].id === id) {
-			return MEMBER[i].name;
-		}
-	}
 };
 
 
@@ -198,7 +205,7 @@ io.sockets.on("connection", function (socket) {
 function gameMessage(socket) {
 	// クライアント接続時に発した[addMember]イベントの受信処理
 	socket.on("addPlayerName", function (client) {
-		console.log("お名前 : " + client.name);
+		// console.log("お名前 : " + client.name);
 
 		// メンバー追加処理(仮の名前)
 		setMember(socket.id, client);

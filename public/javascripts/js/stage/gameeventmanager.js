@@ -61,6 +61,21 @@
             this.player = player;
 
             map.addChild(this.anotherPlayerGroup);
+            
+            // 移動ポイントを送信するタイミング
+            this.frameMoveEmit = 30;
+            this.currentFrame = 0;
+            
+            
+            // 初めての接続時に発生
+            // 仮の名前を送信する
+            var position = this.playerPosition.clone();
+            var message = {
+                name: "名無し",
+                position: position,
+            };
+            console.dir(message);
+            this.socket.emit("addPlayerName", message);
         },
 
         update : function() {
@@ -68,15 +83,7 @@
             var socket = this.socket;
 
             // 接続完了のメッセージ取得
-            var position = this.playerPosition.clone();
             socket.on("connected", function (data) {
-                // 初めての接続時に発生
-                // 仮の名前を送信する
-                var message = {
-                    name: "名無し",
-                    position: position,
-                };
-                socket.emit("addPlayerName", message);
             });
 
             // サーバにプレイヤーデータ登録完了
@@ -115,9 +122,11 @@
             socket.on("moveAnotherPlayer", function (message) {
                 var anotherPlayer = anotherPlayerGroup.getChildByName(message.id);
                 if (anotherPlayer) {
-                    anotherPlayer.position.set(message.position.x, message.position.y);
-                    anotherPlayer.paused = message.paused;
-                    anotherPlayer.directWatch(message.angle);
+                    var vector = tm.geom.Vector2(message.position.x, message.position.y);
+                    console.log(message.position.x + " " + message.position.y);
+                    anotherPlayer.setAutoPosition(vector);
+                    // anotherPlayer.paused = message.paused;
+                    // anotherPlayer.directWatch(message.angle);
                 }
             });
 
@@ -141,13 +150,18 @@
          */
         attackPlayer: function () {},
         movePlayer: function (position, angle, paused) {
-            var socket = this.socket;
-            var message = {
-                position: position,
-                angle: angle,
-                paused: paused,
-            };
-            socket.emit("movePlayer", message);
+            ++this.currentFrame;
+            if (this.currentFrame > this.frameMoveEmit) {
+                this.currentFrame = 0;
+                
+                var socket = this.socket;
+                var message = {
+                    position: position,
+                    angle: angle,
+                    paused: paused,
+                };
+                socket.emit("movePlayer", message);
+            }
         },
         noWeaponAttackPlayer: function () {},
         equipWeapon: function () {},
