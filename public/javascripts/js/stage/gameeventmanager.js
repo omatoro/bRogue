@@ -48,6 +48,8 @@
     //     "",
     // };
 
+    var EMIT_MOVEPOINT_TIME = 20;
+
     ns.GameEventManager = tm.createClass({
 
         init : function(player, playerPosition, map) {
@@ -63,7 +65,7 @@
             map.addChild(this.anotherPlayerGroup);
             
             // 移動ポイントを送信するタイミング
-            this.frameMoveEmit = 30;
+            this.frameMoveEmit = EMIT_MOVEPOINT_TIME;
             this.currentFrame = 0;
             
             

@@ -32,7 +32,7 @@
                 }
             });
 
-			this.superInit(frame.width*drawImageScaleSize, frame.height*drawImageScaleSize, ss);
+			this.superInit(ss, frame.width*drawImageScaleSize, frame.height*drawImageScaleSize);
 
 			// アニメーション終了時の動作
 			this.addEventListener("animationend", function(e) {

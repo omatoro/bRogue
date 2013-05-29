@@ -46,49 +46,57 @@
                 image: imageName,
                 frame: frame,
                 animations: {
-                    "onlydown":   [DOWN_NEUTRAL,   DOWN_NEUTRAL+1, "_onlydown1", 5],
-                    "_onlydown1": [DOWN_NEUTRAL+1, DOWN_NEUTRAL+2, "_onlydown2", 5],
-                    "_onlydown2": [DOWN_NEUTRAL,   DOWN_NEUTRAL+1, "_onlydown3", 5],
-                    "_onlydown3": [DOWN_NEUTRAL-1, DOWN_NEUTRAL,   "onlydown",   5],
+                    "onlydown": {
+                        frames: [DOWN_NEUTRAL, DOWN_NEUTRAL+1, DOWN_NEUTRAL, DOWN_NEUTRAL-1],
+                        next: "onlydown",
+                        frequency: 5,
+                    },
 
-                    "onlyup":   [UP_NEUTRAL,   UP_NEUTRAL+1, "_onlyup1", 5],
-                    "_onlyup1": [UP_NEUTRAL+1, UP_NEUTRAL+2, "_onlyup2", 5],
-                    "_onlyup2": [UP_NEUTRAL,   UP_NEUTRAL+1, "_onlyup3", 5],
-                    "_onlyup3": [UP_NEUTRAL-1, UP_NEUTRAL,   "onlyup",   5],
+                    "onlyup": {
+                        frames: [UP_NEUTRAL, UP_NEUTRAL+1, UP_NEUTRAL, UP_NEUTRAL-1],
+                        next: "onlyup",
+                        frequency: 5,
+                    },
 
-                    "onlyleft":   [LEFT_NEUTRAL,   LEFT_NEUTRAL+1, "_onlyleft1", 5],
-                    "_onlyleft1": [LEFT_NEUTRAL+1, LEFT_NEUTRAL+2, "_onlyleft2", 5],
-                    "_onlyleft2": [LEFT_NEUTRAL,   LEFT_NEUTRAL+1, "_onlyleft3", 5],
-                    "_onlyleft3": [LEFT_NEUTRAL-1, LEFT_NEUTRAL,   "onlyleft",   5],
+                    "onlyleft": {
+                        frames: [LEFT_NEUTRAL, LEFT_NEUTRAL+1, LEFT_NEUTRAL, LEFT_NEUTRAL-1],
+                        next: "onlyleft",
+                        frequency: 5,
+                    },
 
-                    "onlyright":   [RIGHT_NEUTRAL,   RIGHT_NEUTRAL+1, "_onlyright1", 5],
-                    "_onlyright1": [RIGHT_NEUTRAL+1, RIGHT_NEUTRAL+2, "_onlyright2", 5],
-                    "_onlyright2": [RIGHT_NEUTRAL,   RIGHT_NEUTRAL+1, "_onlyright3", 5],
-                    "_onlyright3": [RIGHT_NEUTRAL-1, RIGHT_NEUTRAL,   "onlyright",   5],
+                    "onlyright": {
+                        frames: [RIGHT_NEUTRAL, RIGHT_NEUTRAL+1, RIGHT_NEUTRAL, RIGHT_NEUTRAL-1],
+                        next: "onlyright",
+                        frequency: 5,
+                    },
 
-                    "upleft":   [UPLEFT_NEUTRAL,   UPLEFT_NEUTRAL+1, "_upleft1", 5],
-                    "_upleft1": [UPLEFT_NEUTRAL+1, UPLEFT_NEUTRAL+2, "_upleft2", 5],
-                    "_upleft2": [UPLEFT_NEUTRAL,   UPLEFT_NEUTRAL+1, "_upleft3", 5],
-                    "_upleft3": [UPLEFT_NEUTRAL-1, UPLEFT_NEUTRAL,   "upleft",   5],
+                    "upleft": {
+                        frames: [UPLEFT_NEUTRAL, UPLEFT_NEUTRAL+1, UPLEFT_NEUTRAL, UPLEFT_NEUTRAL-1],
+                        next: "upleft",
+                        frequency: 5,
+                    },
 
-                    "upright":   [UPRIGHT_NEUTRAL,   UPRIGHT_NEUTRAL+1, "_upright1", 5],
-                    "_upright1": [UPRIGHT_NEUTRAL+1, UPRIGHT_NEUTRAL+2, "_upright2", 5],
-                    "_upright2": [UPRIGHT_NEUTRAL,   UPRIGHT_NEUTRAL+1, "_upright3", 5],
-                    "_upright3": [UPRIGHT_NEUTRAL-1, UPRIGHT_NEUTRAL,   "upright",   5],
+                    "upright": {
+                        frames: [UPRIGHT_NEUTRAL, UPRIGHT_NEUTRAL+1, UPRIGHT_NEUTRAL, UPRIGHT_NEUTRAL-1],
+                        next: "upright",
+                        frequency: 5,
+                    },
 
-                    "downleft":   [DOWNLEFT_NEUTRAL,   DOWNLEFT_NEUTRAL+1, "_downleft1", 5],
-                    "_downleft1": [DOWNLEFT_NEUTRAL+1, DOWNLEFT_NEUTRAL+2, "_downleft2", 5],
-                    "_downleft2": [DOWNLEFT_NEUTRAL,   DOWNLEFT_NEUTRAL+1, "_downleft3", 5],
-                    "_downleft3": [DOWNLEFT_NEUTRAL-1, DOWNLEFT_NEUTRAL,   "downleft",   5],
+                    "downleft": {
+                        frames: [DOWNLEFT_NEUTRAL, DOWNLEFT_NEUTRAL+1, DOWNLEFT_NEUTRAL, DOWNLEFT_NEUTRAL-1],
+                        next: "downleft",
+                        frequency: 5,
+                    },
 
-                    "downright":   [DOWNRIGHT_NEUTRAL,   DOWNRIGHT_NEUTRAL+1, "_downright1", 5],
-                    "_downright1": [DOWNRIGHT_NEUTRAL+1, DOWNRIGHT_NEUTRAL+2, "_downright2", 5],
-                    "_downright2": [DOWNRIGHT_NEUTRAL,   DOWNRIGHT_NEUTRAL+1, "_downright3", 5],
-                    "_downright3": [DOWNRIGHT_NEUTRAL-1, DOWNRIGHT_NEUTRAL,   "downright",   5],
+                    "downright": {
+                        frames: [DOWNRIGHT_NEUTRAL, DOWNRIGHT_NEUTRAL+1, DOWNRIGHT_NEUTRAL, DOWNRIGHT_NEUTRAL-1],
+                        next: "downright",
+                        frequency: 5,
+                    },
                 }
             });
 
-            this.superInit(frame.width*drawImageScaleSize, frame.height*drawImageScaleSize, ss);
+            this.superInit(ss, frame.width*drawImageScaleSize, frame.height*drawImageScaleSize);
 
             // 向いている方向を保持
             this.velocity = tm.geom.Vector2(0, 0);

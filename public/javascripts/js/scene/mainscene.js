@@ -117,7 +117,7 @@
                     "slash": [0, 8]
                 }
             });
-            var slash = tm.app.AnimationSprite(120, 120, slashSS);
+            var slash = tm.app.AnimationSprite(slashSS, 120, 120);
             slash.position.set(ns.SCREEN_WIDTH/2 + 10, ns.SCREEN_HEIGHT/2 + 10);
 
             // 敵撃破時のエフェクト
@@ -195,7 +195,7 @@
                         // 敵が死んでた
                         if (enemy.isEnemyDead()) {
                             // 死んだエフェクト
-                            var enemydead = tm.app.AnimationSprite(120, 120, enemyDeadSS);
+                            var enemydead = tm.app.AnimationSprite(enemyDeadSS, 120, 120);
                             enemydead.position.set(enemy.x, enemy.y);
                             map.setEnemyDeadAnimation(enemydead);
                             enemydead.gotoAndPlay("enemydead");

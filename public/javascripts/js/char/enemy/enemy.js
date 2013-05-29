@@ -61,7 +61,7 @@
                     "slash": [0, 8]
                 }
             });
-			var slash = tm.app.AnimationSprite(120, 120, ss)
+			var slash = tm.app.AnimationSprite(ss, 120, 120);
             slash.position.set(0, 0);
             this.slash = slash;
             this.attackDistanse = 50;

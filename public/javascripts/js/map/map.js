@@ -294,6 +294,7 @@
             var messagePlayerPosition = this.mapLeftTopToMapCenter(this.playerPosition.x, this.playerPosition.y);
             var player = app.currentScene.player;
 
+            // イベントの送信
             ns.gameEvent.movePlayer(messagePlayerPosition, player.angle, player.paused);
 
             // プレイヤーがいたらマップチップとのヒット判定を行うので、マップ移動用に移動量を返す

@@ -49,7 +49,7 @@
                     "load": [0, 30, "load"]
                 }
             });
-            var loading = tm.app.AnimationSprite(256, 256, ss);
+            var loading = tm.app.AnimationSprite(ss, 256, 256);
             loading.position.set(ns.SCREEN_WIDTH - 100, ns.SCREEN_HEIGHT - 100);
             this.addChild(loading);
             loading.gotoAndPlay("load");
