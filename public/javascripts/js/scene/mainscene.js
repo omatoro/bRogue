@@ -76,7 +76,9 @@
             }
 
             // マップ
-            var map = ns.Map(pad);
+            // サーバからマップデータを取得
+            var mapData = ns.gameEvent.getMapData();
+            var map = ns.Map(pad, mapData);
             this.map = map;
             // 取得した位置をスクリーンの中心になるようにマップの中心座標を設定する
             var safePosition = map.getRandomSafeMapChipPosition(); // 場所を取得
@@ -219,10 +221,11 @@
                 e.app.pushScene(ns.StatusScene(player));
             });
 
-            // ゲームに関するイベント管理
+            // ゲームに関するイベントセット
+            ns.gameEvent.setPlayer(this.player);
             var messagePlayerPosition = this.map.mapLeftTopToMapCenter(map.playerPosition.x, map.playerPosition.y);
-            ns.gameEvent = ns.gameEvent || ns.GameEventManager(this.player, messagePlayerPosition, this.map);
-            // ns.gameEvent.gameStart(map.playerPosition);
+            ns.gameEvent.setPlayerPosition(messagePlayerPosition);
+            ns.gameEvent.setAnotherPlayer(this.map);
 
             // 画面に追加
             this.addChild(map);
@@ -264,9 +267,6 @@
 
             // ステータスの描画
             this.drawStatus();
-
-            // イベント処理
-            ns.gameEvent.update();
 
             // 次のステージに進むフラグがたったらマップ更新
             if (this.map.isNextStage()) {

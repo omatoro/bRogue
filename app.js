@@ -184,6 +184,13 @@ var getMember = function (id) {
 	return result;
 };
 
+/**
+ * マップ生成
+ */
+var map = require('./server/map/generatemap');
+var mapSize = 25;//Math.rand(20, 31);
+mapdata = map.GenerateMap(mapSize, mapSize);
+// console.dir(mapdata);
 
 /*
  * 通信時の処理
@@ -235,8 +242,13 @@ function gameMessage(socket) {
 		socket.broadcast.emit("moveAnotherPlayer", client);
 	});
 
-	socket.on("getAnotherPlayerInfomation", function () {
-		socket.volatile.emit("addedAnotherPlayers", getMember(socket.id));
+	// いずれまとめて同期する？
+	// socket.on("getAnotherPlayerInfomation", function () {
+	// 	socket.volatile.emit("addedAnotherPlayers", getMember(socket.id));
+	// });
+
+	socket.on("getMapData", function () {
+		socket.emit("gotMapData", mapdata);
 	});
 };
 

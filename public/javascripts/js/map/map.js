@@ -23,14 +23,14 @@
 	ns.Map = tm.createClass({
 		superClass : ns.MapSprite,
 
-		init: function (pad) {
+		init: function (pad, mapData) {
 			// マップの自動生成
-            var mapSize = Math.rand(20, 31);
-            var mapSize = 15;
-			var map = ns.GenerateMap(mapSize, mapSize);
+            // var mapSize = Math.rand(20, 31);
+            // var mapSize = 15;
+			// var map = ns.GenerateMap(mapSize, mapSize);
 
             // 水の部分をオートタイル化する
-            var autotile = ns.AutoTile(map.map);
+            var autotile = ns.AutoTile(mapData.map);
 
 			// マップデータの作成
 			var mapchip = ns.MapChip({
@@ -39,15 +39,15 @@
                 	1: {width: CHIP_WIDTH/2, height: CHIP_HEIGHT/2, image: "Water2_pipo", count: 20},
                 	2: {width: CHIP_WIDTH,   height: CHIP_HEIGHT,   image: "Grass1_pipo", count: 5},
                 },
-                map: map.map,
+                map: mapData.map,
                 autotile: autotile,
-                collision: map.collision
+                collision: mapData.collision
             });
 
             this.superInit(mapchip, 64, 64);
 
             // 歩ける場所の数
-            this.walkMapNum = map.walkMapNum;
+            this.walkMapNum = mapData.walkMapNum;
 
             // 歩ける場所に何かを生成したら覚えておく
             this.isCreateSomething = [];

@@ -25,6 +25,9 @@
         });
         ns.app.replaceScene(loadingScene);
 
+        // イベント管理クラスの作成
+        ns.gameEvent = ns.GameEventManager();
+
         // tmlibの実行
         ns.app.run();
 

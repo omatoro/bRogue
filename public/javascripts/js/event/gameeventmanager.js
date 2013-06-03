@@ -52,17 +52,10 @@
 
     ns.GameEventManager = tm.createClass({
 
-        init : function(player, playerPosition, map) {
+        init : function() {
             // オンライン化
             // グローバル変数を作成しているので注意
             this.socket = io.connect();
-
-            this.anotherPlayerGroup = tm.app.CanvasElement();
-
-            this.playerPosition = playerPosition;
-            this.player = player;
-
-            map.addChild(this.anotherPlayerGroup);
             
             // 移動ポイントを送信するタイミング
             this.frameMoveEmit = EMIT_MOVEPOINT_TIME;
@@ -72,34 +65,57 @@
             this.prePlayerPosition = tm.geom.Vector2(0, 0);
             this.preAnotherPlayerPosition = [];
             
-            
-            // 初めての接続時に発生
-            // 仮の名前を送信する
-            var position = this.playerPosition.clone();
-            var message = {
-                name: "名無し",
-                position: position,
-            };
-            console.dir(message);
-            this.socket.emit("addPlayerName", message);
-
-
-
-
             // 接続処理
             var socket = this.socket;
+
+            // 接続時にマップデータを取得
+            // var mapData = [];
+            // this.mapData = mapData;
+            var eventManager = this;
 
             // 接続完了のメッセージ取得
             socket.on("connected", function (data) {
                 console.log("connected");
+                socket.emit("getMapData");
+                // mapデータ取得
+                socket.on("gotMapData", function (data) {
+                    this.mapData = data;
+                }.bind(eventManager));
             });
+        },
+
+        setPlayer: function (player) {
+            this.player = player;
+
+            // 接続処理
+            var socket = this.socket;
 
             // サーバにプレイヤーデータ登録完了
-            var player = this.player;
             socket.on("addedPlayer", function (id) {
                 console.log("added player");
                 player.name = id;
             });
+        },
+
+        setPlayerPosition: function (position) {
+            this.playerPosition = position;
+
+            // 初めての接続時に発生
+            // 仮の名前を送信する
+            var message = {
+                name: "名無し",
+                position: position,
+            };
+            this.socket.emit("addPlayerName", message);
+        },
+
+        setAnotherPlayer: function (map) {
+            this.anotherPlayerGroup = tm.app.CanvasElement();
+            map.addChild(this.anotherPlayerGroup);
+            var anotherPlayerGroup = this.anotherPlayerGroup;
+
+            // 接続処理
+            var socket = this.socket;
 
             // 既に接続済みのメンバーのデータを取得
             socket.on("addedAnotherPlayers", function (message) {
@@ -116,7 +132,6 @@
             });
 
             // 他プレイヤー接続
-            var anotherPlayerGroup = this.anotherPlayerGroup;
             var ClassPlayer = ns.AnotherPlayer;
             socket.on("addedAnotherPlayer", function (message) {
                 if (anotherPlayerGroup.getChildByName(message.id)) {
@@ -151,8 +166,8 @@
             });
         },
 
-        update : function() {
-
+        getMapData: function () {
+            return this.mapData;
         },
 
         /**
