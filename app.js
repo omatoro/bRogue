@@ -187,10 +187,11 @@ var getMember = function (id) {
 /**
  * マップ生成
  */
-var map = require('./server/map/generatemap');
-var mapSize = 25;//Math.rand(20, 31);
-mapdata = map.GenerateMap(mapSize, mapSize);
-// console.dir(mapdata);
+var mapManager = require('./server/map/mapmanager').MapManager();
+
+
+
+
 
 /*
  * 通信時の処理
@@ -248,7 +249,7 @@ function gameMessage(socket) {
 	// });
 
 	socket.on("getMapData", function () {
-		socket.emit("gotMapData", mapdata);
+		socket.emit("gotMapData", mapManager.mapdata);
 	});
 };
 

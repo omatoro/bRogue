@@ -52,6 +52,9 @@
             // 歩ける場所に何かを生成したら覚えておく
             this.isCreateSomething = [];
 
+            // 階段の場所
+            this.stairsPosition = mapData.stairsPosition;
+
             // キャラではなくマップが移動する 加速度
             this.velocity = tm.geom.Vector2(0, 0);
 
@@ -89,7 +92,7 @@
         setStairs: function () {
             // 階段
             var stairs = tm.app.Sprite("stairs", 64, 64);
-            var stairsPosition = this.getRandomSafeMapChipPosition();
+            var stairsPosition = this.stairsPosition;//this.getRandomSafeMapChipPosition();
             stairsPosition = this.mapLeftTopToMapCenter(
                 stairsPosition.x * this.mapChipWidth + this.mapChipWidth/2,
                 stairsPosition.y * this.mapChipHeight);
