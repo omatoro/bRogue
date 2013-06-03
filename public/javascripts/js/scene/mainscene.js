@@ -101,7 +101,8 @@
             // 敵
             var enemyGroup = tm.app.CanvasElement();
             this.enemyGroup = enemyGroup;
-            this.stage = ns.StageManager(ns.MainScene.STAGE_NUMBER, enemyGroup, player, map);
+            var mapEnemyInfo = mapData.mapEnemyInfo;
+            this.stage = ns.StageManager(ns.MainScene.STAGE_NUMBER, enemyGroup, player, map, mapEnemyInfo);
 
 
             // 敵をマップに追加

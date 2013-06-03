@@ -82,6 +82,12 @@
                     this.mapData = data;
                 }.bind(eventManager));
             });
+
+            // 途中：マップ情報は随時受け取るようにしたい
+            // // ステージ情報受信処理
+            // socket.on("gotStageInfo", function (data) {
+            //     this.stageInfo = data;
+            // }.bind(eventManager));
         },
 
         setPlayer: function (player) {
@@ -168,6 +174,12 @@
 
         getMapData: function () {
             return this.mapData;
+        },
+
+        getStageInfo: function (stageNum) {
+            // 途中：マップ情報は随時受け取るようにしたい
+            // this.socket.emit("getStageInfo");
+            // return this.stageInfo;
         },
 
         /**

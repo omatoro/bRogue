@@ -7,6 +7,9 @@ var tm = tmlib.tm;
 Math = tmlib.Math;
 var map = require('./generatemap');
 
+var mapEnemyInfo = require('./../stage/stagemanager').StageManager().getMapEnemy();
+
+
 (function(ns) {
 
     ns.MapManager = tm.createClass({
@@ -25,6 +28,8 @@ var map = require('./generatemap');
             		this.mapdata.collision);
 
             this.mapdata.stairsPosition = this.stairsPosition;
+
+            this.mapdata.mapEnemyInfo = mapEnemyInfo;
 
             // 敵を設置
             ;

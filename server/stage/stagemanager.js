@@ -10,7 +10,7 @@ var tm = tmlib.tm;
     var STAGE_MAKING = [
         // 1-10
         [
-            {enemy: "SlimeGreen",      num: 1},
+            {enemy: "SlimeGreen",      num: 10},
         ],[
             {enemy: "SlimeGreen",      num: 20},
             {enemy: "SmallBatBlack",   num: 5},
@@ -200,8 +200,10 @@ var tm = tmlib.tm;
             // }
         },
 
+        // 1ステージごとに送信したい todo
         getMapEnemy: function (stage) {
-            return STAGE_MAKING[stage];
+            // return STAGE_MAKING[stage];
+            return STAGE_MAKING;
         },
 	});
 
