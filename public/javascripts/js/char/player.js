@@ -189,7 +189,7 @@
 				return ;
 			}
 			this.hp += item.status.hp || 0;
-			tm.asset.AssetManager.get("eat").clone().play();
+			// tm.asset.AssetManager.get("eat").clone().play();
 			if (this.hp > this.maxhp) {
 				this.hp = this.maxhp;
 			}
@@ -212,7 +212,7 @@
 			this.mp = this.maxmp;
 
 			// 音
-			tm.asset.AssetManager.get("levelup").clone().play();
+			// tm.asset.AssetManager.get("levelup").clone().play();
 
 			// ウィンドウ表示
 			app.currentScene.windows.add("レベルが" + this.level + "に上がった", 255, 255, 30);
@@ -243,7 +243,7 @@
 		equipWeapon: function (item) {
 			if (item) {
 				this.equipedWeapon = item;
-				tm.asset.AssetManager.get("equip").clone().play();
+				// tm.asset.AssetManager.get("equip").clone().play();
 			}
 			else {
 				this.equipedWeapon = null;
@@ -272,7 +272,7 @@
 		equipArmor: function (item) {
 			if (item) {
 				this.equipedArmor = item;
-				tm.asset.AssetManager.get("equip").clone().play();
+				// tm.asset.AssetManager.get("equip").clone().play();
 			}
 			else {
 				this.equipedArmor = null;
@@ -315,14 +315,14 @@
 			// hpが0になったら死亡
 			if (this.hp <= 0) {
 				this._isGameOver = true;
-				tm.asset.AssetManager.get("playerdown").clone().play();
+				// tm.asset.AssetManager.get("playerdown").clone().play();
 			}
 
 			return damage;
 		},
 
 		attack: function () {
-			tm.asset.AssetManager.get("enemydamage").clone().play();
+			// tm.asset.AssetManager.get("enemydamage").clone().play();
 			return this.angle;
 		},
 

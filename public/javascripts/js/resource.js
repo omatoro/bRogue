@@ -92,19 +92,19 @@ var TITLE_ASSETS = {
 
 var MAIN_ASSET = {
 	// 音楽
-	"levelup":		"/images/rsc/sound/[Action]Chinese_blade1_Komori.mp3",
-	"openTreasure":	"/images/rsc/sound/[Action]Door01_Isooki.mp3",
-	"downStairs":	"/images/rsc/sound/[Action]Steps1_Isooki.mp3",
-	"playerdamage":	"/images/rsc/sound/[Effect]Attack6_panop.mp3",
-	"enemydamage":	"/images/rsc/sound/[Effect]SHUN_panop.mp3",
-	// "healing":		"/images/rsc/sound/[Effect]Healing2_panop.mp3",
-	"enemydown":	"/images/rsc/sound/[Effect]SHUWAAAN3_panop.mp3",
-	"playerdown":	"/images/rsc/sound/[Effect]ZAZAZAZA_panop.mp3",
-	"enter":		"/images/rsc/sound/[System]Enter02_Koya.mp3",
-	"openstatus":	"/images/rsc/sound/[System]Click_Komori.mp3",
-	"equip":		"/images/rsc/sound/[Action]Switch2_Komori.mp3",
-	"eat":			"/images/rsc/sound/[Action]Eating_soup_Komori.mp3",
-	"dungeon":		"/images/rsc/sound/Dungeon02_Koya.mp3",
+	// "levelup":		"/images/rsc/sound/[Action]Chinese_blade1_Komori.mp3",
+	// "openTreasure":	"/images/rsc/sound/[Action]Door01_Isooki.mp3",
+	// "downStairs":	"/images/rsc/sound/[Action]Steps1_Isooki.mp3",
+	// "playerdamage":	"/images/rsc/sound/[Effect]Attack6_panop.mp3",
+	// "enemydamage":	"/images/rsc/sound/[Effect]SHUN_panop.mp3",
+	// // "healing":		"/images/rsc/sound/[Effect]Healing2_panop.mp3",
+	// "enemydown":	"/images/rsc/sound/[Effect]SHUWAAAN3_panop.mp3",
+	// "playerdown":	"/images/rsc/sound/[Effect]ZAZAZAZA_panop.mp3",
+	// "enter":		"/images/rsc/sound/[System]Enter02_Koya.mp3",
+	// "openstatus":	"/images/rsc/sound/[System]Click_Komori.mp3",
+	// "equip":		"/images/rsc/sound/[Action]Switch2_Komori.mp3",
+	// "eat":			"/images/rsc/sound/[Action]Eating_soup_Komori.mp3",
+	// "dungeon":		"/images/rsc/sound/Dungeon02_Koya.mp3",
 };
 
 var RESULT_ASSETS = {

@@ -99,7 +99,7 @@
 				return ;
 			}
 			this.hp += item.status.hp || 0;
-			tm.asset.AssetManager.get("eat").clone().play();
+			// tm.asset.AssetManager.get("eat").clone().play();
 			if (this.hp > this.maxhp) {
 				this.hp = this.maxhp;
 			}
@@ -122,7 +122,7 @@
 			this.mp = this.maxmp;
 
 			// 音
-			tm.asset.AssetManager.get("levelup").clone().play();
+			// tm.asset.AssetManager.get("levelup").clone().play();
 
 			// ウィンドウ表示
 			app.currentScene.windows.add("レベルが" + this.level + "に上がった", 255, 255, 30);
@@ -153,7 +153,7 @@
 		equipWeapon: function (item) {
 			if (item) {
 				this.equipedWeapon = item;
-				tm.asset.AssetManager.get("equip").clone().play();
+				// tm.asset.AssetManager.get("equip").clone().play();
 			}
 			else {
 				this.equipedWeapon = null;
@@ -225,14 +225,14 @@
 			// hpが0になったら死亡
 			if (this.hp <= 0) {
 				// this._isGameOver = true;
-				tm.asset.AssetManager.get("playerdown").clone().play();
+				// tm.asset.AssetManager.get("playerdown").clone().play();
 			}
 
 			return damage;
 		},
 
 		attack: function () {
-			tm.asset.AssetManager.get("enemydamage").clone().play();
+			// tm.asset.AssetManager.get("enemydamage").clone().play();
 			return this.angle;
 		},
 
@@ -255,7 +255,7 @@
             // 目的地へのベクトルを取得
             var direct = this.getDirect(this.position, this.aimPosition);
             // 指定された座標が現在と同じであれば移動しない
-            if (direct.x <= 0.1 && direct.y <= 0.1) {
+            if (Math.abs(direct.x) <= this.speed+1 && Math.abs(direct.y) <= this.speed+1) {
                 return ;
             }
 			// 目的地へ角度を求める

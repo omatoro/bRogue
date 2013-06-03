@@ -111,7 +111,7 @@
 
 		isEnemyDead: function () {
 			if (this.hp <= 0) {
-				tm.asset.AssetManager.get("enemydown").clone().play();
+				// tm.asset.AssetManager.get("enemydown").clone().play();
 				this.remove();
 				return true;
 			}
@@ -176,7 +176,7 @@
             this.slash.gotoAndPlay("slash");
 
             // 音
-            tm.asset.AssetManager.get("playerdamage").clone().play();
+            // tm.asset.AssetManager.get("playerdamage").clone().play();
 
             // 攻撃するポイントを作成
             var attackMapPosition = this.position.clone().add(attackScreenPosition);

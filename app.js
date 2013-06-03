@@ -55,6 +55,7 @@ server.listen(app.get('port'), function(){
 var fs = require("fs");
 var socketio = require("socket.io");
 var io = socketio.listen(server, {'log level': 1});
+io.set("log level", 3);
 // var mongodb = require("mongodb");
 
 // /**
@@ -141,7 +142,7 @@ var getName = function (id) {
 var setMember = function (id, data) {
     if (getName(id) === null) {
         MEMBER.push({"id": id, "data": data});
-        console.log("setMember");
+        console.log("setMember : " + id);
     	console.dir(MEMBER);
     }
 };
@@ -151,7 +152,7 @@ var deleteMember = function (id) {
 			MEMBER.splice(i, 1);
 		}
 	}
-    console.log("deleteMember");
+    console.log("deleteMember : " + id);
 };
 var modifyMember = function (id, data) {
 	for (var i = 0; i < MEMBER.length; ++i) {
@@ -160,8 +161,16 @@ var modifyMember = function (id, data) {
 			MEMBER[i].data.angle    = data.angle;
 		}
 	}
-    console.log("modifyMember");
-    console.dir(MEMBER);
+    console.log("modifyMember : " + id);
+};
+var movePlayer = function (id, data) {
+	for (var i = 0; i < MEMBER.length; ++i) {
+		if (MEMBER[i].id === id) {
+			MEMBER[i].data.position = data.position;
+			MEMBER[i].data.angle    = data.angle;
+		}
+	}
+    console.log("movePlayer : " + id);
 };
 var getMember = function (id) {
 	var result = [];
@@ -208,6 +217,7 @@ function gameMessage(socket) {
 		// console.log("お名前 : " + client.name);
 
 		// メンバー追加処理(仮の名前)
+		console.dir(client);
 		setMember(socket.id, client);
 		client.id = socket.id;
 
@@ -220,9 +230,13 @@ function gameMessage(socket) {
 	});
 
 	socket.on("movePlayer", function (client) {
-		modifyMember(socket.id, client);
+		movePlayer(socket.id, client);
 		client.id = socket.id;
 		socket.broadcast.emit("moveAnotherPlayer", client);
+	});
+
+	socket.on("getAnotherPlayerInfomation", function () {
+		socket.volatile.emit("addedAnotherPlayers", getMember(socket.id));
 	});
 };
 

@@ -48,7 +48,7 @@
     //     "",
     // };
 
-    var EMIT_MOVEPOINT_TIME = 20;
+    var EMIT_MOVEPOINT_TIME = 30;
 
     ns.GameEventManager = tm.createClass({
 
@@ -67,6 +67,10 @@
             // 移動ポイントを送信するタイミング
             this.frameMoveEmit = EMIT_MOVEPOINT_TIME;
             this.currentFrame = 0;
+
+            // 移動したかどうか調べる用
+            this.prePlayerPosition = tm.geom.Vector2(0, 0);
+            this.preAnotherPlayerPosition = [];
             
             
             // 初めての接続時に発生
@@ -78,19 +82,22 @@
             };
             console.dir(message);
             this.socket.emit("addPlayerName", message);
-        },
 
-        update : function() {
+
+
+
             // 接続処理
             var socket = this.socket;
 
             // 接続完了のメッセージ取得
             socket.on("connected", function (data) {
+                console.log("connected");
             });
 
             // サーバにプレイヤーデータ登録完了
             var player = this.player;
             socket.on("addedPlayer", function (id) {
+                console.log("added player");
                 player.name = id;
             });
 
@@ -100,6 +107,7 @@
                     if (anotherPlayerGroup.getChildByName(message[i].id)) {
                         continue;
                     }
+                    console.log("addedAnotherPlayers");
                     var anotherPlayer = ClassPlayer();
                     anotherPlayer.position.set(message[i].position.x, message[i].position.y);
                     anotherPlayer.name = message[i].id;
@@ -114,6 +122,7 @@
                 if (anotherPlayerGroup.getChildByName(message.id)) {
                     return ;
                 }
+                console.log("add Another Player");
                 var anotherPlayer = ClassPlayer();
                 anotherPlayer.position.set(message.position.x, message.position.y);
                 anotherPlayer.name = message.id;
@@ -123,9 +132,11 @@
             // 他プレイヤー移動
             socket.on("moveAnotherPlayer", function (message) {
                 var anotherPlayer = anotherPlayerGroup.getChildByName(message.id);
-                if (anotherPlayer) {
+                if (anotherPlayer &&
+                        (anotherPlayer.position.x !== message.position.x ||
+                         anotherPlayer.position.y !== message.position.y)) {
                     var vector = tm.geom.Vector2(message.position.x, message.position.y);
-                    console.log(message.position.x + " " + message.position.y);
+                    console.log("move anotherPlayer : ");
                     anotherPlayer.setAutoPosition(vector);
                     // anotherPlayer.paused = message.paused;
                     // anotherPlayer.directWatch(message.angle);
@@ -135,8 +146,13 @@
             // プレイヤー削除
             socket.on("deleteAnotherPlayer", function (message) {
                 var anotherPlayer = anotherPlayerGroup.getChildByName(message);
+                console.log("delete another player");
                 anotherPlayerGroup.removeChild(anotherPlayer);
             });
+        },
+
+        update : function() {
+
         },
 
         /**
@@ -152,9 +168,25 @@
          */
         attackPlayer: function () {},
         movePlayer: function (position, angle, paused) {
+            // 一定の時間が経過したかどうか
             ++this.currentFrame;
+            var isTimer = false;
             if (this.currentFrame > this.frameMoveEmit) {
+                isTimer = true;
+                this.currentFrame = this.frameMoveEmit;
+            }
+
+            // 移動したかどうか
+            var isMove = false;
+            if (this.prePlayerPosition.x !== position.x ||
+                this.prePlayerPosition.y !== position.y) {
+                isMove = true;
+            }
+
+
+            if (isTimer && isMove) {
                 this.currentFrame = 0;
+                this.prePlayerPosition = position.clone();
                 
                 var socket = this.socket;
                 var message = {

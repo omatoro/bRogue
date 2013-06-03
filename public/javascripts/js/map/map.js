@@ -354,7 +354,7 @@
                         player.addItem(getItem);
 
                         // 音
-                        tm.asset.AssetManager.get("openTreasure").clone().play();
+                        // tm.asset.AssetManager.get("openTreasure").clone().play();
                     }
                 }
             }
