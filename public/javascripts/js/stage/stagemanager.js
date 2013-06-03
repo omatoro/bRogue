@@ -3,177 +3,177 @@
  */
 (function(ns) {
 
-    var STAGE_MAKING = [
-        // 1-10
-        [
-            {enemy: ns.SlimeGreen,      num: 1},
-        ],[
-            {enemy: ns.SlimeGreen,      num: 20},
-            {enemy: ns.SmallBatBlack,   num: 5},
-        ],[
-            {enemy: ns.SlimeGreen,      num: 15},
-            {enemy: ns.SmallBatBlack,   num: 10},
-        ],[
-            {enemy: ns.SlimeGreen,      num: 10},
-            {enemy: ns.SmallBatBlack,   num: 15},
-            {enemy: ns.GoblinGrey,      num: 5},
-        ],[
-            {enemy: ns.SlimeGreen,      num: 10},
-            {enemy: ns.SmallBatBlack,   num: 10},
-            {enemy: ns.GoblinGrey,      num: 15},
-        ],[
-            {enemy: ns.SlimeGreen,      num: 10},
-            {enemy: ns.SmallBatBlack,   num: 10},
-            {enemy: ns.GoblinGrey,      num: 10},
-            {enemy: ns.BatBlack,        num: 5},
-        ],[
-            {enemy: ns.SlimeGreen,      num: 10},
-            {enemy: ns.SmallBatBlack,   num: 10},
-            {enemy: ns.GoblinGrey,      num: 10},
-            {enemy: ns.BatBlack,        num: 10},
-        ],[
-            {enemy: ns.SlimeGreen,      num: 10},
-            {enemy: ns.SmallBatBlack,   num: 10},
-            {enemy: ns.GoblinGrey,      num: 10},
-            {enemy: ns.BatBlack,        num: 10},
-        ],[
-            {enemy: ns.SlimeGreen,      num: 10},
-            {enemy: ns.SmallBatBlack,   num: 10},
-            {enemy: ns.GoblinGrey,      num: 10},
-            {enemy: ns.BatBlack,        num: 5},
-        ],[
-            {enemy: ns.SlimeGreen,      num: 10},
-            {enemy: ns.SmallBatBlack,   num: 10},
-            {enemy: ns.GoblinGrey,      num: 10},
-            {enemy: ns.BatBlack,        num: 5},
-        ],
+    // var STAGE_MAKING = [
+    //     // 1-10
+    //     [
+    //         {enemy: ns.SlimeGreen,      num: 1},
+    //     ],[
+    //         {enemy: ns.SlimeGreen,      num: 20},
+    //         {enemy: ns.SmallBatBlack,   num: 5},
+    //     ],[
+    //         {enemy: ns.SlimeGreen,      num: 15},
+    //         {enemy: ns.SmallBatBlack,   num: 10},
+    //     ],[
+    //         {enemy: ns.SlimeGreen,      num: 10},
+    //         {enemy: ns.SmallBatBlack,   num: 15},
+    //         {enemy: ns.GoblinGrey,      num: 5},
+    //     ],[
+    //         {enemy: ns.SlimeGreen,      num: 10},
+    //         {enemy: ns.SmallBatBlack,   num: 10},
+    //         {enemy: ns.GoblinGrey,      num: 15},
+    //     ],[
+    //         {enemy: ns.SlimeGreen,      num: 10},
+    //         {enemy: ns.SmallBatBlack,   num: 10},
+    //         {enemy: ns.GoblinGrey,      num: 10},
+    //         {enemy: ns.BatBlack,        num: 5},
+    //     ],[
+    //         {enemy: ns.SlimeGreen,      num: 10},
+    //         {enemy: ns.SmallBatBlack,   num: 10},
+    //         {enemy: ns.GoblinGrey,      num: 10},
+    //         {enemy: ns.BatBlack,        num: 10},
+    //     ],[
+    //         {enemy: ns.SlimeGreen,      num: 10},
+    //         {enemy: ns.SmallBatBlack,   num: 10},
+    //         {enemy: ns.GoblinGrey,      num: 10},
+    //         {enemy: ns.BatBlack,        num: 10},
+    //     ],[
+    //         {enemy: ns.SlimeGreen,      num: 10},
+    //         {enemy: ns.SmallBatBlack,   num: 10},
+    //         {enemy: ns.GoblinGrey,      num: 10},
+    //         {enemy: ns.BatBlack,        num: 5},
+    //     ],[
+    //         {enemy: ns.SlimeGreen,      num: 10},
+    //         {enemy: ns.SmallBatBlack,   num: 10},
+    //         {enemy: ns.GoblinGrey,      num: 10},
+    //         {enemy: ns.BatBlack,        num: 5},
+    //     ],
 
-        // 11-20
-        [
-            {enemy: ns.SmallBatBlack,   num: 10},
-            {enemy: ns.GoblinGrey,      num: 10},
-            {enemy: ns.BatBlack,        num: 10},
-            {enemy: ns.SkeltonNormal,   num: 5},
-        ],[
-            {enemy: ns.GoblinGrey,      num: 10},
-            {enemy: ns.BatBlack,        num: 15},
-            {enemy: ns.SkeltonNormal,   num: 10},
-        ],[
-            {enemy: ns.GoblinGrey,      num: 5},
-            {enemy: ns.BatBlack,        num: 10},
-            {enemy: ns.SkeltonNormal,   num: 10},
-            {enemy: ns.SlimeBlue,       num: 10},
-        ],[
-            {enemy: ns.GoblinGrey,      num: 5},
-            {enemy: ns.BatBlack,        num: 10},
-            {enemy: ns.SkeltonNormal,   num: 10},
-            {enemy: ns.SlimeBlue,       num: 10},
-        ],[
-            {enemy: ns.GoblinGrey,      num: 5},
-            {enemy: ns.BatBlack,        num: 5},
-            {enemy: ns.SkeltonNormal,   num: 10},
-            {enemy: ns.SlimeBlue,       num: 10},
-            {enemy: ns.HarypyNormal,    num: 10},
-        ],[
-            {enemy: ns.BatBlack,        num: 5},
-            {enemy: ns.SkeltonNormal,   num: 10},
-            {enemy: ns.SlimeBlue,       num: 10},
-            {enemy: ns.HarypyNormal,    num: 15},
-        ],[
-            {enemy: ns.BatBlack,        num: 5},
-            {enemy: ns.SkeltonNormal,   num: 10},
-            {enemy: ns.SlimeBlue,       num: 10},
-            {enemy: ns.HarypyNormal,    num: 15},
-        ],[
-            {enemy: ns.BatBlack,        num: 5},
-            {enemy: ns.SkeltonNormal,   num: 10},
-            {enemy: ns.SlimeBlue,       num: 10},
-            {enemy: ns.HarypyNormal,    num: 15},
-        ],[
-            {enemy: ns.SkeltonNormal,   num: 10},
-            {enemy: ns.SlimeBlue,       num: 10},
-            {enemy: ns.HarypyNormal,    num: 15},
-            {enemy: ns.LizardManNormal, num: 5},
-        ],[
-            {enemy: ns.SkeltonNormal,   num: 10},
-            {enemy: ns.SlimeBlue,       num: 10},
-            {enemy: ns.HarypyNormal,    num: 15},
-            {enemy: ns.LizardManNormal, num: 5},
-        ],
+    //     // 11-20
+    //     [
+    //         {enemy: ns.SmallBatBlack,   num: 10},
+    //         {enemy: ns.GoblinGrey,      num: 10},
+    //         {enemy: ns.BatBlack,        num: 10},
+    //         {enemy: ns.SkeltonNormal,   num: 5},
+    //     ],[
+    //         {enemy: ns.GoblinGrey,      num: 10},
+    //         {enemy: ns.BatBlack,        num: 15},
+    //         {enemy: ns.SkeltonNormal,   num: 10},
+    //     ],[
+    //         {enemy: ns.GoblinGrey,      num: 5},
+    //         {enemy: ns.BatBlack,        num: 10},
+    //         {enemy: ns.SkeltonNormal,   num: 10},
+    //         {enemy: ns.SlimeBlue,       num: 10},
+    //     ],[
+    //         {enemy: ns.GoblinGrey,      num: 5},
+    //         {enemy: ns.BatBlack,        num: 10},
+    //         {enemy: ns.SkeltonNormal,   num: 10},
+    //         {enemy: ns.SlimeBlue,       num: 10},
+    //     ],[
+    //         {enemy: ns.GoblinGrey,      num: 5},
+    //         {enemy: ns.BatBlack,        num: 5},
+    //         {enemy: ns.SkeltonNormal,   num: 10},
+    //         {enemy: ns.SlimeBlue,       num: 10},
+    //         {enemy: ns.HarypyNormal,    num: 10},
+    //     ],[
+    //         {enemy: ns.BatBlack,        num: 5},
+    //         {enemy: ns.SkeltonNormal,   num: 10},
+    //         {enemy: ns.SlimeBlue,       num: 10},
+    //         {enemy: ns.HarypyNormal,    num: 15},
+    //     ],[
+    //         {enemy: ns.BatBlack,        num: 5},
+    //         {enemy: ns.SkeltonNormal,   num: 10},
+    //         {enemy: ns.SlimeBlue,       num: 10},
+    //         {enemy: ns.HarypyNormal,    num: 15},
+    //     ],[
+    //         {enemy: ns.BatBlack,        num: 5},
+    //         {enemy: ns.SkeltonNormal,   num: 10},
+    //         {enemy: ns.SlimeBlue,       num: 10},
+    //         {enemy: ns.HarypyNormal,    num: 15},
+    //     ],[
+    //         {enemy: ns.SkeltonNormal,   num: 10},
+    //         {enemy: ns.SlimeBlue,       num: 10},
+    //         {enemy: ns.HarypyNormal,    num: 15},
+    //         {enemy: ns.LizardManNormal, num: 5},
+    //     ],[
+    //         {enemy: ns.SkeltonNormal,   num: 10},
+    //         {enemy: ns.SlimeBlue,       num: 10},
+    //         {enemy: ns.HarypyNormal,    num: 15},
+    //         {enemy: ns.LizardManNormal, num: 5},
+    //     ],
 
-        // 21-30
-        [
-            {enemy: ns.HarypyNormal,    num: 15},
-            {enemy: ns.LizardManNormal, num: 5},
-            {enemy: ns.SmallBatGreen,   num: 10},
-            {enemy: ns.GoblinGreen,     num: 10},
-        ],[
-            {enemy: ns.HarypyNormal,    num: 10},
-            {enemy: ns.LizardManNormal, num: 5},
-            {enemy: ns.SmallBatGreen,   num: 10},
-            {enemy: ns.GoblinGreen,     num: 10},
-            {enemy: ns.BatGreen,        num: 10},
-        ],[
-            {enemy: ns.HarypyNormal,    num: 10},
-            {enemy: ns.LizardManNormal, num: 5},
-            {enemy: ns.SmallBatGreen,   num: 10},
-            {enemy: ns.GoblinGreen,     num: 10},
-            {enemy: ns.BatGreen,        num: 10},
-        ],[
-            {enemy: ns.HarypyNormal,    num: 10},
-            {enemy: ns.LizardManNormal, num: 5},
-            {enemy: ns.SmallBatGreen,   num: 10},
-            {enemy: ns.GoblinGreen,     num: 10},
-            {enemy: ns.BatGreen,        num: 10},
-        ],[
-            {enemy: ns.LizardManNormal, num: 5},
-            {enemy: ns.SmallBatGreen,   num: 10},
-            {enemy: ns.GoblinGreen,     num: 10},
-            {enemy: ns.BatGreen,        num: 10},
-            {enemy: ns.SlimeRed,        num: 10},
-        ],[
-            {enemy: ns.LizardManNormal, num: 5},
-            {enemy: ns.SmallBatGreen,   num: 10},
-            {enemy: ns.GoblinGreen,     num: 10},
-            {enemy: ns.BatGreen,        num: 10},
-            {enemy: ns.SlimeRed,        num: 10},
-        ],[
-            {enemy: ns.LizardManNormal, num: 5},
-            {enemy: ns.SmallBatGreen,   num: 10},
-            {enemy: ns.GoblinGreen,     num: 10},
-            {enemy: ns.BatGreen,        num: 10},
-            {enemy: ns.SlimeRed,        num: 10},
-        ],[
-            {enemy: ns.SmallBatGreen,   num: 10},
-            {enemy: ns.GoblinGreen,     num: 10},
-            {enemy: ns.BatGreen,        num: 10},
-            {enemy: ns.SlimeRed,        num: 15},
-        ],[
-            {enemy: ns.SmallBatGreen,   num: 10},
-            {enemy: ns.GoblinGreen,     num: 10},
-            {enemy: ns.BatGreen,        num: 10},
-            {enemy: ns.SlimeRed,        num: 15},
-        ],[
-            {enemy: ns.GoblinGreen,     num: 5},
-            {enemy: ns.BatGreen,        num: 5},
-            {enemy: ns.SlimeRed,        num: 10},
-            {enemy: ns.DragonGreen,     num: 20},
-        ]
-    ];
+    //     // 21-30
+    //     [
+    //         {enemy: ns.HarypyNormal,    num: 15},
+    //         {enemy: ns.LizardManNormal, num: 5},
+    //         {enemy: ns.SmallBatGreen,   num: 10},
+    //         {enemy: ns.GoblinGreen,     num: 10},
+    //     ],[
+    //         {enemy: ns.HarypyNormal,    num: 10},
+    //         {enemy: ns.LizardManNormal, num: 5},
+    //         {enemy: ns.SmallBatGreen,   num: 10},
+    //         {enemy: ns.GoblinGreen,     num: 10},
+    //         {enemy: ns.BatGreen,        num: 10},
+    //     ],[
+    //         {enemy: ns.HarypyNormal,    num: 10},
+    //         {enemy: ns.LizardManNormal, num: 5},
+    //         {enemy: ns.SmallBatGreen,   num: 10},
+    //         {enemy: ns.GoblinGreen,     num: 10},
+    //         {enemy: ns.BatGreen,        num: 10},
+    //     ],[
+    //         {enemy: ns.HarypyNormal,    num: 10},
+    //         {enemy: ns.LizardManNormal, num: 5},
+    //         {enemy: ns.SmallBatGreen,   num: 10},
+    //         {enemy: ns.GoblinGreen,     num: 10},
+    //         {enemy: ns.BatGreen,        num: 10},
+    //     ],[
+    //         {enemy: ns.LizardManNormal, num: 5},
+    //         {enemy: ns.SmallBatGreen,   num: 10},
+    //         {enemy: ns.GoblinGreen,     num: 10},
+    //         {enemy: ns.BatGreen,        num: 10},
+    //         {enemy: ns.SlimeRed,        num: 10},
+    //     ],[
+    //         {enemy: ns.LizardManNormal, num: 5},
+    //         {enemy: ns.SmallBatGreen,   num: 10},
+    //         {enemy: ns.GoblinGreen,     num: 10},
+    //         {enemy: ns.BatGreen,        num: 10},
+    //         {enemy: ns.SlimeRed,        num: 10},
+    //     ],[
+    //         {enemy: ns.LizardManNormal, num: 5},
+    //         {enemy: ns.SmallBatGreen,   num: 10},
+    //         {enemy: ns.GoblinGreen,     num: 10},
+    //         {enemy: ns.BatGreen,        num: 10},
+    //         {enemy: ns.SlimeRed,        num: 10},
+    //     ],[
+    //         {enemy: ns.SmallBatGreen,   num: 10},
+    //         {enemy: ns.GoblinGreen,     num: 10},
+    //         {enemy: ns.BatGreen,        num: 10},
+    //         {enemy: ns.SlimeRed,        num: 15},
+    //     ],[
+    //         {enemy: ns.SmallBatGreen,   num: 10},
+    //         {enemy: ns.GoblinGreen,     num: 10},
+    //         {enemy: ns.BatGreen,        num: 10},
+    //         {enemy: ns.SlimeRed,        num: 15},
+    //     ],[
+    //         {enemy: ns.GoblinGreen,     num: 5},
+    //         {enemy: ns.BatGreen,        num: 5},
+    //         {enemy: ns.SlimeRed,        num: 10},
+    //         {enemy: ns.DragonGreen,     num: 20},
+    //     ]
+    // ];
 
 	ns.StageManager = tm.createClass({
 		init: function (stageNum, enemyGroup, player, map) {
             this._isGameClear = false;
-            if (STAGE_MAKING.length < stageNum) {
-                // ゲームクリア
-                this._isGameClear = true;
-            }
-            else {
+            // if (STAGE_MAKING.length < stageNum) {
+            //     // ゲームクリア
+            //     this._isGameClear = true;
+            // }
+            // else {
                 for (var i = 0; i < STAGE_MAKING[stageNum-1].length; ++i) {
                     var dataCreateEnemy = STAGE_MAKING[stageNum-1][i];
                     this._createEnemy(enemyGroup, player, map, dataCreateEnemy.enemy, dataCreateEnemy.num);
                 }
-            }
+            // }
 		},
 
         isGameClear: function () {
