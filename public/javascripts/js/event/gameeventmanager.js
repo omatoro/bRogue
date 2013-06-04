@@ -79,6 +79,7 @@
                 socket.emit("getMapData");
                 // mapデータ取得
                 socket.on("gotMapData", function (data) {
+                    console.log("gotMapData");
                     this.mapData = data;
                 }.bind(eventManager));
             });
@@ -173,6 +174,7 @@
         },
 
         getMapData: function () {
+            console.dir(this.mapData);
             return this.mapData;
         },
 

@@ -108,8 +108,8 @@
             this.backgroundColor = "rgba(0, 0, 0, 0.0)";
             this.alpha = 1.0;
             
-            this.interaction.enabled = true;
-            this.interaction.boundingType = "rect";
+            this.setInteractive(true);
+            this.boundingType = "rect";
             this._refresh();
 
             // プレーヤー

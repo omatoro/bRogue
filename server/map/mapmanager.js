@@ -9,6 +9,9 @@ var map = require('./generatemap');
 
 var mapEnemyInfo = require('./../stage/stagemanager').StageManager().getMapEnemy();
 
+var enemyManager = require('./../enemy/enemymanager');
+
+
 
 (function(ns) {
 
@@ -26,13 +29,19 @@ var mapEnemyInfo = require('./../stage/stagemanager').StageManager().getMapEnemy
             this.stairsPosition = this.getRandomSafeMapChipPosition(
             		this.mapdata.walkMapNum,
             		this.mapdata.collision);
-
             this.mapdata.stairsPosition = this.stairsPosition;
 
+            // プレイヤーの初期位置
+            this.mapdata.playerStartPosition = this.getRandomSafeMapChipPosition(
+            		this.mapdata.walkMapNum,
+            		this.mapdata.collision);
+
+            // 敵の位置(鯖で管理)
             this.mapdata.mapEnemyInfo = mapEnemyInfo;
 
             // 敵を設置
-            ;
+            this.enemyManager = enemyManager(mapEnemyInfo);
+
     	},
 
         /**

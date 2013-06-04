@@ -37,7 +37,7 @@
             label.x = 0;
             label.y = -5;
 
-	        this.interaction.enabled = false;
+	        this.setInteractive(false);
 	        this.alpha = 1000;
 	        this.backgroundColor = "rgba(0, 0, 0, 0.0)";
 
