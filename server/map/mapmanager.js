@@ -9,7 +9,7 @@ var map = require('./generatemap');
 
 var mapEnemyInfo = require('./../stage/stagemanager').StageManager().getMapEnemy();
 
-var enemyManager = require('./../enemy/enemymanager');
+var enemyManager = require('./../enemy/enemymanager').EnemyManager;
 
 
 
@@ -40,9 +40,42 @@ var enemyManager = require('./../enemy/enemymanager');
             this.mapdata.mapEnemyInfo = mapEnemyInfo;
 
             // 敵を設置
-            this.enemyManager = enemyManager(mapEnemyInfo);
+            var enemyMapPosition = this.createFirstEnemyPosition(
+                    mapEnemyInfo[0], 
+                    this.mapdata.walkMapNum, 
+                    this.mapdata.collision);
+
+            // this.enemyManager = enemyManager(enemyMapPosition); // 仮に1階の敵データを渡す
+            this.mapdata.enemyManager = enemyManager(enemyMapPosition).data; // 仮に1階の敵データを渡す
+
+
 
     	},
+
+        /**
+         * 敵の初期位置を作成
+         * 仮に1階の敵データを作る
+         */
+        createFirstEnemyPosition: function (stageEnemy, walkMapNum, collisionMap) {
+            var result = [];
+
+            for (var i = 0; i < stageEnemy.length; ++i) {
+                for (var j = 0; j < stageEnemy[i].num; ++j) {
+                    // 敵の位置(マップチップの配列状態)
+                    var enemyMapPosition = this.getRandomSafeMapChipPosition(walkMapNum, collisionMap);
+
+                    // 格納するデータの作成
+                    var enemyData = {
+                        id: i,
+                        name: stageEnemy[i].enemy,
+                        mapPosition: enemyMapPosition,
+                    };
+                    result.push(enemyData);
+                }
+            }
+
+            return result;
+        },
 
         /**
          * 歩ける場所からランダムに選んで返す(マップの左上を0,0)

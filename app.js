@@ -55,7 +55,7 @@ server.listen(app.get('port'), function(){
 var fs = require("fs");
 var socketio = require("socket.io");
 var io = socketio.listen(server, {'log level': 1});
-io.set("log level", 3);
+io.set("log level", 1);
 // var mongodb = require("mongodb");
 
 // /**
