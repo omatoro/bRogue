@@ -71,7 +71,7 @@
             // 接続時にマップデータを取得
             // var mapData = [];
             // this.mapData = mapData;
-            var eventManager = this;
+            var self = this;
 
             // 接続完了のメッセージ取得
             socket.on("connected", function (data) {
@@ -81,14 +81,20 @@
                 socket.on("gotMapData", function (data) {
                     console.log("gotMapData");
                     this.mapData = data;
-                }.bind(eventManager));
+                }.bind(self));
             });
 
             // 途中：マップ情報は随時受け取るようにしたい
             // // ステージ情報受信処理
             // socket.on("gotStageInfo", function (data) {
             //     this.stageInfo = data;
-            // }.bind(eventManager));
+            // }.bind(self));
+
+            // サーバにプレイヤーデータ登録完了
+            socket.on("gotEnemyData", function (enemies) {
+                console.log("got Enemy Data");
+                this.enemyData = enemies;
+            }.bind(self));
         },
 
         setPlayer: function (player) {
@@ -132,7 +138,8 @@
                     }
                     console.log("addedAnotherPlayers");
                     var anotherPlayer = ClassPlayer();
-                    anotherPlayer.position.set(message[i].position.x, message[i].position.y);
+                    var position = map.mapLeftTopToMapCenter(message[i].position.x, message[i].position.y);
+                    anotherPlayer.position.set(position.x, position.y);
                     anotherPlayer.name = message[i].id;
                     anotherPlayerGroup.addChild(anotherPlayer);
                 }
@@ -146,7 +153,8 @@
                 }
                 console.log("add Another Player");
                 var anotherPlayer = ClassPlayer();
-                anotherPlayer.position.set(message.position.x, message.position.y);
+                var position = map.mapLeftTopToMapCenter(message.position.x, message.position.y);
+                anotherPlayer.position.set(position.x, position.y);
                 anotherPlayer.name = message.id;
                 anotherPlayerGroup.addChild(anotherPlayer);
             });
@@ -157,9 +165,9 @@
                 if (anotherPlayer &&
                         (anotherPlayer.position.x !== message.position.x ||
                          anotherPlayer.position.y !== message.position.y)) {
-                    var vector = tm.geom.Vector2(message.position.x, message.position.y);
                     console.log("move anotherPlayer : ");
-                    anotherPlayer.setAutoPosition(vector);
+                    var position = map.mapLeftTopToMapCenter(message.position.x, message.position.y);
+                    anotherPlayer.setAutoPosition(position);
                     // anotherPlayer.paused = message.paused;
                     // anotherPlayer.directWatch(message.angle);
                 }
@@ -174,8 +182,14 @@
         },
 
         getMapData: function () {
-            console.dir(this.mapData);
+            // console.dir(this.mapData);
             return this.mapData;
+        },
+
+        getEnemyData: function () {
+            // console.dir(this.enemyData);
+            this.socket.emit("getEnemyData");
+            return this.enemyData;
         },
 
         getStageInfo: function (stageNum) {

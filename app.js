@@ -187,9 +187,19 @@ var getMember = function (id) {
 /**
  * マップ生成
  */
-var mapManager = require('./server/map/mapmanager').MapManager();
+var mapManager = require('./server/map/mapmanager').MapManager(MEMBER);
 
+/**
+ * 敵
+ */
+// var enemyManager = require('./server/enemy/enemymanager').EnemyManager();
 
+/**
+ * FPS
+ */
+var main = require('./server/loop/loopmanager').LoopManager();
+main.addChild(mapManager.update.bind(mapManager));
+main.update();
 
 
 
@@ -250,6 +260,10 @@ function gameMessage(socket) {
 
 	socket.on("getMapData", function () {
 		socket.emit("gotMapData", mapManager.mapdata);
+	});
+
+	socket.on("getEnemyData", function () {
+		socket.emit("gotEnemyData", mapManager.mapdata.enemyManager);
 	});
 };
 

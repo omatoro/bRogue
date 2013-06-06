@@ -254,25 +254,42 @@
 		},
 
         _enemyMove: function () {
+            // 敵の情報をサーバから取得
+            var enemies = ns.gameEvent.getEnemyData();
+            if (!enemies) {
+                return ;
+            }
+
             for (var i = 0; i < this.enemyGroup.children.length; ++i) {
-                var velocity = this.enemyGroup.children[i].velocity.clone();
-                var position = this.enemyGroup.children[i].position.clone();
-                position = this.mapCenterToMapLeftTop(position.x, position.y);
-                var speed    = this.enemyGroup.children[i].speed;
-                velocity.x *= -1;
-                velocity.y *= -1;
-                var isHit = this._isHitCollisionMap(
-                    position.x,
-                    position.y,
-                    velocity,
-                    speed);
-                if (isHit & HIT_UP)    { velocity.y = 0; }
-                if (isHit & HIT_DOWN)  { velocity.y = 0; }
-                if (isHit & HIT_LEFT)  { velocity.x = 0; }
-                if (isHit & HIT_RIGHT) { velocity.x = 0; }
+                // 同じIDの敵情報を取得
+                for (var j = 0; j < enemies.length; ++j) {
+                    if (this.enemyGroup.children[i].id === enemies[j].id) {
+                        // console.log(enemies[j].id);
+                        break;
+                    }
+                }
+
+                // var velocity = this.enemyGroup.children[i].velocity.clone();
+                // var position = this.enemyGroup.children[i].position.clone();
+                // position = this.mapCenterToMapLeftTop(position.x, position.y);
+                // var speed    = this.enemyGroup.children[i].speed;
+                // velocity.x *= -1;
+                // velocity.y *= -1;
+                // var isHit = this._isHitCollisionMap(
+                //     position.x,
+                //     position.y,
+                //     velocity,
+                //     speed);
+                // if (isHit & HIT_UP)    { velocity.y = 0; }
+                // if (isHit & HIT_DOWN)  { velocity.y = 0; }
+                // if (isHit & HIT_LEFT)  { velocity.x = 0; }
+                // if (isHit & HIT_RIGHT) { velocity.x = 0; }
+
+                var position = this.mapLeftTopToMapCenter(enemies[j].position.x, enemies[j].position.y);
 
                 // 敵の位置を更新
-                this.enemyGroup.children[i].position.add(tm.geom.Vector2.mul(velocity, speed));
+                // this.enemyGroup.children[i].position.add(tm.geom.Vector2.mul(velocity, speed));
+                this.enemyGroup.children[i].position.set(position.x, position.y);
             }
         },
 
@@ -294,11 +311,10 @@
             this.playerPosition.add(tm.geom.Vector2.mul(playerVelocity, this.speed));
 
             // プレイヤーの位置情報をサーバへ送信
-            var messagePlayerPosition = this.mapLeftTopToMapCenter(this.playerPosition.x, this.playerPosition.y);
             var player = app.currentScene.player;
 
             // イベントの送信
-            ns.gameEvent.movePlayer(messagePlayerPosition, player.angle, player.paused);
+            ns.gameEvent.movePlayer(this.playerPosition, player.angle, player.paused);
 
             // プレイヤーがいたらマップチップとのヒット判定を行うので、マップ移動用に移動量を返す
             playerVelocity.x *= -1;

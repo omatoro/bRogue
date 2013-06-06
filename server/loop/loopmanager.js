@@ -11,18 +11,18 @@ Math = tmlib.Math;
 	// tm.mainが来るまでの仮組み
 	ns.LoopManager = tm.createClass({
 		init: function () {
-			this.fps = 1;
+			this.fps = 30;
 			this.interval = 1000 / this.fps;
 			this.children = [];
 
 			// setIntervalでいいや
 			this.setIntervalLoop();
 
-			var testCall = function () {
-				console.log("loop");
-			};
+			// var testCall = function () {
+			// 	console.log("loop");
+			// };
 
-			this.addChild(testCall);
+			// this.addChild(testCall);
 		},
 
 		addChild: function (child) {

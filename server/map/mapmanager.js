@@ -9,7 +9,7 @@ var map = require('./generatemap');
 
 var mapEnemyInfo = require('./../stage/stagemanager').StageManager().getMapEnemy();
 
-var enemyManager = require('./../enemy/enemymanager').EnemyManager;
+var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
 
 
 
@@ -17,7 +17,7 @@ var enemyManager = require('./../enemy/enemymanager').EnemyManager;
 
     ns.MapManager = tm.createClass({
 
-    	init: function () {
+    	init: function (players) {
 			// マップ生成
 			var mapSize = Math.rand(20, 31);
 			this.mapdata = map.GenerateMap(mapSize, mapSize);
@@ -46,10 +46,12 @@ var enemyManager = require('./../enemy/enemymanager').EnemyManager;
                     this.mapdata.collision);
 
             // this.enemyManager = enemyManager(enemyMapPosition); // 仮に1階の敵データを渡す
-            this.mapdata.enemyManager = enemyManager(enemyMapPosition).data; // 仮に1階の敵データを渡す
+            var enemyManager = EnemyManager(enemyMapPosition);
+            this.mapdata.enemyManager = enemyManager.data; // 仮に1階の敵データを渡す
+            this.enemyManager = enemyManager;
 
-
-
+            // プレイヤーのデータ
+            this.players = players;
     	},
 
         /**
@@ -66,7 +68,7 @@ var enemyManager = require('./../enemy/enemymanager').EnemyManager;
 
                     // 格納するデータの作成
                     var enemyData = {
-                        id: i,
+                        id: (i*stageEnemy[i].num)+(j+1), // 一意のIDを与える
                         name: stageEnemy[i].enemy,
                         mapPosition: enemyMapPosition,
                     };
@@ -121,6 +123,16 @@ var enemyManager = require('./../enemy/enemymanager').EnemyManager;
                         }
                     }
                 }
+            }
+        },
+
+        update: function () {
+            // Enemyのupdateを実行する
+            // 移動処理はenemyManagerでやったほうがいい？
+            // var enemies = this.data;
+            var enemies = this.enemyManager;
+            for (var i = 0; i < enemies.data.length; ++i) {
+                enemies.data[i].update(this.players);
             }
         },
 

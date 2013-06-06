@@ -104,7 +104,6 @@
             // var mapEnemyInfo = mapData.mapEnemyInfo;
             this.stage = ns.StageManager(ns.MainScene.STAGE_NUMBER, enemyGroup, player, map, mapData.enemyManager);
 
-
             // 敵をマップに追加
             map.setEnemyGroup(enemyGroup);
 
@@ -224,8 +223,7 @@
 
             // ゲームに関するイベントセット
             ns.gameEvent.setPlayer(this.player);
-            var messagePlayerPosition = this.map.mapLeftTopToMapCenter(map.playerPosition.x, map.playerPosition.y);
-            ns.gameEvent.setPlayerPosition(messagePlayerPosition);
+            ns.gameEvent.setPlayerPosition(map.playerPosition);
             ns.gameEvent.setAnotherPlayer(this.map);
 
             // 画面に追加
