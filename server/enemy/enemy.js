@@ -81,7 +81,11 @@ Math = tmlib.Math;
 			// 状態管理
 			var self = this;
 			this.state = ns.RegistState();
-
+			
+			this.state.add("attack", function () {
+				this.velocity.x = 0;
+				this.velocity.y = 0;
+			}.bind(self));
 			this.state.add("active", function () {
 				this.playerPosition.sub(this.mapEnemyPosition);
 				this.velocity = this.playerPosition.normalize();
@@ -132,9 +136,7 @@ Math = tmlib.Math;
 
         	// キャラクターの位置によって行動を変化させる(AI)
         	if (minDistanceToPlayer <= LENGTH_TO_ATTACK) {
-        		// 攻撃
-        		this._moveAttack();
-        		this.state.replace(" ");
+        		this.state.replace("attack");
         	}
         	else if (minDistanceToPlayer <= LENGTH_TO_ACTIVE) {
         		this.state.replace("active");
@@ -145,11 +147,6 @@ Math = tmlib.Math;
         	}
 			// AI処理
 			this.state.update();
-		},
-
-		_moveAttack: function () {
-			this.velocity.x = 0;
-			this.velocity.y = 0;
 		},
 	});
 
