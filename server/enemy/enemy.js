@@ -59,7 +59,7 @@ Math = tmlib.Math;
 					return ;
 				}
 			}
-			this.currentState = null;
+			this.currentState = {func: function(){}};
 		},
 		update: function () {
 			this.always.func();
@@ -82,6 +82,17 @@ Math = tmlib.Math;
 			var self = this;
 			this.state = ns.RegistState();
 
+			this.state.add("sense", function () {
+	            // フレームに合わせてランダム移動する
+	            if (this.frame % FPS === 0) {
+	                var angle = Math.rand(0, 359);
+	            }
+	            if (angle) {// && this.isAnimation) {
+	                this.velocity.setDegree(angle, 1);
+	            }
+	            else {
+	            }
+			}.bind(self));
 			this.state.add("alwaysLast", function () {
 				// マップのヒット判定無しに移動　@todo どこか一箇所で処理させたい
 				this.position.add(tm.geom.Vector2.mul(this.velocity, this.speed));
@@ -89,7 +100,7 @@ Math = tmlib.Math;
 		},
 
 		update: function (players) {
-			// playersを保持 - ここだけで3%くらい上がってる
+			// playersを保持 - ここだけで2%くらい上がってる
 			this.players = players;
 
 			// フレームをカウントアップ
@@ -100,7 +111,7 @@ Math = tmlib.Math;
 			var myPosition = this.position; // CPU効果無し
         	var mapEnemyPosition = tm.geom.Vector2(myPosition.x, myPosition.y);
         	mapEnemyPosition.y += 35; // 位置を調整
-        	this.mapEnemyPosition = mapEnemyPosition; // ここだけで3%くらい上がってる
+        	this.mapEnemyPosition = mapEnemyPosition; // ここだけで2%くらい上がってる
 
         	// 一番近いプレイヤーを探す
         	var minDistanceToPlayer = INIT_MAX_LENGTH_TO_PLAYER;
@@ -113,22 +124,23 @@ Math = tmlib.Math;
         			playerPosition      = position;
         		}
         	}
-        	this.playerPosition = playerPosition; // ここだけで3%くらい上がってる
+        	this.playerPosition = playerPosition; // ここだけで2%くらい上がってる
 
         	// キャラクターの位置によって行動を変化させる(AI)
         	if (minDistanceToPlayer <= LENGTH_TO_ATTACK) {
         		// 攻撃
         		this._moveAttack();
+        		this.state.replace(" ");
         	}
         	else if (minDistanceToPlayer <= LENGTH_TO_ACTIVE) {
         		// playerに近づく
         		this._moveActive(mapEnemyPosition, playerPosition);
+        		this.state.replace(" ");
         	}
         	else {// if (minDistanceToPlayer <= LENGTH_TO_SENSE) {
         		// 動き始める
-        		this._moveSense();
+        		this.state.replace("sense");
         	}
-
 			// AI処理
 			this.state.update();
 		},
@@ -141,17 +153,6 @@ Math = tmlib.Math;
 			// プレイヤーへの距離
 			var distance = playerPosition.sub(enemyPosition);
 			this.velocity = playerPosition.normalize();
-		},
-		_moveSense: function () {
-            // フレームに合わせて移動する
-            if (this.frame % FPS === 0) {
-                var angle = Math.rand(0, 359);
-            }
-            if (angle) {// && this.isAnimation) {
-                this.velocity.setDegree(angle, 1);
-            }
-            else {
-            }
 		},
 	});
 
