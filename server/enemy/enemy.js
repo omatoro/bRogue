@@ -81,6 +81,11 @@ Math = tmlib.Math;
 			// 状態管理
 			var self = this;
 			this.state = ns.RegistState();
+
+			this.state.add("alwaysLast", function () {
+				// マップのヒット判定無しに移動　@todo どこか一箇所で処理させたい
+				this.position.add(tm.geom.Vector2.mul(this.velocity, this.speed));
+			}.bind(self));
 		},
 
 		update: function (players) {
@@ -117,9 +122,6 @@ Math = tmlib.Math;
         		// 動き始める
         		this._moveSense();
         	}
-
-			// マップのヒット判定無しに移動　@todo どこか一箇所で処理させたい
-			this.position.add(tm.geom.Vector2.mul(this.velocity, this.speed));
 
 			// AI処理
 			this.state.update();
