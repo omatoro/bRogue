@@ -19,6 +19,55 @@ Math = tmlib.Math;
 
 	var FPS = 30;
 
+	ns.RegistState = tm.createClass({
+		init: function () {
+			this.stateList = [];
+			this.currentState = {func: function(){}};
+			this.always       = {func: function(){}};
+			this.last         = {func: function(){}};
+		},
+		add: function (state, func) {
+			if (state === "alwaysFirst") {
+				this.always = {
+					state: state,
+					func: func,
+				};
+			}
+			if (state === "alwaysLast") {
+				this.last = {
+					state: state,
+					func: func,
+				};
+			}
+			else {
+				this.stateList.push({
+					state: state,
+					func: func,
+				});
+			}
+
+		},
+		remove: function () {}, // @todo
+		replace: function (state) {
+			// 既に状態が同じなら以下処理を行わない
+			if (this.currentState && this.currentState.state === state) {
+				return ;
+			}
+			for (var i = 0; i < this.stateList.length; ++i) {
+				if (this.stateList[i].state === state) {
+					this.currentState = this.stateList[i];
+					return ;
+				}
+			}
+			this.currentState = null;
+		},
+		update: function () {
+			this.always.func();
+			this.currentState.func();
+			this.last.func();
+		}, 
+	});
+
 	ns.Enemy = tm.createClass({
 		init: function () {
 			this.speed = DEFAULT_MOVE_SPEED;
