@@ -10,7 +10,7 @@ var tm = tmlib.tm;
     var STAGE_MAKING = [
         // 1-10
         [
-            {enemy: "SlimeGreen",      num: 1},
+            {enemy: "SlimeGreen",      num: 100},
         ],[
             {enemy: "SlimeGreen",      num: 20},
             {enemy: "SmallBatBlack",   num: 5},

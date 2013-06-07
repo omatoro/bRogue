@@ -17,6 +17,8 @@ Math = tmlib.Math;
 
 	var DEFAULT_MOVE_SPEED = 4;
 
+	var FPS = 30;
+
 	ns.Enemy = tm.createClass({
 		init: function () {
 			// this.isAuto  = true;
@@ -39,6 +41,10 @@ Math = tmlib.Math;
 			this.speed = DEFAULT_MOVE_SPEED;
 			this.velocity = tm.geom.Vector2(0, 0);
 			this.position = tm.geom.Vector2(0, 0);
+
+			// 攻撃のタイミングを図るためのフレームカウンター
+			// 上限値決めないとな～ @todo
+			this.frame = 0;
 
 			// this.dropItemList = [
 			// 	{
@@ -112,6 +118,9 @@ Math = tmlib.Math;
 		// },
 
 		update: function (players) {
+			// フレームをカウントアップ
+			++this.frame;
+
         	var mapEnemyPosition = tm.geom.Vector2(this.position.x, this.position.y);//this.position.clone();
         	// mapEnemyPosition = this.map.mapCenterToMapLeftTop(mapEnemyPosition.x, mapEnemyPosition.y);
         	mapEnemyPosition.y += 35; // 位置を調整
@@ -128,9 +137,11 @@ Math = tmlib.Math;
         			playerPosition      = tm.geom.Vector2(players[i].data.position.x, players[i].data.position.y);
         		}
         	}
+
+        	// キャラクターの位置によって行動を変化させる(AI)
         	if (minDistanceToPlayer <= LENGTH_TO_ATTACK) {
         		// // 攻撃
-        		// this._moveAttack();
+        		this._moveAttack();
         		// this._attack(app, mapEnemyPosition, this.map.playerPosition.clone());
 
         		// // 攻撃へのカウントアップ
@@ -144,12 +155,15 @@ Math = tmlib.Math;
         		// ++this.attackTime;
         	}
         	else if (minDistanceToPlayer <= LENGTH_TO_SENSE) {
-        		// // 動き始める
-        		// this._moveSense(app);
+        		// 動き始める
+        		this._moveSense();
 
         		// // 攻撃をキャンセル
         		// this.attackTime = 0;
         	}
+
+			// マップのヒット判定無しに移動　@todo どこか一箇所で処理させたい
+			this.position.add(tm.geom.Vector2.mul(this.velocity, this.speed));
 		},
 
 		// _attack: function (app, enemyPosition, playerPosition) {
@@ -207,17 +221,14 @@ Math = tmlib.Math;
   //           }
 		// },
 
-		// _moveAttack: function () {
-		// 	this.velocity.x = 0;
-		// 	this.velocity.y = 0;
-		// },
+		_moveAttack: function () {
+			this.velocity.x = 0;
+			this.velocity.y = 0;
+		},
 		_moveActive: function (enemyPosition, playerPosition) {
 			// プレイヤーへの距離
 			var distance = playerPosition.sub(enemyPosition);
 			this.velocity = playerPosition.normalize();
-
-			// マップのヒット判定無しに移動
-			this.position.add(tm.geom.Vector2.mul(this.velocity, this.speed));
 
 			// this.velocity.x *= -1;
 			// this.velocity.y *= -1;
@@ -227,25 +238,25 @@ Math = tmlib.Math;
    //          else             {angle = 360 - angle;}
 			// this.directWatch(angle);
 		},
-		// _moveSense: function (app) {
-		// 	// 移動を開始するモードに変更する
-		// 	// this.modeSafe = true;
+		_moveSense: function () {
+			// 移動を開始するモードに変更する
+			// this.modeSafe = true;
 
-  //           // フレームに合わせて移動する
-  //           if (app.frame % 20 === 0) {
-  //               var angle = Math.rand(0, 359);
-  //           }
-  //           if (angle && this.isAnimation) {
-  //               this.velocity.setDegree(angle, 1);
-  //               this.velocity.x *= -1;
-  //               // this.speed = 4;
-  //               // 移動方向に対して体を向けてアニメーションする
-  //               this.directWatch(angle);
-  //           }
-  //           else {
-  //               //this.paused = true;
-  //           }
-		// },
+            // フレームに合わせて移動する
+            if (this.frame % FPS === 0) {
+                var angle = Math.rand(0, 359);
+            }
+            if (angle) {// && this.isAnimation) {
+                this.velocity.setDegree(angle, 1);
+                // this.velocity.x *= -1;
+                // this.speed = 4;
+                // 移動方向に対して体を向けてアニメーションする
+                // this.directWatch(angle);
+            }
+            else {
+                //this.paused = true;
+            }
+		},
 	});
 
 
