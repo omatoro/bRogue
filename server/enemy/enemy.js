@@ -82,6 +82,10 @@ Math = tmlib.Math;
 			var self = this;
 			this.state = ns.RegistState();
 
+			this.state.add("active", function () {
+				this.playerPosition.sub(this.mapEnemyPosition);
+				this.velocity = this.playerPosition.normalize();
+			}.bind(self));
 			this.state.add("sense", function () {
 	            // フレームに合わせてランダム移動する
 	            if (this.frame % FPS === 0) {
@@ -133,9 +137,7 @@ Math = tmlib.Math;
         		this.state.replace(" ");
         	}
         	else if (minDistanceToPlayer <= LENGTH_TO_ACTIVE) {
-        		// playerに近づく
-        		this._moveActive(mapEnemyPosition, playerPosition);
-        		this.state.replace(" ");
+        		this.state.replace("active");
         	}
         	else {// if (minDistanceToPlayer <= LENGTH_TO_SENSE) {
         		// 動き始める
@@ -148,11 +150,6 @@ Math = tmlib.Math;
 		_moveAttack: function () {
 			this.velocity.x = 0;
 			this.velocity.y = 0;
-		},
-		_moveActive: function (enemyPosition, playerPosition) {
-			// プレイヤーへの距離
-			var distance = playerPosition.sub(enemyPosition);
-			this.velocity = playerPosition.normalize();
 		},
 	});
 
