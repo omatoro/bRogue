@@ -77,6 +77,10 @@ Math = tmlib.Math;
 			// 攻撃のタイミングを図るためのフレームカウンター
 			// 上限値決めないとな～ @todo
 			this.frame = 0;
+
+			// 状態管理
+			var self = this;
+			this.state = ns.RegistState();
 		},
 
 		update: function (players) {
@@ -116,6 +120,9 @@ Math = tmlib.Math;
 
 			// マップのヒット判定無しに移動　@todo どこか一箇所で処理させたい
 			this.position.add(tm.geom.Vector2.mul(this.velocity, this.speed));
+
+			// AI処理
+			this.state.update();
 		},
 
 		_moveAttack: function () {
