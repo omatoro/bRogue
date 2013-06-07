@@ -89,25 +89,31 @@ Math = tmlib.Math;
 		},
 
 		update: function (players) {
+			// playersを保持
+			this.players = players;
 			// フレームをカウントアップ
 			++this.frame;
 
+			// 実行速度を考慮して変数を保持
+			var myPosition = this.position;
+
 			// マップ上の位置
-        	var mapEnemyPosition = tm.geom.Vector2(this.position.x, this.position.y);
+        	var mapEnemyPosition = tm.geom.Vector2(myPosition.x, myPosition.y);
         	mapEnemyPosition.y += 35; // 位置を調整
+        	this.mapEnemyPosition = mapEnemyPosition;
 
         	// 一番近いプレイヤーを探す
         	var minDistanceToPlayer = INIT_MAX_LENGTH_TO_PLAYER;
         	var playerPosition      = null;
         	for (var i = 0; i < players.length; ++i) {
-
-        		var position = tm.geom.Vector2(players[i].data.position.x, players[i].data.position.y);
-        		var distanceToPlayer = mapEnemyPosition.distance(position);
+        		var tempPlayerPosition = players[i].data.position;
+        		var distanceToPlayer = mapEnemyPosition.distance(tempPlayerPosition);
         		if (distanceToPlayer < minDistanceToPlayer) {
         			minDistanceToPlayer = distanceToPlayer;
-        			playerPosition      = tm.geom.Vector2(players[i].data.position.x, players[i].data.position.y);
+        			playerPosition      = tm.geom.Vector2(tempPlayerPosition.x, tempPlayerPosition.y);
         		}
         	}
+        	this.playerPosition = playerPosition;
 
         	// キャラクターの位置によって行動を変化させる(AI)
         	if (minDistanceToPlayer <= LENGTH_TO_ATTACK) {
