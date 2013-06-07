@@ -15,6 +15,14 @@ var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
 
 (function(ns) {
 
+    // どこに衝突しているか
+    var HIT_UP    = 0x01;
+    var HIT_DOWN  = 0x02;
+    var HIT_LEFT  = 0x04;
+    var HIT_RIGHT = 0x08;
+
+    var MAP_CHIP_SIZE = 64;
+
     ns.MapManager = tm.createClass({
 
     	init: function (players) {
@@ -133,7 +141,111 @@ var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
             var enemies = this.enemyManager;
             for (var i = 0; i < enemies.data.length; ++i) {
                 enemies.data[i].update(this.players);
+
+                // マップとのヒット判定＆移動制限
+                var isHit = this._isHitCollisionMap(
+                        enemies.data[i].position.x,
+                        enemies.data[i].position.y,
+                        enemies.data[i].velocity.clone(),
+                        enemies.data[i].speed);
+                if (isHit & HIT_UP)    { enemies.data[i].velocity.y = 0; }
+                if (isHit & HIT_DOWN)  { enemies.data[i].velocity.y = 0; }
+                if (isHit & HIT_LEFT)  { enemies.data[i].velocity.x = 0; }
+                if (isHit & HIT_RIGHT) { enemies.data[i].velocity.x = 0; }
+
+                // 移動処理
+                enemies.data[i].position.add(
+                        tm.geom.Vector2.mul(
+                                enemies.data[i].velocity, 
+                                enemies.data[i].speed));
             }
+        },
+
+        // マップとのヒット判定
+        _isHitCollisionMap: function (x, y, velocity, speed) {
+            // 返す値
+            var result = 0x00;
+            // 所属しているマップチップを取得
+            var chip = this._getBelong(x, y);
+            // 所属しているマップチップのrectを取得
+            var chipRect = this._getRect(chip.col, chip.row);
+            // 上下左右のマップチップのcollisionを取得
+            var crossCollision = this._getCrossCollision(chip.col, chip.row);
+            // 移動量を取得
+            var movingAmount = tm.geom.Vector2.mul(velocity, speed);
+            // 移動後の位置が衝突しているか
+            if (crossCollision.up === null || crossCollision.up === 0) {
+                var movedY = y + movingAmount.y;
+                if (movedY < chipRect.up)   { result |= HIT_UP; } // とりあえず移動させない(マップぴったりに合わせたほうがいいかも)
+            }
+            if (crossCollision.down === null || crossCollision.down === 0) {
+                var movedY = y + movingAmount.y;
+                if (movedY > chipRect.down) { result |= HIT_DOWN; }
+            }
+            if (crossCollision.left === null || crossCollision.left === 0) {
+                var movedX = x + movingAmount.x;
+                if (movedX < chipRect.left) { result |= HIT_LEFT; }
+            }
+            if (crossCollision.right === null || crossCollision.right === 0) {
+                var movedX = x + movingAmount.x;
+                if (movedX > chipRect.right) { result |= HIT_RIGHT; }
+            }
+            return result;
+        },
+
+        /**
+         * どこのマップチップに所属しているか取得(Map左上が0,0となる座標で指定)
+         */
+        _getBelong: function(x, y) {
+            var col = (x / MAP_CHIP_SIZE) |0;
+            var row = (y / MAP_CHIP_SIZE) |0;
+
+            var result = {
+                col: col,
+                row: row,
+            };
+            return result;
+        },
+
+        /**
+         * マップチップのrectを取得
+         */
+        _getRect: function(col, row) {
+            var up    = row     * MAP_CHIP_SIZE;
+            var down  = (row+1) * MAP_CHIP_SIZE-1;
+            var left  = col     * MAP_CHIP_SIZE;
+            var right = (col+1) * MAP_CHIP_SIZE-1;
+
+            var result = {
+                up: up,
+                down: down,
+                left: left,
+                right: right
+            };
+
+            return result;
+        },
+
+        /**
+         * 上下左右のマップチップのcollisionを取得
+         */
+        _getCrossCollision: function(col, row) {
+            var limitDown  = this.mapdata.map.length-1;
+            var limitRight = this.mapdata.map[0].length-1;
+
+            var up    = (row > 0)          ? this.mapdata.collision[row-1][col] : null;
+            var down  = (row < limitDown)  ? this.mapdata.collision[row+1][col] : null;
+            var left  = (col > 0)          ? this.mapdata.collision[row][col-1] : null;
+            var right = (col < limitRight) ? this.mapdata.collision[row][col+1] : null;
+
+            var result = {
+                up:    up,
+                down:  down,
+                left:  left,
+                right: right,
+            };
+
+            return result;
         },
 
     });

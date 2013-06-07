@@ -19,6 +19,7 @@ Math = tmlib.Math;
 
 	var FPS = 30;
 
+
 	ns.Enemy = tm.createClass({
 		init: function () {
 			this.speed = DEFAULT_MOVE_SPEED;
@@ -60,13 +61,15 @@ Math = tmlib.Math;
         		// playerに近づく
         		this._moveActive(mapEnemyPosition, playerPosition.clone());
         	}
-        	else {// if (minDistanceToPlayer <= LENGTH_TO_SENSE) {
+        	else if (minDistanceToPlayer <= LENGTH_TO_SENSE) {
         		// 動き始める
         		this._moveSense();
         	}
-
-			// マップのヒット判定無しに移動　@todo どこか一箇所で処理させたい
-			this.position.add(tm.geom.Vector2.mul(this.velocity, this.speed));
+        	else {
+        		// 動かない
+        		this._moveSense();
+        		// this._moveStop();
+        	}
 		},
 
 		_moveAttack: function () {
@@ -89,6 +92,12 @@ Math = tmlib.Math;
             else {
             }
 		},
+		_moveStop: function () {
+			this.velocity.x = 0;
+			this.velocity.y = 0;
+		},
+
+
 	});
 
 
