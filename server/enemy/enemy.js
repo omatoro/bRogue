@@ -81,7 +81,36 @@ Math = tmlib.Math;
 			// 状態管理
 			var self = this;
 			this.state = ns.RegistState();
-			
+
+			this.state.add("alwaysFirst", function () {
+				// フレームをカウントアップ
+				++this.frame;
+				var players = this.players;
+
+				// マップ上の位置
+				var myPosition = this.position; // CPU効果無し
+	        	var mapEnemyPosition = tm.geom.Vector2(myPosition.x, myPosition.y);
+	        	mapEnemyPosition.y += 35; // 位置を調整
+	        	this.mapEnemyPosition = mapEnemyPosition; // ここだけで2%くらい上がってる
+
+	        	// 一番近いプレイヤーを探す
+	        	var minDistanceToPlayer = INIT_MAX_LENGTH_TO_PLAYER;
+	        	var playerPosition      = null;
+	        	for (var i = 0; i < players.length; ++i) {
+	        		var position = tm.geom.Vector2(players[i].data.position.x, players[i].data.position.y);
+	        		var distanceToPlayer = mapEnemyPosition.distance(position);
+	        		if (distanceToPlayer < minDistanceToPlayer) {
+	        			minDistanceToPlayer = distanceToPlayer;
+	        			playerPosition      = position;
+	        		}
+	        	}
+	        	this.playerPosition = playerPosition; // ここだけで2%くらい上がってる
+
+	        	if      (minDistanceToPlayer <= LENGTH_TO_ATTACK) { this.state.replace("attack"); }
+	        	else if (minDistanceToPlayer <= LENGTH_TO_ACTIVE) { this.state.replace("active"); }
+	        	else if (minDistanceToPlayer <= LENGTH_TO_SENSE)  { this.state.replace("sense"); }
+	        	else { this.state.replace("sense"); }
+			}.bind(self));
 			this.state.add("attack", function () {
 				this.velocity.x = 0;
 				this.velocity.y = 0;
@@ -110,41 +139,6 @@ Math = tmlib.Math;
 		update: function (players) {
 			// playersを保持 - ここだけで2%くらい上がってる
 			this.players = players;
-
-			// フレームをカウントアップ
-			++this.frame;
-			var players = this.players;
-
-			// マップ上の位置
-			var myPosition = this.position; // CPU効果無し
-        	var mapEnemyPosition = tm.geom.Vector2(myPosition.x, myPosition.y);
-        	mapEnemyPosition.y += 35; // 位置を調整
-        	this.mapEnemyPosition = mapEnemyPosition; // ここだけで2%くらい上がってる
-
-        	// 一番近いプレイヤーを探す
-        	var minDistanceToPlayer = INIT_MAX_LENGTH_TO_PLAYER;
-        	var playerPosition      = null;
-        	for (var i = 0; i < players.length; ++i) {
-        		var position = tm.geom.Vector2(players[i].data.position.x, players[i].data.position.y);
-        		var distanceToPlayer = mapEnemyPosition.distance(position);
-        		if (distanceToPlayer < minDistanceToPlayer) {
-        			minDistanceToPlayer = distanceToPlayer;
-        			playerPosition      = position;
-        		}
-        	}
-        	this.playerPosition = playerPosition; // ここだけで2%くらい上がってる
-
-        	// キャラクターの位置によって行動を変化させる(AI)
-        	if (minDistanceToPlayer <= LENGTH_TO_ATTACK) {
-        		this.state.replace("attack");
-        	}
-        	else if (minDistanceToPlayer <= LENGTH_TO_ACTIVE) {
-        		this.state.replace("active");
-        	}
-        	else {// if (minDistanceToPlayer <= LENGTH_TO_SENSE) {
-        		// 動き始める
-        		this.state.replace("sense");
-        	}
 			// AI処理
 			this.state.update();
 		},
