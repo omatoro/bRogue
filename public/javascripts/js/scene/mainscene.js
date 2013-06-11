@@ -123,7 +123,7 @@
             slash.position.set(ns.SCREEN_WIDTH/2 + 10, ns.SCREEN_HEIGHT/2 + 10);
 
             // 敵撃破時のエフェクト
-            var enemyDeadSS = tm.app.SpriteSheet({
+            this.enemyDeadSS = tm.app.SpriteSheet({
                 image: "enemydead",
                 frame: {
                     width:  64,
@@ -177,36 +177,8 @@
                     if (enemy.isHitElementCircle(attackElement)) {
                         // ダメージ数を計算
                         var attack = player.getAttackPoint();
-                        var damage = enemy.damage(attack);
-
-                        // ダメージ数を表示
-                        var damageEffect = ns.DamagedNumber(damage);
-
-                        // 経験値取得
-                        var exp = enemy.getExp();
-                        player.addExp(exp, e.app);
-
-                        // アイテムドロップ
-                        var itemData = itemList.get(enemy.getDropItem());
-                        if (itemData !== null) {
-                            var dropItem = ns.DropItem(itemData);
-                            dropItem.position.set(enemy.x, enemy.y);
-                            map.addItem(dropItem);
-                        }
-
-                        // 敵が死んでた
-                        if (enemy.isEnemyDead()) {
-                            // 死んだエフェクト
-                            var enemydead = tm.app.AnimationSprite(enemyDeadSS, 120, 120);
-                            enemydead.position.set(enemy.x, enemy.y);
-                            map.setEnemyDeadAnimation(enemydead);
-                            enemydead.gotoAndPlay("enemydead");
-                        }
-
-                        // 表示場所を設定
-                        var damagePosition = map.mapCenterToScreenTopLeft(enemy.x, enemy.y);
-                        damageEffect.effectPositionSet(damagePosition.x + 10, damagePosition.y + 5);
-                        e.app.currentScene.addChild(damageEffect);
+                        // ダメージ数送信
+                        ns.gameEvent.sendDamageEnemy(enemy.id, attack);
                     }
                 }
             });
@@ -266,6 +238,45 @@
 
             // ステータスの描画
             this.drawStatus();
+
+            // 敵へのダメージ量をサーバから受信してたら処理する
+            for (var i = 0; i < ns.gameEvent.enemyDamagedData.length; ++i) {
+                var damageData = ns.gameEvent.enemyDamagedData.shift();
+                for (var i = 0; i < this.enemyGroup.children.length; ++i) {
+                    var enemy    = this.enemyGroup.children[i];
+                    if (damageData.enemyId === enemy.id) {
+                        // ダメージ数を表示
+                        var damageEffect = ns.DamagedNumber(damageData.damage);
+
+                        // 表示場所を設定
+                        var damagePosition = this.map.mapCenterToScreenTopLeft(enemy.x, enemy.y);
+                        damageEffect.effectPositionSet(damagePosition.x + 10, damagePosition.y + 5);
+                        app.currentScene.addChild(damageEffect);
+
+                        // 敵が死んでいた場合
+                        if (damageData.isDead) {
+                            // 経験値取得
+                            this.player.addExp(damageData.exp, app);
+
+                            // // アイテムドロップ
+                            // var itemData = itemList.get(enemy.getDropItem());
+                            // if (itemData !== null) {
+                            //     var dropItem = ns.DropItem(itemData);
+                            //     dropItem.position.set(enemy.x, enemy.y);
+                            //     this.map.addItem(dropItem);
+                            // }
+
+                            // 死んだエフェクト
+                            var enemydead = tm.app.AnimationSprite(this.enemyDeadSS, 120, 120);
+                            enemydead.position.set(enemy.x, enemy.y);
+                            this.map.setEnemyDeadAnimation(enemydead);
+                            enemydead.gotoAndPlay("enemydead");
+
+                            enemy.remove();
+                        }
+                    }
+                }
+            }
 
             // 次のステージに進むフラグがたったらマップ更新
             if (this.map.isNextStage()) {

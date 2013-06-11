@@ -40,6 +40,48 @@ var Enemy = require('./enemy').Enemy;
 				enemyData.push(enemy);
 			}
 			this.data = enemyData;
+
+			// プレイヤーの攻撃データを保持する
+			this.attackPlayersData = [];
+		},
+
+		attackPlayers: function (data) {
+			this.attackPlayersData.push(data);
+			console.dir(this.attackPlayersData);
+		},
+
+		/**
+		 * クライアントで攻撃&ヒット判定を行なっているので、クライアントから送信された敵IDと照合してダメージ計算を行う
+		 */
+		enemyDamage: function (attackData) {
+			for (var i = 0; i < this.data.length; ++i) {
+				if (this.data[i].id === attackData.enemyId) {
+					console.dir("enemyDamage");
+					var data = {
+						enemyId: attackData.enemyId,
+						exp:    this.data[i].getExp(),
+						damage: this.data[i].damage(attackData.playerAttackPoint),
+						isDead: this.data[i].isDead(),
+						itemDrop: {},
+					};
+					attackData.socket.emit("enemyDamaged", data);
+					attackData.socket.broadcast.emit("enemyDamaged", data);
+
+					if (data.isDead) {
+						// 敵の情報を配列から削除
+						this.data.splice(i, 1);
+						--i;
+						continue;
+					}
+				}
+			}
+		},
+
+		update: function () {
+			// まとめて敵ダメージを計算
+			for (var i = 0; i < this.attackPlayersData.length; ++i) {
+				this.enemyDamage(this.attackPlayersData.shift());
+			}
 		},
 
 	});

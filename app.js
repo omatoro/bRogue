@@ -265,6 +265,12 @@ function gameMessage(socket) {
 	socket.on("getEnemyData", function () {
 		socket.emit("gotEnemyData", mapManager.mapdata.enemyManager);
 	});
+
+	socket.on("enemyDamage", function (data) {
+		// ダメージ量計算
+		data.socket = socket;
+		mapManager.enemyManager.attackPlayers(data);
+	});
 };
 
 

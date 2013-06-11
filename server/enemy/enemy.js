@@ -22,13 +22,59 @@ Math = tmlib.Math;
 
 	ns.Enemy = tm.createClass({
 		init: function () {
-			this.speed = DEFAULT_MOVE_SPEED;
 			this.velocity = tm.geom.Vector2(0, 0);
 			this.position = tm.geom.Vector2(0, 0);
 
 			// 攻撃のタイミングを図るためのフレームカウンター
 			// 上限値決めないとな～ @todo
 			this.frame = 0;
+
+			// パラメータ関連
+			this.maxhp = 0;
+			this.hp    = 0;
+			this.maxmp = 0;
+			this.mp    = 0;
+
+			this._str  = 0; // 攻撃力
+			this._def  = 0; // 防御力
+			// this._int = 1; // 魔力
+			this._agi  = 0; // 素早さ
+			this._luk  = 0; // 運
+			this._vit  = 0; // 体力
+			this._dex  = 0; // 器用さ
+
+			this.exp = 0; // 倒した時の経験値
+
+			this.speed = DEFAULT_MOVE_SPEED;
+
+
+			this.maxhp = 5;
+			this.hp    = 5;
+			this.maxmp = 0;
+			this.mp    = 0;
+
+			this._str  = 3; // 攻撃力
+			this._def  = 0; // 防御力
+			// this._int = 1; // 魔力
+			this._agi  = 0; // 素早さ
+			this._luk  = 0; // 運
+			this._vit  = 0; // 体力
+			this._dex  = 0; // 器用さ
+			this.exp = 1; // 倒した時の経験値
+			this.isDeaded = false;
+
+			this.dropItemList = [
+				{
+					itemName: "雑草",
+					random: 2
+				},{
+					itemName: "モンスターの液体",
+					random: 2
+				},{
+					itemName: "布の服",
+					random: 2
+				}
+			];
 		},
 
 		update: function (players) {
@@ -71,6 +117,27 @@ Math = tmlib.Math;
         		// this._moveStop();
         	}
 		},
+
+		damage: function (attack) {
+			var damage = (attack - this._def) |0;
+			damage = (damage < 0) ? 0 : damage;
+
+			this.hp -= damage;
+			this.hp = (this.hp < 0) ? 0 : this.hp;
+
+			return damage;
+		},
+
+		isDead: function () {
+			if (this.hp <= 0) {
+				this.isDeaded = true;
+				// this.remove();
+				return true;
+			}
+			return false;
+		},
+
+		getExp: function () { return this.exp; },
 
 		_moveAttack: function () {
 			this.velocity.x = 0;

@@ -64,7 +64,10 @@
             // 移動したかどうか調べる用
             this.prePlayerPosition = tm.geom.Vector2(0, 0);
             this.preAnotherPlayerPosition = [];
-            
+
+            // 敵のダメージ情報
+            this.enemyDamagedData = [];
+
             // 接続処理
             var socket = this.socket;
 
@@ -126,6 +129,7 @@
             this.anotherPlayerGroup = tm.app.CanvasElement();
             map.addChild(this.anotherPlayerGroup);
             var anotherPlayerGroup = this.anotherPlayerGroup;
+            var self = this;
 
             // 接続処理
             var socket = this.socket;
@@ -179,6 +183,31 @@
                 console.log("delete another player");
                 anotherPlayerGroup.removeChild(anotherPlayer);
             });
+
+            /**
+             * 敵が攻撃を受けた
+             * message = {
+             *     enemyId,
+             *     damage,
+             *     isDead,
+             *     exp,
+             *     itemDrop: {
+             *         空,
+             *     },
+             * }
+             */
+            socket.on("enemyDamaged", function (message) {
+                // 一旦データを蓄積して、MainSceneで取り出し処理する
+                this.enemyDamagedData.push(message);
+            }.bind(self));
+        },
+
+        sendDamageEnemy: function (enemyId, playerAttackPoint) {
+            var data = {
+                enemyId: enemyId,
+                playerAttackPoint: playerAttackPoint
+            };
+            this.socket.emit("enemyDamage", data);
         },
 
         getMapData: function () {

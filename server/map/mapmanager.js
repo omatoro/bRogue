@@ -135,11 +135,20 @@ var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
         },
 
         update: function () {
+            // ダメージ処理を行う
+            var enemies = this.enemyManager;
+            enemies.update();
+
+
             // Enemyのupdateを実行する
             // 移動処理はenemyManagerでやったほうがいい？
             // var enemies = this.data;
-            var enemies = this.enemyManager;
             for (var i = 0; i < enemies.data.length; ++i) {
+                // 死んでたら処理しない
+                if (enemies.data[i].isDead()) {
+                    continue;
+                }
+
                 enemies.data[i].update(this.players);
 
                 // マップとのヒット判定＆移動制限

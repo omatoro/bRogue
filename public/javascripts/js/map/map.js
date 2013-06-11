@@ -259,37 +259,16 @@
             if (!enemies) {
                 return ;
             }
-
             for (var i = 0; i < this.enemyGroup.children.length; ++i) {
                 // 同じIDの敵情報を取得
                 for (var j = 0; j < enemies.length; ++j) {
                     if (this.enemyGroup.children[i].id === enemies[j].id) {
-                        // console.log(enemies[j].id);
+                        // 敵の位置を更新
+                        var position = this.mapLeftTopToMapCenter(enemies[j].position.x, enemies[j].position.y);
+                        this.enemyGroup.children[i].position.set(position.x, position.y);
                         break;
                     }
                 }
-
-                // var velocity = this.enemyGroup.children[i].velocity.clone();
-                // var position = this.enemyGroup.children[i].position.clone();
-                // position = this.mapCenterToMapLeftTop(position.x, position.y);
-                // var speed    = this.enemyGroup.children[i].speed;
-                // velocity.x *= -1;
-                // velocity.y *= -1;
-                // var isHit = this._isHitCollisionMap(
-                //     position.x,
-                //     position.y,
-                //     velocity,
-                //     speed);
-                // if (isHit & HIT_UP)    { velocity.y = 0; }
-                // if (isHit & HIT_DOWN)  { velocity.y = 0; }
-                // if (isHit & HIT_LEFT)  { velocity.x = 0; }
-                // if (isHit & HIT_RIGHT) { velocity.x = 0; }
-
-                var position = this.mapLeftTopToMapCenter(enemies[j].position.x, enemies[j].position.y);
-
-                // 敵の位置を更新
-                // this.enemyGroup.children[i].position.add(tm.geom.Vector2.mul(velocity, speed));
-                this.enemyGroup.children[i].position.set(position.x, position.y);
             }
         },
 
