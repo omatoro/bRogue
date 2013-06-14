@@ -164,7 +164,6 @@
                 else {
                     this.paused = true;
                 }
-                // console.log("x : " + this.x + " y : " + this.y);
             }
         },
 

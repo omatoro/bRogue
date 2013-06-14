@@ -66,6 +66,13 @@
             this.slash = slash;
             this.attackDistanse = 50;
             this.addChild(slash);
+
+            // 移動の目的地
+            this.aimPosition = null;
+		},
+
+		setAimPosition: function (position) {
+			this.aimPosition = position;
 		},
 
 		getMaxHP:     function () { return this.maxhp; },
@@ -124,34 +131,7 @@
 
 		update: function (app) {
             // ランダム移動
-            // if (this.isAuto) {
-            // 	var mapEnemyPosition = this.position.clone();
-            // 	mapEnemyPosition = this.map.mapCenterToMapLeftTop(mapEnemyPosition.x, mapEnemyPosition.y);
-            // 	mapEnemyPosition.y += 35; // 位置を調整
-            // 	var lengthToPlayer = this.map.playerPosition.distance(mapEnemyPosition);
-            // 	if (lengthToPlayer <= this.lengthToAttack) {
-            // 		// 攻撃
-            // 		this._moveAttack();
-            // 		this._attack(app, mapEnemyPosition, this.map.playerPosition.clone());
-
-            // 		// 攻撃へのカウントアップ
-            // 		++this.attackTime;
-            // 	}
-            // 	else if (lengthToPlayer <= this.lengthToActive) {
-            // 		// playerに近づく
-            // 		this._moveActive(mapEnemyPosition, this.map.playerPosition.clone());
-
-            // 		// 攻撃へのカウントアップ
-            // 		++this.attackTime;
-            // 	}
-            // 	else if (lengthToPlayer <= this.lengthToSense) {
-            // 		// 動き始める
-            // 		this._moveSense(app);
-
-            // 		// 攻撃をキャンセル
-            // 		this.attackTime = 0;
-            // 	}
-            // }
+            
 		},
 
 		_attack: function (app, enemyPosition, playerPosition) {
