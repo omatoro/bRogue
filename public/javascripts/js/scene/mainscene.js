@@ -239,6 +239,61 @@
             // ステータスの描画
             this.drawStatus();
 
+            // 敵の情報をサーバから取得
+            var enemies = ns.gameEvent.getEnemyData();
+            if (enemies) {
+                // 受信した敵の情報と、クライアントの情報が不一致だったら、敵を生成/削除する
+                var cliantEnemyNum = this.enemyGroup.children.length;
+                var serverEnemyNum = enemies.length;
+
+                if (serverEnemyNum >= cliantEnemyNum) {
+                    var iLimit = serverEnemyNum;
+                    var jLimit = cliantEnemyNum;
+                    var isCreateOrDelete = "create";
+                }
+                // サーバーの敵の数よりクライアントの敵の数の方が少ない！？
+                else {
+                    var iLimit = cliantEnemyNum;
+                    var jLimit = serverEnemyNum;
+                    var isCreateOrDelete = "delete";
+                }
+                // 総当りで調べるので、効率化可能 @todo
+                for (var i = 0; i < iLimit; ++i) {
+                    // 同じIDの敵情報を取得
+                    var isEnemy = false;
+                    for (var j = 0; j < jLimit; ++j) {
+                        if (serverEnemyNum >= cliantEnemyNum) {
+                            var serverIte = i;
+                            var cliantIte = j;
+                        }
+                        else {
+                            var serverIte = j;
+                            var cliantIte = i;
+                        }
+                        if (this.enemyGroup.children[cliantIte].id === enemies[serverIte].id) {
+                            isEnemy = true;
+                            break;
+                        }
+                    }
+                    if (!isEnemy) {
+                        if (isCreateOrDelete === "create") {
+                            // 敵を生成
+                            this.stage.createEnemy(
+                                    this.enemyGroup, 
+                                    this.player, 
+                                    this.map, 
+                                    enemies[serverIte].className, 
+                                    enemies[serverIte].position, 
+                                    enemies[serverIte].id);
+                        }
+                        else {
+                            this.enemyGroup.children[cliantIte].remove();
+                        }
+                        break;
+                    }
+                }
+            }
+
             // 敵へのダメージ量をサーバから受信してたら処理する
             for (var i = 0; i < ns.gameEvent.enemyDamagedData.length; ++i) {
                 var damageData = ns.gameEvent.enemyDamagedData.shift();

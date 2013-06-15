@@ -24,11 +24,17 @@ var Enemy = require('./enemy').Enemy;
 			// 敵情報をまとめる配列
 			this.data = [];
 
-			var enemyData = [];
-
 			// マップの配列上のデータから、ピクセル単位のポジションに変換する(マップ左上から見た座標)
 			// Enemyを作成する
-			for (var i = 0; i < enemyMapPositions.length; ++i) {
+			this.createEnemy(enemyMapPositions);
+
+			// プレイヤーの攻撃データを保持する
+			this.attackPlayersData = [];
+		},
+
+		createEnemy: function (enemyMapPositions) {
+			console.dir(enemyMapPositions);
+			for (var i = 0, n = enemyMapPositions.length; i < n; ++i) {
 				var x = enemyMapPositions[i].mapPosition.x * MAP_CHIP_SIZE + MAP_CHIP_SIZE/2;
 				var y = enemyMapPositions[i].mapPosition.y * MAP_CHIP_SIZE;
 
@@ -37,17 +43,13 @@ var Enemy = require('./enemy').Enemy;
 				enemy.id = enemyMapPositions[i].id;
 				enemy.className = enemyMapPositions[i].name;
 
-				enemyData.push(enemy);
+				this.data.push(enemy);
 			}
-			this.data = enemyData;
-
-			// プレイヤーの攻撃データを保持する
-			this.attackPlayersData = [];
 		},
 
 		attackPlayers: function (data) {
 			this.attackPlayersData.push(data);
-			console.dir(this.attackPlayersData);
+			// console.dir(this.attackPlayersData);
 		},
 
 		/**
@@ -70,6 +72,7 @@ var Enemy = require('./enemy').Enemy;
 					if (data.isDead) {
 						// 敵の情報を配列から削除
 						this.data.splice(i, 1);
+						// console.dir(this.data);
 						--i;
 						continue;
 					}

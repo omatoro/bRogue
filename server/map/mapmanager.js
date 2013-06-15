@@ -8,7 +8,6 @@ Math = tmlib.Math;
 var map = require('./generatemap');
 
 var mapEnemyInfo = require('./../stage/stagemanager').StageManager().getMapEnemy();
-
 var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
 
 
@@ -33,6 +32,9 @@ var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
             // 歩ける場所に何かを生成したら覚えておく
     		this.isCreateSomething = [];
 
+            // 敵のIDカウンター
+            this.enemyIDNum = 1;
+
     		// 階段を設置
             this.stairsPosition = this.getRandomSafeMapChipPosition(
             		this.mapdata.walkMapNum,
@@ -49,8 +51,8 @@ var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
 
             // 敵を設置
             var enemyMapPosition = this.createFirstEnemyPosition(
-                    mapEnemyInfo[0], 
-                    this.mapdata.walkMapNum, 
+                    mapEnemyInfo[0],
+                    this.mapdata.walkMapNum,
                     this.mapdata.collision);
 
             // this.enemyManager = enemyManager(enemyMapPosition); // 仮に1階の敵データを渡す
@@ -66,24 +68,23 @@ var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
          * 敵の初期位置を作成
          * 仮に1階の敵データを作る
          */
-        createFirstEnemyPosition: function (stageEnemy, walkMapNum, collisionMap) {
+        createFirstEnemyPosition: function (stageEnemy, walkMapNum, collisionMap, currentEnemyNum) {
             var result = [];
 
-            for (var i = 0; i < stageEnemy.length; ++i) {
-                for (var j = 0; j < stageEnemy[i].num; ++j) {
+            for (var i = 0, n = stageEnemy.length; i < n; ++i) {
+                for (var j = currentEnemyNum || 0, jn = stageEnemy[i].num; j < jn; ++j) {
                     // 敵の位置(マップチップの配列状態)
                     var enemyMapPosition = this.getRandomSafeMapChipPosition(walkMapNum, collisionMap);
 
                     // 格納するデータの作成
                     var enemyData = {
-                        id: (i*stageEnemy[i].num)+(j+1), // 一意のIDを与える
+                        id: this.enemyIDNum++, // 一意のIDを与える
                         name: stageEnemy[i].enemy,
                         mapPosition: enemyMapPosition,
                     };
                     result.push(enemyData);
                 }
             }
-
             return result;
         },
 
@@ -95,7 +96,7 @@ var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
             var mapPosition = Math.rand(0, walkMapNum-1);
             var isBreak = true;
             while (true) {
-                for (var i = 0; i < this.isCreateSomething.length; ++i) {
+                for (var i = 0, n = this.isCreateSomething.length; i < n; ++i) {
                     if (this.isCreateSomething[i] === mapPosition) {
                         mapPosition = Math.rand(0, walkMapNum-1);
                         isBreak = false;
@@ -112,8 +113,8 @@ var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
 
             // 歩ける場所を返す
             var counter = 0;
-            for (var i = 0; i < collisionMap.length; ++i) {
-                for (var j = 0; j < collisionMap[i].length; ++j) {
+            for (var i = 0, n = collisionMap.length; i < n; ++i) {
+                for (var j = 0, jn = collisionMap[i].length; j < jn; ++j) {
                     // 歩ける場所かどうか
                     if (collisionMap[i][j] === 1) {
                         // ランダムに選んだ場所かどうか
@@ -139,11 +140,21 @@ var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
             var enemies = this.enemyManager;
             enemies.update();
 
+            // 敵の数が減ったら生成する
+            if (this.mapdata.mapEnemyInfo[0][0].num > enemies.data.length) {
+                var enemyMapPosition = this.createFirstEnemyPosition(
+                        this.mapdata.mapEnemyInfo[0], // 一体だけ生成
+                        this.mapdata.walkMapNum,
+                        this.mapdata.collision,
+                        enemies.data.length);
+
+                this.enemyManager.createEnemy(enemyMapPosition);
+            }
 
             // Enemyのupdateを実行する
             // 移動処理はenemyManagerでやったほうがいい？
             // var enemies = this.data;
-            for (var i = 0; i < enemies.data.length; ++i) {
+            for (var i = 0, n = enemies.data.length; i < n; ++i) {
                 // 死んでたら処理しない
                 if (enemies.data[i].isDead()) {
                     continue;

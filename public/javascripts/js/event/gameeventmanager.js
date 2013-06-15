@@ -95,7 +95,7 @@
 
             // サーバにプレイヤーデータ登録完了
             socket.on("gotEnemyData", function (enemies) {
-                console.log("got Enemy Data");
+                // console.log("got Enemy Data");
                 this.enemyData = enemies;
             }.bind(self));
         },

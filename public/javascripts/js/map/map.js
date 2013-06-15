@@ -259,6 +259,7 @@
             if (!enemies) {
                 return ;
             }
+
             for (var i = 0; i < this.enemyGroup.children.length; ++i) {
                 // 同じIDの敵情報を取得
                 for (var j = 0; j < enemies.length; ++j) {

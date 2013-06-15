@@ -15,11 +15,9 @@
             // サーバからステージ情報取得
             ns.gameEvent.getStageInfo(stageNum);
 
-            console.dir(enemyManager);
-
             for (var i = 0; i < enemyManager.length; ++i) {
                 var dataCreateEnemy = enemyManager[i];
-                this._createEnemy(
+                this.createEnemy(
                         enemyGroup, 
                         player, 
                         map, 
@@ -28,8 +26,6 @@
                         dataCreateEnemy.id);
             }
 
-            console.dir(enemyGroup.children);
-
             // }
 		},
 
@@ -37,7 +33,7 @@
             // return this._isGameClear;
         },
 
-        _createEnemy: function (enemyGroup, player, map, enemyClassName, position, enemyId) {
+        createEnemy: function (enemyGroup, player, map, enemyClassName, position, enemyId) {
             // 敵を生成して返す
             // for (var i = 0; i < num; ++i) {
             // enemyを作成
