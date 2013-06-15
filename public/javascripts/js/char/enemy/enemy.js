@@ -6,7 +6,7 @@
 	var ATTACK_LIMIT_COUNTER = 90;
 
 	ns.Enemy = tm.createClass({
-		superClass : ns.AnimationCharactor,
+		superClass : ns.AutoMoveCharactor,
 
 		init: function (image, imageData, drawImageScaleSize, player, map) {
 			this.superInit(image, imageData, drawImageScaleSize);
@@ -66,13 +66,6 @@
             this.slash = slash;
             this.attackDistanse = 50;
             this.addChild(slash);
-
-            // 移動の目的地
-            this.aimPosition = null;
-		},
-
-		setAimPosition: function (position) {
-			this.aimPosition = position;
 		},
 
 		getMaxHP:     function () { return this.maxhp; },
@@ -130,8 +123,7 @@
 		},
 
 		update: function (app) {
-            // ランダム移動
-            
+            this.autoMove();
 		},
 
 		_attack: function (app, enemyPosition, playerPosition) {

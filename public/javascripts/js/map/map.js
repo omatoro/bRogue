@@ -265,7 +265,7 @@
                     if (this.enemyGroup.children[i].id === enemies[j].id) {
                         // 敵の位置を更新
                         var position = this.mapLeftTopToMapCenter(enemies[j].position.x, enemies[j].position.y);
-                        this.enemyGroup.children[i].position.set(position.x, position.y);
+                        this.enemyGroup.children[i].setAim(position);
                         break;
                     }
                 }

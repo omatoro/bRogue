@@ -125,6 +125,12 @@
             this.pad = pad || false;
         },
 
+        // 向いている方向(ベクトル)でアニメーション
+        setAim: function (vector) {
+            var angle = vector.toAngle();
+            this.directWatch(angle);
+        },
+
         // 向いている方向を決める
         directWatch: function (angle) {
             if (this._exceptDirectWatch(angle)) {

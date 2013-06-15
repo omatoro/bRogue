@@ -4,7 +4,7 @@
 (function(ns) {
 
 	ns.AnotherPlayer = tm.createClass({
-		superClass : ns.AnimationCharactor,
+		superClass : ns.AutoMoveCharactor,
 
 		init: function () {
 			this.superInit("player", {
@@ -240,54 +240,6 @@
 			this.inputAnimation(app);
             this.autoMove();
 		},
-        
-        setAutoPosition: function (position) {
-            this.aimPosition = tm.geom.Vector2(position.x, position.y);
-        },
-        
-        /**
-         * 自動移動
-         */
-        autoMove: function () {
-            if (!this.aimPosition) {
-                return ;
-            }
-            // 目的地へのベクトルを取得
-            var direct = this.getDirect(this.position, this.aimPosition);
-            // 指定された座標が現在と同じであれば移動しない
-            if (Math.abs(direct.x) <= this.speed+1 && Math.abs(direct.y) <= this.speed+1) {
-                return ;
-            }
-			// 目的地へ角度を求める
-			var angle = this.getAngle(direct.clone());
-            // 角度の方向へ向く
-			this.directWatch(angle);
-            // 移動
-            direct.normalize();
-            this.position.add(tm.geom.Vector2.mul(direct, this.speed));
-        },
-        
-        /**
-         * ベクトルを取得
-         */
-        getDirect: function (from, to) {
-            return to.clone().sub(from);
-        },
-        
-        /**
-         * 角度を取得
-         */
-        getAngle: function (normal) {
-			normal.x *= -1;
-			normal.y *= -1;
-			var angle = Math.radToDeg(normal.toAngle());
-            
-            // 右箇所0から始まり、360度の角度に変換
-    		angle -= 180;
-            if   (angle < 0) {angle *= -1;}
-            else             {angle = 360 - angle;}
-            return angle;
-        },
 	});
 
 })(game);

@@ -171,7 +171,7 @@
                          anotherPlayer.position.y !== message.position.y)) {
                     console.log("move anotherPlayer : ");
                     var position = map.mapLeftTopToMapCenter(message.position.x, message.position.y);
-                    anotherPlayer.setAutoPosition(position);
+                    anotherPlayer.setAim(position);
                     // anotherPlayer.paused = message.paused;
                     // anotherPlayer.directWatch(message.angle);
                 }
