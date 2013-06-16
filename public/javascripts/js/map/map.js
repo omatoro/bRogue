@@ -296,7 +296,7 @@
             var player = app.currentScene.player;
 
             // イベントの送信
-            ns.gameEvent.movePlayer(this.playerPosition, player.angle, player.paused);
+            ns.gameEvent.movePlayer(this.playerPosition, player);
 
             // プレイヤーがいたらマップチップとのヒット判定を行うので、マップ移動用に移動量を返す
             playerVelocity.x *= -1;
@@ -363,15 +363,15 @@
 
         // プレイヤーと階段とのヒット判定
         _isHitStairs: function (app) {
-            // if (this.isPlayer) {
-            //     var playerPosition = this.mapLeftTopToMapCenter(this.playerPosition.x, this.playerPosition.y);
-            //     this.playerElement.position.set(playerPosition.x, playerPosition.y);
+            if (this.isPlayer) {
+                var playerPosition = this.mapLeftTopToMapCenter(this.playerPosition.x, this.playerPosition.y);
+                this.playerElement.position.set(playerPosition.x, playerPosition.y);
 
-            //     if (this.stairs.isHitElementCircle(this.playerElement)) {
-            //         // 次のステージへの遷移処理はOpeningSceneクラスで行う
-            //         this._isNextStage = true;
-            //     }
-            // }
+                if (this.stairs && this.stairs.isHitElementCircle(this.playerElement)) {
+                    // 次のステージへの遷移処理はMainSceneクラスで行う
+                    this._isNextStage = true;
+                }
+            }
         },
 
 	});

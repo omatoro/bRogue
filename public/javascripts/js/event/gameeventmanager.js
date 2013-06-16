@@ -244,7 +244,13 @@
          * プレイヤーに関するイベント
          */
         attackPlayer: function () {},
-        movePlayer: function (position, angle, paused) {
+        movePlayer: function (position, player) {
+            if (!player) {
+                return ;
+            }
+            var angle  = player.angle;
+            var paused = player.paused;
+
             // 一定の時間が経過したかどうか
             ++this.currentFrame;
             var isTimer = false;

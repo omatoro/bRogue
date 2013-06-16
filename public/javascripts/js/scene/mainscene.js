@@ -56,8 +56,6 @@
         init : function(continuePlayer, continuePad) {
             this.superInit();
 
-            ns.MainScene.STAGE_NUMBER = ns.STAIRS;
-
             console.time("MainScene init");
 
             // コントローラーパッド
@@ -66,6 +64,7 @@
             this.pad = pad;
 
             // プレイヤー
+            console.dir(continuePlayer);
             var player = continuePlayer || ns.Player(pad);
             this.player = player;
             player.setInputPad(pad);
@@ -75,7 +74,7 @@
             var saveData = this._loadSaveData();
             if (saveData && !continuePlayer) {
                 player.dataLoad(saveData.saveData.player);
-                ns.MainScene.STAGE_NUMBER = saveData.saveData.stairs;
+                ns.STAIRS = saveData.saveData.stairs;
             }
 
             // マップ
@@ -105,7 +104,7 @@
             var enemyGroup = tm.app.CanvasElement();
             this.enemyGroup = enemyGroup;
             // var mapEnemyInfo = mapData.mapEnemyInfo;
-            this.stage = ns.StageManager(ns.MainScene.STAGE_NUMBER, enemyGroup, player, map, mapData.enemyManager);
+            this.stage = ns.StageManager(ns.STAIRS, enemyGroup, player, map, mapData.enemyManager);
 
             // 敵をマップに追加
             map.setEnemyGroup(enemyGroup);
@@ -159,7 +158,7 @@
                         // ダメージ数を計算
                         var attack = player.getAttackPoint();
                         // ダメージ数送信
-                        ns.gameEvent.sendDamageEnemy(enemy.id, attack, ns.MainScene.STAGE_NUMBER);
+                        ns.gameEvent.sendDamageEnemy(enemy.id, attack, ns.STAIRS);
                     }
                 }
             });
@@ -212,7 +211,7 @@
         },
 
         drawStatus: function () {
-            this.stairsNum.text   = ns.MainScene.STAGE_NUMBER + "階";
+            this.stairsNum.text   = ns.STAIRS + "階";
             this.statusLevel.text = "Lv." + this.player.getLevel();
             this.statusHP.text    = "HP " + this.player.getCurrentHP() + "/" + this.player.getMaxHP();
             // this.statusMP.text    = "MP " + this.player.getCurrentMP() + "/" + this.player.getMaxMP();
@@ -226,7 +225,7 @@
             this.drawStatus();
 
             // 敵の情報をサーバから取得
-            var enemies = ns.gameEvent.getAndSendEnemyData(ns.MainScene.STAGE_NUMBER);
+            var enemies = ns.gameEvent.getAndSendEnemyData(ns.STAIRS);
             if (enemies) {
                 // 受信した敵の情報と、クライアントの情報が不一致だったら、敵を生成/削除する
                 var cliantEnemyNum = this.enemyGroup.children.length;
@@ -318,18 +317,36 @@
 
             // 次のステージに進むフラグがたったらマップ更新
             if (this.map.isNextStage()) {
-                ++ns.MainScene.STAGE_NUMBER;
+                ++ns.STAIRS;
                 // this.bgm.stop();
                 // tm.asset.AssetManager.get("downStairs").clone().play();
                 this._autoSave();
-                app.replaceScene(ns.MainScene(this.player, this.pad));
+                // app.replaceScene(ns.MainScene(this.player, this.pad));
+
+                // シーンの切り替え
+                var loadingScene = ns.AsyncLoading({
+                    width:        app.width,
+                    height:       app.height,
+                    nextScene:    ns.MainScene.bind(null, this.player, this.pad),
+                },function (postLoadingFunc) {
+                    var self = this;
+                    var socket = self.socket;
+                    socket.emit("getMapData", ns.STAIRS);
+                    // mapデータ取得
+                    socket.on("gotMapData", function (data) {
+                        console.log("gotMapData");
+                        this.mapData = data;
+                        postLoadingFunc();
+                    }.bind(self));
+                }.bind(ns.gameEvent)); // 仕方なくここで通信系の処理を書く
+                app.replaceScene(loadingScene);
             }
 
             // ゲームオーバーフラグがたったらゲーム終了
             if (this.player.isGameOver()) {
                 // this.bgm.stop();
                 this._deleteSaveData();
-                app.replaceScene(ns.EndScene(ns.MainScene.STAGE_NUMBER, this.player.getLevel(), false));
+                app.replaceScene(ns.EndScene(ns.STAIRS, this.player.getLevel(), false));
             }
 
             // ゲームクリアフラグがたったらゲーム終了
@@ -337,7 +354,7 @@
                 // this.bgm.stop();
                 this._deleteSaveData();
                 // tm.asset.AssetManager.get("levelup").clone().play();
-                app.replaceScene(ns.EndScene(ns.MainScene.STAGE_NUMBER, this.player.getLevel(), true));
+                app.replaceScene(ns.EndScene(ns.STAIRS, this.player.getLevel(), true));
             }
         },
 
@@ -345,7 +362,7 @@
             // セーブデータを作成
             var saveData = {
                 player: this.player.cloneToSave(),
-                stairs: ns.MainScene.STAGE_NUMBER,
+                stairs: ns.STAIRS,
             };
 
             var date = new Date();
@@ -382,7 +399,5 @@
             localStorage.removeItem("RoguePlus");
         },
     });
-
-    ns.MainScene.STAGE_NUMBER = 1;
 
 })(game);
