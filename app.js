@@ -262,14 +262,18 @@ function gameMessage(socket) {
 		socket.emit("gotMapData", mapManager.mapdatas[stairsNum-1]);
 	});
 
-	socket.on("getEnemyData", function () {
-		socket.emit("gotEnemyData", mapManager.mapdata.enemyManager);
+	socket.on("getEnemyData", function (stairsNum) {
+		if (mapManager.enemyManager[stairsNum-1]) {
+			socket.emit("gotEnemyData", mapManager.enemyManager[stairsNum-1].data);
+		}
 	});
 
 	socket.on("enemyDamage", function (data) {
 		// ダメージ量計算
 		data.socket = socket;
-		mapManager.enemyManager.attackPlayers(data);
+		if (mapManager.enemyManager[data.stairs-1]) {
+			mapManager.enemyManager[data.stairs-1].attackPlayers(data);
+		}
 	});
 };
 

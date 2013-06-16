@@ -41,6 +41,7 @@ var MapFileJSON  = require('./../map/mapfilesample');
 			// var mapSize = Math.rand(20, 31);
             // this.mapdata = map.GenerateMap(mapSize, mapSize);
 
+            this.enemyManager = [];
 
             // とりあえず1階分だけ
 			this.mapdata = MapFileJSON[0];
@@ -74,8 +75,7 @@ var MapFileJSON  = require('./../map/mapfilesample');
 
             // this.enemyManager = enemyManager(enemyMapPosition); // 仮に1階の敵データを渡す
             var enemyManager = EnemyManager(enemyMapPosition);
-            this.mapdata.enemyManager = enemyManager.data; // 仮に1階の敵データを渡す
-            this.enemyManager = enemyManager;
+            this.enemyManager.push(enemyManager);
 
             // プレイヤーのデータ
             this.players = players;
@@ -153,48 +153,50 @@ var MapFileJSON  = require('./../map/mapfilesample');
         },
 
         update: function () {
-            // ダメージ処理を行う
-            var enemies = this.enemyManager;
-            enemies.update();
+            for (var j = 0; j < this.enemyManager.length; ++j) {
+                // ダメージ処理を行う
+                var enemies = this.enemyManager[j];
+                enemies.update();
 
-            // 敵の数が減ったら生成する
-            if (this.mapdata.mapEnemyInfo[0][0].num > enemies.data.length) {
-                var enemyMapPosition = this.createFirstEnemyPosition(
-                        this.mapdata.mapEnemyInfo[0], // 一体だけ生成
-                        this.mapdata.walkMapNum,
-                        this.mapdata.collision,
-                        enemies.data.length);
+                // 敵の数が減ったら生成する
+                if (this.mapdata.mapEnemyInfo[0][0].num > enemies.data.length) {
+                    var enemyMapPosition = this.createFirstEnemyPosition(
+                            this.mapdata.mapEnemyInfo[0], // 一体だけ生成
+                            this.mapdata.walkMapNum,
+                            this.mapdata.collision,
+                            enemies.data.length);
 
-                this.enemyManager.createEnemy(enemyMapPosition);
-            }
-
-            // Enemyのupdateを実行する
-            // 移動処理はenemyManagerでやったほうがいい？
-            // var enemies = this.data;
-            for (var i = 0, n = enemies.data.length; i < n; ++i) {
-                // 死んでたら処理しない
-                if (enemies.data[i].isDead()) {
-                    continue;
+                    this.enemyManager[j].createEnemy(enemyMapPosition);
                 }
 
-                enemies.data[i].update(this.players);
+                // Enemyのupdateを実行する
+                // 移動処理はenemyManagerでやったほうがいい？
+                // var enemies = this.data;
+                for (var i = 0, n = enemies.data.length; i < n; ++i) {
+                    // 死んでたら処理しない
+                    if (enemies.data[i].isDead()) {
+                        continue;
+                    }
 
-                // マップとのヒット判定＆移動制限
-                var isHit = this._isHitCollisionMap(
-                        enemies.data[i].position.x,
-                        enemies.data[i].position.y,
-                        enemies.data[i].velocity.clone(),
-                        enemies.data[i].speed);
-                if (isHit & HIT_UP)    { enemies.data[i].velocity.y = 0; }
-                if (isHit & HIT_DOWN)  { enemies.data[i].velocity.y = 0; }
-                if (isHit & HIT_LEFT)  { enemies.data[i].velocity.x = 0; }
-                if (isHit & HIT_RIGHT) { enemies.data[i].velocity.x = 0; }
+                    enemies.data[i].update(this.players);
 
-                // 移動処理
-                enemies.data[i].position.add(
-                        tm.geom.Vector2.mul(
-                                enemies.data[i].velocity, 
-                                enemies.data[i].speed));
+                    // マップとのヒット判定＆移動制限
+                    var isHit = this._isHitCollisionMap(
+                            enemies.data[i].position.x,
+                            enemies.data[i].position.y,
+                            enemies.data[i].velocity.clone(),
+                            enemies.data[i].speed);
+                    if (isHit & HIT_UP)    { enemies.data[i].velocity.y = 0; }
+                    if (isHit & HIT_DOWN)  { enemies.data[i].velocity.y = 0; }
+                    if (isHit & HIT_LEFT)  { enemies.data[i].velocity.x = 0; }
+                    if (isHit & HIT_RIGHT) { enemies.data[i].velocity.x = 0; }
+
+                    // 移動処理
+                    enemies.data[i].position.add(
+                            tm.geom.Vector2.mul(
+                                    enemies.data[i].velocity, 
+                                    enemies.data[i].speed));
+                }
             }
         },
 

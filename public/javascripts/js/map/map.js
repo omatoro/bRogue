@@ -50,8 +50,8 @@
             // 歩ける場所に何かを生成したら覚えておく
             this.isCreateSomething = [];
 
-            // 階段の場所
-            this.stairsPosition = mapData.stairsPosition;
+            // 階段の場所(なかったら書かない、最後の階かな？バグかな？)
+            this.stairsPosition = mapData.stairsPosition || null;
 
             // キャラではなくマップが移動する 加速度
             this.velocity = tm.geom.Vector2(0, 0);
@@ -88,6 +88,10 @@
         },
 
         setStairs: function () {
+            if (!this.stairsPosition) {
+                // 最後の階？バグ？
+                return ;
+            }
             // 階段
             var stairs = tm.app.Sprite("stairs", 64, 64);
             var stairsPosition = this.stairsPosition;//this.getRandomSafeMapChipPosition();

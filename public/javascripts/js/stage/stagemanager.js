@@ -15,15 +15,17 @@
             // サーバからステージ情報取得
             ns.gameEvent.getStageInfo(stageNum);
 
-            for (var i = 0; i < enemyManager.length; ++i) {
-                var dataCreateEnemy = enemyManager[i];
-                this.createEnemy(
-                        enemyGroup, 
-                        player, 
-                        map, 
-                        dataCreateEnemy.className, 
-                        dataCreateEnemy.position, 
-                        dataCreateEnemy.id);
+            if (enemyManager) {
+                for (var i = 0; i < enemyManager.length; ++i) {
+                    var dataCreateEnemy = enemyManager[i];
+                    this.createEnemy(
+                            enemyGroup, 
+                            player, 
+                            map, 
+                            dataCreateEnemy.className, 
+                            dataCreateEnemy.position, 
+                            dataCreateEnemy.id);
+                }
             }
 
             // }

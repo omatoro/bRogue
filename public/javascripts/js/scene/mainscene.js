@@ -56,6 +56,8 @@
         init : function(continuePlayer, continuePad) {
             this.superInit();
 
+            ns.MainScene.STAGE_NUMBER = ns.STAIRS;
+
             console.time("MainScene init");
 
             // コントローラーパッド
@@ -157,7 +159,7 @@
                         // ダメージ数を計算
                         var attack = player.getAttackPoint();
                         // ダメージ数送信
-                        ns.gameEvent.sendDamageEnemy(enemy.id, attack);
+                        ns.gameEvent.sendDamageEnemy(enemy.id, attack, ns.MainScene.STAGE_NUMBER);
                     }
                 }
             });
@@ -224,13 +226,14 @@
             this.drawStatus();
 
             // 敵の情報をサーバから取得
-            var enemies = ns.gameEvent.getEnemyData();
+            var enemies = ns.gameEvent.getAndSendEnemyData(ns.MainScene.STAGE_NUMBER);
             if (enemies) {
                 // 受信した敵の情報と、クライアントの情報が不一致だったら、敵を生成/削除する
                 var cliantEnemyNum = this.enemyGroup.children.length;
                 var serverEnemyNum = enemies.length;
+                var flagCreateOrDelete = (serverEnemyNum >= cliantEnemyNum);
 
-                if (serverEnemyNum >= cliantEnemyNum) {
+                if (flagCreateOrDelete) {
                     var iLimit = serverEnemyNum;
                     var jLimit = cliantEnemyNum;
                     var isCreateOrDelete = "create";
@@ -245,15 +248,11 @@
                 for (var i = 0; i < iLimit; ++i) {
                     // 同じIDの敵情報を取得
                     var isEnemy = false;
+                    var serverIte = (flagCreateOrDelete) ? i : 0;
+                    var cliantIte = (flagCreateOrDelete) ? 0 : i;
                     for (var j = 0; j < jLimit; ++j) {
-                        if (serverEnemyNum >= cliantEnemyNum) {
-                            var serverIte = i;
-                            var cliantIte = j;
-                        }
-                        else {
-                            var serverIte = j;
-                            var cliantIte = i;
-                        }
+                        var serverIte = (flagCreateOrDelete) ? i : j;
+                        var cliantIte = (flagCreateOrDelete) ? j : i;
                         if (this.enemyGroup.children[cliantIte].id === enemies[serverIte].id) {
                             isEnemy = true;
                             break;

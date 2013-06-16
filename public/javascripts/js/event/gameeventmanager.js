@@ -202,10 +202,11 @@
             }.bind(self));
         },
 
-        sendDamageEnemy: function (enemyId, playerAttackPoint) {
+        sendDamageEnemy: function (enemyId, playerAttackPoint, stairsNum) {
             var data = {
                 enemyId: enemyId,
-                playerAttackPoint: playerAttackPoint
+                playerAttackPoint: playerAttackPoint,
+                stairs: stairsNum
             };
             this.socket.emit("enemyDamage", data);
         },
@@ -215,9 +216,13 @@
             return this.mapData;
         },
 
-        getEnemyData: function () {
+        getEnemyData: function (stairsNum) {
+            return this.enemyData;
+        },
+
+        getAndSendEnemyData: function (stairsNum) {
             // console.dir(this.enemyData);
-            this.socket.emit("getEnemyData");
+            this.socket.emit("getEnemyData", stairsNum);
             return this.enemyData;
         },
 

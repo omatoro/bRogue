@@ -21,6 +21,7 @@
             else {
                 var stairs = 2; // 1階から開始
             }
+            ns.STAIRS = stairs;
 
             this.addEventListener("pointingend", function(e) {
                 // シーンの切り替え
@@ -40,7 +41,7 @@
                         this.mapData = data;
                         postLoadingFunc();
                     }.bind(self));
-                }.bind(ns.gameEvent));
+                }.bind(ns.gameEvent)); // 仕方なくここで通信系の処理を書く
                 e.app.replaceScene(loadingScene);
             });
         },
