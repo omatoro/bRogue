@@ -9,8 +9,9 @@ var map = require('./generatemap');
 
 var mapEnemyInfo = require('./../stage/stagemanager').StageManager().getMapEnemy();
 var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
+var MapFileJSON  = require('./../map/mapfilesample');
 
-
+// var fs = require('fs');
 
 (function(ns) {
 
@@ -26,8 +27,23 @@ var EnemyManager = require('./../enemy/enemymanager').EnemyManager;
 
     	init: function (players) {
 			// マップ生成
-			var mapSize = Math.rand(20, 31);
-			this.mapdata = map.GenerateMap(mapSize, mapSize);
+            // var createdMapData = []; 
+
+            // for (var i = 0; i < 100; ++i) {
+            //     var mapSize = Math.rand(20, 31);
+            //     this.mapdata = map.GenerateMap(mapSize, mapSize);
+            //     createdMapData.push(this.mapdata);
+            // }
+
+            // fs.writeFile("mapfilesample400.json",JSON.stringify(createdMapData));
+
+
+			// var mapSize = Math.rand(20, 31);
+            // this.mapdata = map.GenerateMap(mapSize, mapSize);
+
+
+
+			this.mapdata = MapFileJSON[0];
 
             // 歩ける場所に何かを生成したら覚えておく
     		this.isCreateSomething = [];

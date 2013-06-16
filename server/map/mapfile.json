@@ -1,0 +1,11 @@
+{
+    "image": "slash",
+    "frame": {
+        "width":65,
+        "height":65,
+        "count":8
+    },
+    "animations": {
+        "slash": [0, 8]
+    }
+}
