@@ -143,7 +143,10 @@ var setMember = function (id, data) {
     if (getName(id) === null) {
         MEMBER.push({"id": id, "data": data});
         console.log("setMember : " + id);
-    	console.dir(MEMBER);
+    	// console.dir(MEMBER);
+    }
+    else {
+    	modifyMember(id, data);
     }
 };
 var deleteMember = function (id) {
@@ -157,8 +160,7 @@ var deleteMember = function (id) {
 var modifyMember = function (id, data) {
 	for (var i = 0; i < MEMBER.length; ++i) {
 		if (MEMBER[i].id === id) {
-			MEMBER[i].data.position = data.position;
-			MEMBER[i].data.angle    = data.angle;
+			MEMBER[i].data = data;
 		}
 	}
     console.log("modifyMember : " + id);
@@ -173,12 +175,26 @@ var movePlayer = function (id, data) {
     console.log("movePlayer : " + id);
 };
 var getMember = function (id) {
+	for (var i = 0; i < MEMBER.length; ++i) {
+		if (MEMBER[i].id === id) {
+			return MEMBER[i].data;
+		}
+	}
+	return null;
+};
+var getAnotherMember = function (id, stairs) {
 	var result = [];
 	for (var i = 0; i < MEMBER.length; ++i) {
 		if (MEMBER[i].id === id) {
 		}
 		else {
-			result.push(MEMBER[i].data);
+			// 同じ階層
+			console.dir(MEMBER[i]);
+			console.log(stairs);
+			if (MEMBER[i].data.stairs === stairs) {
+				console.log("-----------------------asdfasdf------------------");
+				result.push(MEMBER[i].data);
+			}
 		}
 	}
 	return result;
@@ -216,12 +232,14 @@ io.sockets.on("connection", function (socket) {
 
 	// 接続が終了した
 	socket.on("disconnect", function (cliant) {
-		// 切断したメンバーを削除
-		deleteMember(socket.id);
-
 		// 名前を削除したので、メンバー名の書き換えメッセージを送信
 		// socket.emit("deletePlayer", getMember());
-		socket.broadcast.emit("deleteAnotherPlayer", socket.id);
+		var meData = getMember(socket.id);
+		var stairs = meData.stairs;
+
+		// 切断したメンバーを削除
+		deleteMember(socket.id);
+		io.sockets.in(stairs + "").emit("deleteAnotherPlayer", socket.id);
 	});
 
 });
@@ -234,23 +252,35 @@ function gameMessage(socket) {
 	socket.on("addPlayerName", function (client) {
 		// console.log("お名前 : " + client.name);
 
+		// 過去にルールへ参加していたら、離脱する
+		var preData = getMember(socket.id);
+		if (preData) {
+			socket.leave(preData.stairs + "");
+			io.sockets.in(preData.stairs + "").emit("deleteAnotherPlayer", socket.id);
+		}
+
 		// メンバー追加処理(仮の名前)
-		console.dir(client);
 		setMember(socket.id, client);
 		client.id = socket.id;
 
 		// 名前を追加したので、メンバー名の書き換えメッセージを送信
 		socket.emit("addedPlayer", socket.id);
-		socket.broadcast.emit("addedAnotherPlayer", client);
-
 		// 既に参加しているメンバーのデータを送る
-		socket.emit("addedAnotherPlayers", getMember(socket.id));
+		socket.emit("addedAnotherPlayers", getAnotherMember(socket.id, client.stairs));
+
+		// ループ参加済みのメンバーへ、新しいプレイヤー情報を送信する
+		io.sockets.in(client.stairs + "").emit("addedAnotherPlayer", client);
+
+		// 階層ごとにルーム作成し、参加する
+		socket.join(client.stairs + "");
 	});
 
 	socket.on("movePlayer", function (client) {
 		movePlayer(socket.id, client);
 		client.id = socket.id;
-		socket.broadcast.emit("moveAnotherPlayer", client);
+		var meData = getMember(socket.id);
+		var stairs = meData.stairs;
+		io.sockets.in(stairs + "").emit("moveAnotherPlayer", client);
 	});
 
 	// いずれまとめて同期する？

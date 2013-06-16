@@ -16,7 +16,7 @@
             // セーブされている階層があるか調べる
             var saveData = this._loadSaveData();
             if (saveData) {
-                var stairs = saveData.saveData.stairs;
+                var stairs = 1;//saveData.saveData.stairs;
             }
             else {
                 var stairs = 1; // 1階から開始

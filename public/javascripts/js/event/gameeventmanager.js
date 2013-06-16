@@ -121,6 +121,7 @@
             var message = {
                 name: "名無し",
                 position: position,
+                stairs: ns.STAIRS
             };
             this.socket.emit("addPlayerName", message);
         },
@@ -276,6 +277,7 @@
                     position: position,
                     angle: angle,
                     paused: paused,
+                    // stairs: ns.STAIRS,
                 };
                 socket.emit("movePlayer", message);
             }

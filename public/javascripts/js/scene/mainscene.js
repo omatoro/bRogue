@@ -74,7 +74,7 @@
             var saveData = this._loadSaveData();
             if (saveData && !continuePlayer) {
                 player.dataLoad(saveData.saveData.player);
-                ns.STAIRS = saveData.saveData.stairs;
+                // ns.STAIRS = saveData.saveData.stairs;
             }
 
             // マップ
