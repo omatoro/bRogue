@@ -20,25 +20,23 @@
     var HIT_LEFT  = 0x04;
     var HIT_RIGHT = 0x08;
 
+    // マップチップ情報
+    var MAPCHIP = {
+        0: {width: CHIP_WIDTH,   height: CHIP_HEIGHT,   image: "Dirt1_pipo",  count: 5},
+        1: {width: CHIP_WIDTH/2, height: CHIP_HEIGHT/2, image: "Water2_pipo", count: 20},
+        2: {width: CHIP_WIDTH,   height: CHIP_HEIGHT,   image: "Grass1_pipo", count: 5},
+    };
+
 	ns.Map = tm.createClass({
 		superClass : ns.MapSprite,
 
 		init: function (pad, mapData) {
-			// マップの自動生成
-            // var mapSize = Math.rand(20, 31);
-            // var mapSize = 15;
-			// var map = ns.GenerateMap(mapSize, mapSize);
-
-            // 水の部分をオートタイル化する
+            // オートタイル
             var autotile = ns.AutoTile(mapData.map);
 
 			// マップデータの作成
 			var mapchip = ns.MapChip({
-                chips: {
-                	0: {width: CHIP_WIDTH,   height: CHIP_HEIGHT,   image: "Dirt1_pipo",  count: 5},
-                	1: {width: CHIP_WIDTH/2, height: CHIP_HEIGHT/2, image: "Water2_pipo", count: 20},
-                	2: {width: CHIP_WIDTH,   height: CHIP_HEIGHT,   image: "Grass1_pipo", count: 5},
-                },
+                chips: MAPCHIP,
                 map: mapData.map,
                 autotile: autotile,
                 collision: mapData.collision

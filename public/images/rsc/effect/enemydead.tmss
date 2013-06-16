@@ -1,0 +1,11 @@
+{
+    "image": "enemydead",
+    "frame": {
+        "width":64,
+        "height":64,
+        "count":40
+    },
+    "animations": {
+        "enemydead": [0, 40]
+    }
+}

@@ -28,14 +28,20 @@
 			this._str = 1; // 攻撃力
 			this._def = 1; // 防御力
 			// this._int = 40; // 魔力
-			this._agi = 4; // 素早さ
+			this._agi = 10; // 素早さ // 初期値10くらい
 			this._luk = 1; // 運
 			this._vit = 1; // 体力
 			this._dex = 1; // 器用さ
 
-			this._aspd = 190; // 攻撃スピード
+			// 剣系：154
+			// 大剣系：140
+			// 大槌系：135
+			// ナイフ系：160
+			// 二刀流：163
+			// 最速：167
+			this._aspd = 154; // 攻撃スピード
 
-			this.speed = 5;
+			this.speed = 7;
 
 			this.exp = 0; // 取得経験値
 			this.nextLevelExp = 8;
@@ -147,12 +153,10 @@
 			this.item          = saveData.item;
 			this.equipedWeapon = saveData.equipedWeapon;
 			this.equipedArmor  = saveData.equipedArmor;
-
-			console.dir(this);
 		},
 
 		getSpeed: function () {
-			return this.speed + (this.getLastAGI()/2 |0);
+			return this.speed + (this.getLastAGI()/15 |0);
 		},
 
 		getLastAGI: function () {
@@ -169,12 +173,13 @@
 		getAttackSpeed: function (fps) {
 			// 攻撃速度を計算
 			// var attackSpeed = this._aspd + Math.sqrt(this.getLastAGI() * (10 + 10/111) + (this.getDEX() * 9 / 49));
-			var attackSpeed = this._aspd + Math.sqrt(this.getLastAGI() * (150000) + (this.getDEX() * 9 / 49));
+			var attackSpeed = this._aspd + Math.sqrt((this.getLastAGI() * (10)) + (this.getDEX() * 9 / 49));
+
 			// attackSpeed = (attackSpeed > 190) ? 190 : (attackSpeed |0);
 			// attackSpeed = (attackSpeed > 250) ? 190 : (attackSpeed |0);
 
-			// フレーム速に変換して返す
-			return fps / (attackSpeed / 150);
+			// ミリ秒速に変換して返す
+			return ((200 - attackSpeed) / 50 * 1000) |0;
 		},
 
 		getDistanse: function () {

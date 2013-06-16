@@ -105,6 +105,8 @@ var MAIN_ASSET = {
 	// "equip":		"/images/rsc/sound/[Action]Switch2_Komori.mp3",
 	// "eat":			"/images/rsc/sound/[Action]Eating_soup_Komori.mp3",
 	// "dungeon":		"/images/rsc/sound/Dungeon02_Koya.mp3",
+	"slashSS":      "/images/rsc/boldslash.tmss",
+	"enemydeadSS":  "/images/rsc/effect/enemydead.tmss",
 };
 
 var RESULT_ASSETS = {

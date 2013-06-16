@@ -56,10 +56,12 @@
         init : function(continuePlayer, continuePad) {
             this.superInit();
 
+            console.time("MainScene init");
+
             // コントローラーパッド
             var pad = continuePad || tm.app.Pad();
-            this.pad = pad;
             pad.position.set(100, ns.SCREEN_HEIGHT - 80);
+            this.pad = pad;
 
             // プレイヤー
             var player = continuePlayer || ns.Player(pad);
@@ -69,10 +71,9 @@
 
             // セーブデータがあれば引き継ぐ
             var saveData = this._loadSaveData();
-            if (saveData && !continuePlayer && !continuePad) {
-                var savedPlayer           = saveData.saveData.player;
+            if (saveData && !continuePlayer) {
+                player.dataLoad(saveData.saveData.player);
                 ns.MainScene.STAGE_NUMBER = saveData.saveData.stairs;
-                player.dataLoad(savedPlayer);
             }
 
             // マップ
@@ -108,48 +109,26 @@
             map.setEnemyGroup(enemyGroup);
 
             // 攻撃時のエフェクト
-            var slashSS = tm.app.SpriteSheet({
-                image: "slash",
-                frame: {
-                    width:  65,
-                    height: 65,
-                    count: 8
-                },
-                animations: {
-                    "slash": [0, 8]
-                }
-            });
-            var slash = tm.app.AnimationSprite(slashSS, 120, 120);
+            var slash = tm.app.AnimationSprite("slashSS", 120, 120);
             slash.position.set(ns.SCREEN_WIDTH/2 + 10, ns.SCREEN_HEIGHT/2 + 10);
-
-            // 敵撃破時のエフェクト
-            this.enemyDeadSS = tm.app.SpriteSheet({
-                image: "enemydead",
-                frame: {
-                    width:  64,
-                    height: 64,
-                    count: 40
-                },
-                animations: {
-                    "enemydead": [0, 40]
-                }
-            });
 
             // 攻撃ボタン
             var attackIcon = tm.app.Sprite("attackIcon", 72, 72);
             var attackButton = ns.GlossyImageButton(200, 160, attackIcon, "green");
             attackButton.position.set(ns.SCREEN_WIDTH-50-50, ns.SCREEN_HEIGHT-30-50);
             this.attackButton = attackButton;
-            var attackTiming = ns.Timing(150);
+            var attackTiming = ns.GameBar(100, 20);
+            attackTiming.position.set(ns.SCREEN_WIDTH/2, ns.SCREEN_HEIGHT/2 + 55);
+            attackTiming.resetAnimation(1); // 初期化時は高速でアクティブバーをマックスにする
             this.attackTiming = attackTiming;
 
             attackButton.addEventListener("pointingmove", function(e) {
                 // タイミングが来たら攻撃可能
-                attackTiming.resetLimit(player.getAttackSpeed(e.app.fps));
-                if (attackTiming.is() === false) {
+                // attackTiming.reset(player.getAttackSpeed(e.app.fps));
+                if (attackTiming.isMax() === false) {
                     return ;
                 }
-                attackTiming.reset();
+                attackTiming.resetAnimation(player.getAttackSpeed());
 
                 // 攻撃の方向を調べる
                 var attackAngle = player.attack();
@@ -203,6 +182,7 @@
             this.windows = ns.ManageSimpleWindows(this); // ウィンドウ
             this.addChild(pad);
             this.addChild(player);
+            this.addChild(attackTiming);
             this.addChild(slash);
             this.addChild(attackButton);
             this.addChild(statusButton);
@@ -214,6 +194,10 @@
 
             // ステータス表示
             this.fromJSON(UI_DATA.LABELS);
+
+
+            console.timeEnd("MainScene init");
+
         },
 
         screenLeftTopToCenter: function (x, y) {
@@ -297,7 +281,7 @@
             // 敵へのダメージ量をサーバから受信してたら処理する
             for (var i = 0, n = ns.gameEvent.enemyDamagedData.length; i < n; ++i) {
                 var damageData = ns.gameEvent.enemyDamagedData.shift();
-                for (var j = 0, jn = this.enemyGroup.children.length; j < jn; ++j) {
+                for (var j = 0; j < this.enemyGroup.children.length; ++j) {
                     var enemy    = this.enemyGroup.children[j];
                     if (damageData.enemyId === enemy.id) {
                         // ダメージ数を表示
@@ -322,7 +306,7 @@
                             // }
 
                             // 死んだエフェクト
-                            var enemydead = tm.app.AnimationSprite(this.enemyDeadSS, 120, 120);
+                            var enemydead = tm.app.AnimationSprite("enemydeadSS", 120, 120);
                             enemydead.position.set(enemy.x, enemy.y);
                             this.map.setEnemyDeadAnimation(enemydead);
                             enemydead.gotoAndPlay("enemydead");
