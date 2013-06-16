@@ -41,41 +41,53 @@ var MapFileJSON  = require('./../map/mapfilesample');
 			// var mapSize = Math.rand(20, 31);
             // this.mapdata = map.GenerateMap(mapSize, mapSize);
 
+            // 全ての敵データ
             this.enemyManager = [];
-
-            // とりあえず1階分だけ
-			this.mapdata = MapFileJSON[0];
-            this.mapdatas = MapFileJSON;
-
-            // 歩ける場所に何かを生成したら覚えておく
-    		this.isCreateSomething = [];
-
             // 敵のIDカウンター
             this.enemyIDNum = 1;
+            // 全マップデータ
+            this.mapdatas = MapFileJSON;
+            // 既に何かを生成した場所をを覚えておく
+            // this.isCreateSomethings = [];
 
-    		// 階段を設置
-            this.stairsPosition = this.getRandomSafeMapChipPosition(
-            		this.mapdata.walkMapNum,
-            		this.mapdata.collision);
-            this.mapdata.stairsPosition = this.stairsPosition;
+            // for (var i = 0, n = this.mapdatas.length; i < n; ++i) { // 最終的には←にする
+            for (var i = 0, n = 30; i < n; ++i) {
+                // 歩ける場所に何かを生成したら覚えておく
+                var isCreateSomething = [];
 
-            // プレイヤーの初期位置
-            this.mapdata.playerStartPosition = this.getRandomSafeMapChipPosition(
-            		this.mapdata.walkMapNum,
-            		this.mapdata.collision);
+                // 階段を設置(最上階以外)
+                if (i !== 29) {
+                    this.mapdatas[i].stairsPosition = this.getRandomSafeMapChipPosition(
+                            this.mapdatas[i].walkMapNum,
+                            this.mapdatas[i].collision,
+                            isCreateSomething);
+                }
 
-            // 敵の位置(鯖で管理)
-            this.mapdata.mapEnemyInfo = mapEnemyInfo;
+                // プレイヤーの初期位置
+                this.mapdatas[i].playerStartPosition = this.getRandomSafeMapChipPosition(
+                        this.mapdatas[i].walkMapNum,
+                        this.mapdatas[i].collision,
+                        isCreateSomething);
 
-            // 敵を設置
-            var enemyMapPosition = this.createFirstEnemyPosition(
-                    mapEnemyInfo[0],
-                    this.mapdata.walkMapNum,
-                    this.mapdata.collision);
+                // 敵の位置(鯖で管理)
+                this.mapdatas[i].mapEnemyInfo = mapEnemyInfo[i];
 
-            // this.enemyManager = enemyManager(enemyMapPosition); // 仮に1階の敵データを渡す
-            var enemyManager = EnemyManager(enemyMapPosition);
-            this.enemyManager.push(enemyManager);
+                // 敵を設置
+                var enemyMapPosition = this.createFirstEnemyPosition(
+                        mapEnemyInfo[i],
+                        this.mapdatas[i].walkMapNum,
+                        this.mapdatas[i].collision,
+                        0,
+                        isCreateSomething);
+
+                // 何かを生成した場所を暗記
+                // this.isCreateSomethings.push(isCreateSomething);
+
+                // this.enemyManager = enemyManager(enemyMapPosition); // 仮に1階の敵データを渡す
+                this.enemyManager.push(EnemyManager(enemyMapPosition));
+            }
+
+
 
             // プレイヤーのデータ
             this.players = players;
@@ -85,13 +97,16 @@ var MapFileJSON  = require('./../map/mapfilesample');
          * 敵の初期位置を作成
          * 仮に1階の敵データを作る
          */
-        createFirstEnemyPosition: function (stageEnemy, walkMapNum, collisionMap, currentEnemyNum) {
+        createFirstEnemyPosition: function (stageEnemy, walkMapNum, collisionMap, currentEnemyNum, isCreateSomething) {
             var result = [];
 
             for (var i = 0, n = stageEnemy.length; i < n; ++i) {
                 for (var j = currentEnemyNum || 0, jn = stageEnemy[i].num; j < jn; ++j) {
                     // 敵の位置(マップチップの配列状態)
-                    var enemyMapPosition = this.getRandomSafeMapChipPosition(walkMapNum, collisionMap);
+                    var enemyMapPosition = this.getRandomSafeMapChipPosition(
+                            walkMapNum, 
+                            collisionMap, 
+                            isCreateSomething);
 
                     // 格納するデータの作成
                     var enemyData = {
@@ -108,13 +123,13 @@ var MapFileJSON  = require('./../map/mapfilesample');
         /**
          * 歩ける場所からランダムに選んで返す(マップの左上を0,0)
          */
-        getRandomSafeMapChipPosition: function (walkMapNum, collisionMap) {
+        getRandomSafeMapChipPosition: function (walkMapNum, collisionMap, isCreateSomething) {
             // 既に何かを生成していないか調べる
             var mapPosition = Math.rand(0, walkMapNum-1);
             var isBreak = true;
             while (true) {
-                for (var i = 0, n = this.isCreateSomething.length; i < n; ++i) {
-                    if (this.isCreateSomething[i] === mapPosition) {
+                for (var i = 0, n = isCreateSomething.length; i < n; ++i) {
+                    if (isCreateSomething[i] === mapPosition) {
                         mapPosition = Math.rand(0, walkMapNum-1);
                         isBreak = false;
                         break;
@@ -123,7 +138,7 @@ var MapFileJSON  = require('./../map/mapfilesample');
                         isBreak = true;
                     }
                 }
-                if (isBreak && this.isCreateSomething[i] !== mapPosition) {
+                if (isBreak && isCreateSomething[i] !== mapPosition) {
                     break;
                 }
             }
@@ -141,7 +156,7 @@ var MapFileJSON  = require('./../map/mapfilesample');
                                 x: j,
                                 y: i
                             };
-                            this.isCreateSomething.push(counter);
+                            isCreateSomething.push(counter);
                             return result;
                         }
                         else {
@@ -158,16 +173,22 @@ var MapFileJSON  = require('./../map/mapfilesample');
                 var enemies = this.enemyManager[j];
                 enemies.update();
 
-                // 敵の数が減ったら生成する
-                if (this.mapdata.mapEnemyInfo[0][0].num > enemies.data.length) {
-                    var enemyMapPosition = this.createFirstEnemyPosition(
-                            this.mapdata.mapEnemyInfo[0], // 一体だけ生成
-                            this.mapdata.walkMapNum,
-                            this.mapdata.collision,
-                            enemies.data.length);
+                // 同じ場所に生成しないように場所を覚える
+                var isCreateSomething = [];
 
-                    this.enemyManager[j].createEnemy(enemyMapPosition);
-                }
+                // // 敵の数が減ったら生成する
+                // for (var i = 0, n = this.mapdatas[j].mapEnemyInfo.length; i < n; ++i) {
+                //     if (this.mapdatas[j].mapEnemyInfo[i].num > enemies.data.length) { // enemies.data[i].length // まだ敵の種類を作ってないから
+                //         var enemyMapPosition = this.createFirstEnemyPosition(
+                //                 this.mapdatas[j].mapEnemyInfo, // 一体だけ生成
+                //                 this.mapdatas[j].walkMapNum,
+                //                 this.mapdatas[j].collision,
+                //                 enemies.data.length,
+                //                 isCreateSomething);
+
+                //         this.enemyManager[j].createEnemy(enemyMapPosition);
+                //     }
+                // }
 
                 // Enemyのupdateを実行する
                 // 移動処理はenemyManagerでやったほうがいい？
@@ -185,7 +206,8 @@ var MapFileJSON  = require('./../map/mapfilesample');
                             enemies.data[i].position.x,
                             enemies.data[i].position.y,
                             enemies.data[i].velocity.clone(),
-                            enemies.data[i].speed);
+                            enemies.data[i].speed,
+                            j);
                     if (isHit & HIT_UP)    { enemies.data[i].velocity.y = 0; }
                     if (isHit & HIT_DOWN)  { enemies.data[i].velocity.y = 0; }
                     if (isHit & HIT_LEFT)  { enemies.data[i].velocity.x = 0; }
@@ -201,7 +223,7 @@ var MapFileJSON  = require('./../map/mapfilesample');
         },
 
         // マップとのヒット判定
-        _isHitCollisionMap: function (x, y, velocity, speed) {
+        _isHitCollisionMap: function (x, y, velocity, speed, mapIte) {
             // 返す値
             var result = 0x00;
             // 所属しているマップチップを取得
@@ -209,7 +231,7 @@ var MapFileJSON  = require('./../map/mapfilesample');
             // 所属しているマップチップのrectを取得
             var chipRect = this._getRect(chip.col, chip.row);
             // 上下左右のマップチップのcollisionを取得
-            var crossCollision = this._getCrossCollision(chip.col, chip.row);
+            var crossCollision = this._getCrossCollision(chip.col, chip.row, mapIte);
             // 移動量を取得
             var movingAmount = tm.geom.Vector2.mul(velocity, speed);
             // 移動後の位置が衝突しているか
@@ -268,14 +290,14 @@ var MapFileJSON  = require('./../map/mapfilesample');
         /**
          * 上下左右のマップチップのcollisionを取得
          */
-        _getCrossCollision: function(col, row) {
-            var limitDown  = this.mapdata.map.length-1;
-            var limitRight = this.mapdata.map[0].length-1;
+        _getCrossCollision: function(col, row, mapIte) {
+            var limitDown  = this.mapdatas[mapIte].map.length-1;
+            var limitRight = this.mapdatas[mapIte].map[0].length-1;
 
-            var up    = (row > 0)          ? this.mapdata.collision[row-1][col] : null;
-            var down  = (row < limitDown)  ? this.mapdata.collision[row+1][col] : null;
-            var left  = (col > 0)          ? this.mapdata.collision[row][col-1] : null;
-            var right = (col < limitRight) ? this.mapdata.collision[row][col+1] : null;
+            var up    = (row > 0)          ? this.mapdatas[mapIte].collision[row-1][col] : null;
+            var down  = (row < limitDown)  ? this.mapdatas[mapIte].collision[row+1][col] : null;
+            var left  = (col > 0)          ? this.mapdatas[mapIte].collision[row][col-1] : null;
+            var right = (col < limitRight) ? this.mapdatas[mapIte].collision[row][col+1] : null;
 
             var result = {
                 up:    up,

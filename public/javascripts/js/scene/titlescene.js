@@ -19,7 +19,7 @@
                 var stairs = saveData.saveData.stairs;
             }
             else {
-                var stairs = 2; // 1階から開始
+                var stairs = 30; // 1階から開始
             }
             ns.STAIRS = stairs;
 

@@ -33,7 +33,6 @@ var Enemy = require('./enemy').Enemy;
 		},
 
 		createEnemy: function (enemyMapPositions) {
-			console.dir(enemyMapPositions);
 			for (var i = 0, n = enemyMapPositions.length; i < n; ++i) {
 				var x = enemyMapPositions[i].mapPosition.x * MAP_CHIP_SIZE + MAP_CHIP_SIZE/2;
 				var y = enemyMapPositions[i].mapPosition.y * MAP_CHIP_SIZE;
