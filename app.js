@@ -258,8 +258,8 @@ function gameMessage(socket) {
 	// 	socket.volatile.emit("addedAnotherPlayers", getMember(socket.id));
 	// });
 
-	socket.on("getMapData", function () {
-		socket.emit("gotMapData", mapManager.mapdata);
+	socket.on("getMapData", function (stairsNum) {
+		socket.emit("gotMapData", mapManager.mapdatas[stairsNum-1]);
 	});
 
 	socket.on("getEnemyData", function () {

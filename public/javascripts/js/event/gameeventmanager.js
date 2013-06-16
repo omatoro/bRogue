@@ -79,12 +79,12 @@
             // 接続完了のメッセージ取得
             socket.on("connected", function (data) {
                 console.log("connected");
-                socket.emit("getMapData");
-                // mapデータ取得
-                socket.on("gotMapData", function (data) {
-                    console.log("gotMapData");
-                    this.mapData = data;
-                }.bind(self));
+                // socket.emit("getMapData");
+                // // mapデータ取得
+                // socket.on("gotMapData", function (data) {
+                //     console.log("gotMapData");
+                //     this.mapData = data;
+                // }.bind(self));
             });
 
             // 途中：マップ情報は随時受け取るようにしたい

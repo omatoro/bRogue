@@ -44,6 +44,7 @@ var MapFileJSON  = require('./../map/mapfilesample');
 
             // とりあえず1階分だけ
 			this.mapdata = MapFileJSON[0];
+            this.mapdatas = MapFileJSON;
 
             // 歩ける場所に何かを生成したら覚えておく
     		this.isCreateSomething = [];
