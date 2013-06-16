@@ -189,10 +189,7 @@ var getAnotherMember = function (id, stairs) {
 		}
 		else {
 			// 同じ階層
-			console.dir(MEMBER[i]);
-			console.log(stairs);
 			if (MEMBER[i].data.stairs === stairs) {
-				console.log("-----------------------asdfasdf------------------");
 				result.push(MEMBER[i].data);
 			}
 		}
