@@ -295,10 +295,10 @@
             }
 
             // 敵へのダメージ量をサーバから受信してたら処理する
-            for (var i = 0; i < ns.gameEvent.enemyDamagedData.length; ++i) {
+            for (var i = 0, n = ns.gameEvent.enemyDamagedData.length; i < n; ++i) {
                 var damageData = ns.gameEvent.enemyDamagedData.shift();
-                for (var i = 0; i < this.enemyGroup.children.length; ++i) {
-                    var enemy    = this.enemyGroup.children[i];
+                for (var j = 0, jn = this.enemyGroup.children.length; j < jn; ++j) {
+                    var enemy    = this.enemyGroup.children[j];
                     if (damageData.enemyId === enemy.id) {
                         // ダメージ数を表示
                         var damageEffect = ns.DamagedNumber(damageData.damage);
