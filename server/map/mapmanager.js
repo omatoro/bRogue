@@ -42,7 +42,7 @@ var MapFileJSON  = require('./../map/mapfilesample');
             // this.mapdata = map.GenerateMap(mapSize, mapSize);
 
 
-
+            // とりあえず1階分だけ
 			this.mapdata = MapFileJSON[0];
 
             // 歩ける場所に何かを生成したら覚えておく
