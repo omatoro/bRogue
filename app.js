@@ -232,11 +232,11 @@ io.sockets.on("connection", function (socket) {
 		// 名前を削除したので、メンバー名の書き換えメッセージを送信
 		// socket.emit("deletePlayer", getMember());
 		var meData = getMember(socket.id);
-		var stairs = meData.stairs;
-
-		// 切断したメンバーを削除
-		deleteMember(socket.id);
-		io.sockets.in(stairs + "").emit("deleteAnotherPlayer", socket.id);
+		if (meData) {
+			// 切断したメンバーを削除
+			deleteMember(socket.id);
+			io.sockets.in(meData.stairs + "").emit("deleteAnotherPlayer", socket.id);
+		}
 	});
 
 });
