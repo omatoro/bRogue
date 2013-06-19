@@ -21,7 +21,7 @@
             width:      ns.app.width,
             height:     ns.app.height,
             assets:     TITLE_ASSETS,
-            nextScene:  ns.TitleScene,
+            nextScene:  ns.TmlibScene,
         });
         ns.app.replaceScene(loadingScene);
 

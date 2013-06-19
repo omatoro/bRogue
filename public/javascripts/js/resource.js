@@ -12,6 +12,12 @@ tm.preload(function() {
 });
 
 var TITLE_ASSETS = {
+	// タイトル、クレジット用
+	"logoTmlib": 	"/images/rsc/logo/logo_tmlib.png",
+	"logoWolf": 	"/images/rsc/logo/logo_wolf.gif",
+	"logoFSM": 		"/images/rsc/logo/logo_FSM.gif",
+
+
 	// プレイヤー
 	"player": 		"/images/rsc/player.png",
 	"playerFace": 	"/images/rsc/char.png",
