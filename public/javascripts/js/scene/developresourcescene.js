@@ -38,9 +38,9 @@
             var wolf = tm.app.Sprite("logoWolf").addChildTo(this);
             wolf.position.set(80 + 100, 230);
 
-            // fsm
-            var fsm = tm.app.Sprite("logoFSM").addChildTo(this);
-            fsm.position.set(80 + 200 + 80 + 100, 230);
+            // // fsm
+            // var fsm = tm.app.Sprite("logoFSM").addChildTo(this);
+            // fsm.position.set(80 + 200 + 80 + 100, 230);
 
             this.alpha = 0.0;
             this.tweener.

@@ -346,6 +346,7 @@
             if (this.player.isGameOver()) {
                 // this.bgm.stop();
                 this._deleteSaveData();
+                ns.gameEvent.deadPlayer();
                 app.replaceScene(ns.EndScene(ns.STAIRS, this.player.getLevel(), false));
             }
 

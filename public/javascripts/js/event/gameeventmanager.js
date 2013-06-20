@@ -239,6 +239,9 @@
         gameStart: function (playerPosition) {},
         gameClear: function () {},
         gameOver: function () {},
+        deadPlayer: function () {
+            this.socket.emit("deadPlayer");
+        },
         gameReStart: function () {},
 
         /**

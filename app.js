@@ -174,6 +174,14 @@ var movePlayer = function (id, data) {
 	}
     console.log("movePlayer : " + id);
 };
+var deadPlayer = function (id) {
+	for (var i = 0; i < MEMBER.length; ++i) {
+		if (MEMBER[i].id === id) {
+			MEMBER.splice(i, 1);
+		}
+	}
+    console.log("deadPlayer : " + id);
+};
 var getMember = function (id) {
 	for (var i = 0; i < MEMBER.length; ++i) {
 		if (MEMBER[i].id === id) {
@@ -301,6 +309,11 @@ function gameMessage(socket) {
 		if (mapManager.enemyManager[data.stairs-1]) {
 			mapManager.enemyManager[data.stairs-1].attackPlayers(data);
 		}
+	});
+
+	socket.on("deadPlayer", function () {
+		deadPlayer(socket.id);
+		// io.sockets.in(stairs + "").emit("deadAnotherPlayer", client);
 	});
 };
 
