@@ -3,6 +3,40 @@
  */
 (function(ns) {
 
+    /*
+     * TmlibLogo
+     */
+    ns.TmlibLogo = tm.createClass({
+        superClass : tm.app.Shape,
+        
+        init: function(width, height) {
+            this.superInit(width, height);
+            this.backgroundColor = "rgba(100,100,100,0.5)";
+            this.alpha = 1.0;
+        },
+        
+        update: function() {
+            this._refresh();
+        },
+        
+        _refresh: function () {
+            var c = this.canvas;
+            c.resize(this.width, this.height);
+            c.fillStyle = "rgba(0,0,255,1.0)";
+            c.fillCircle(this.position.x - this.width/10, this.position.y - this.height/4, this.width/5);
+            
+            c.fillStyle = "rgba(255,255,0,1.0)";
+            c.fillCircle(this.position.x + this.width/10, this.position.y - this.height/8, this.width/5);
+            
+            
+            // テキストを描画
+            c.setShadow("rgb(20,20,20)", 2, 2, 7);
+            c.setText("80px 'Consolas', 'Monaco', 'ＭＳ ゴシック'", "center", "center");
+            c.fillStyle = "rgba(255,255,255,1.0)";
+            c.fillText("tmlib.js", this.position.x, this.position.y + this.height/20);
+        },
+    });
+
     ns.TmlibScene = tm.createClass({
         superClass : tm.app.Scene,
 
@@ -16,7 +50,7 @@
             this.addChild(filter);
 
             // tmlib logo
-            var logo = tm.app.Sprite("logoTmlib").addChildTo(this);
+            var logo = ns.TmlibLogo(ns.SCREEN_WIDTH, ns.SCREEN_WIDTH).addChildTo(this);
             logo.position.set(ns.SCREEN_WIDTH/2, ns.SCREEN_HEIGHT/2);
 
             this.alpha = 0.0;
