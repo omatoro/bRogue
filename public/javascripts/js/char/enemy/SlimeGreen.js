@@ -18,7 +18,7 @@
 			this.maxmp = 0;
 			this.mp    = 0;
 
-			this._str  = 3; // 攻撃力
+			this._str  = 1; // 攻撃力
 			this._def  = 0; // 防御力
 			// this._int = 1; // 魔力
 			this._agi  = 0; // 素早さ
@@ -34,13 +34,13 @@
 			this.dropItemList = [
 				{
 					itemName: "雑草",
-					random: 2
+					random: 20
 				},{
 					itemName: "モンスターの液体",
-					random: 2
+					random: 20
 				},{
 					itemName: "布の服",
-					random: 2
+					random: 20
 				}
 			];
 		}

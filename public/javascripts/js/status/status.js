@@ -143,6 +143,7 @@
                         dropImage: null,
                         name: "装備無し",
                         status: {
+                            aspd: 0,
                             dis: 0,
                             str: 0,
                             def: 0,
@@ -183,6 +184,7 @@
                         dropImage: null,
                         name: "装備無し",
                         status: {
+                            aspd: 0,
                             str: 0,
                             def: 0,
                             agi: 0,

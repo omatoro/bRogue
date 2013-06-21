@@ -33,12 +33,12 @@
 			this._vit = 1; // 体力
 			this._dex = 1; // 器用さ
 
-			// 剣系：154
-			// 大剣系：140
-			// 大槌系：135
-			// ナイフ系：160
-			// 二刀流：163
-			// 最速：167
+			// 剣系：154		: 0
+			// 大剣系：140	: -14
+			// 大槌系：135	: -19
+			// ナイフ系：160	: +6
+			// 二刀流：163	: +9
+			// 最速：167		: +13
 			this._aspd = 154; // 攻撃スピード
 
 			this.speed = 7;
@@ -158,22 +158,24 @@
 		getSpeed: function () {
 			return this.speed + (this.getLastAGI()/15 |0);
 		},
+		getAspd: function () {
+			var aspd = this._aspd;
+			aspd += this.getWeapon().status.aspd;
+			aspd += this.getArmor().status.aspd;
+			return aspd;
+		},
 
 		getLastAGI: function () {
 			var agi = this.getAGI();
-			if (this.equipedWeapon !== null) {
-				agi += this.equipedWeapon.status.agi;
-			}
-			if (this.equipedArmor !== null) {
-				agi += this.equipedArmor.status.agi;
-			}
+			agi += this.getWeapon().status.agi;
+			agi += this.getArmor().status.agi;
 			return agi;
 		},
 
 		getAttackSpeed: function (fps) {
 			// 攻撃速度を計算
 			// var attackSpeed = this._aspd + Math.sqrt(this.getLastAGI() * (10 + 10/111) + (this.getDEX() * 9 / 49));
-			var attackSpeed = this._aspd + Math.sqrt((this.getLastAGI() * (10)) + (this.getDEX() * 9 / 49));
+			var attackSpeed = this.getAspd() + Math.sqrt((this.getLastAGI() * (10)) + (this.getDEX() * 9 / 49));
 
 			// attackSpeed = (attackSpeed > 190) ? 190 : (attackSpeed |0);
 			// attackSpeed = (attackSpeed > 250) ? 190 : (attackSpeed |0);
@@ -260,6 +262,7 @@
 					dropImage: null,
 					name: "装備無し",
 					status: {
+						aspd: 0,
 						dis: 0,
 						str: 0,
 						def: 0,
@@ -289,6 +292,7 @@
 					dropImage: null,
 					name: "装備無し",
 					status: {
+						aspd: 0,
 						str: 0,
 						def: 0,
 						agi: 0,

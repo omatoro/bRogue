@@ -94,7 +94,7 @@
             map.setPlayer(safePosition);
 
             // アイテム
-            var itemList   = ns.ItemList();
+            this.itemList   = ns.ItemList();
             var itemGroup  = tm.app.CanvasElement();
             this.itemGroup = itemGroup;
             map.setItemGroup(itemGroup);
@@ -305,13 +305,13 @@
                             // 経験値取得
                             this.player.addExp(damageData.exp, app);
 
-                            // // アイテムドロップ
-                            // var itemData = itemList.get(enemy.getDropItem());
-                            // if (itemData !== null) {
-                            //     var dropItem = ns.DropItem(itemData);
-                            //     dropItem.position.set(enemy.x, enemy.y);
-                            //     this.map.addItem(dropItem);
-                            // }
+                            // アイテムドロップ
+                            var itemData = this.itemList.get(enemy.getDropItem());
+                            if (itemData !== null) {
+                                var dropItem = ns.DropItem(itemData);
+                                dropItem.position.set(enemy.x, enemy.y);
+                                this.map.addItem(dropItem);
+                            }
 
                             // 死んだエフェクト
                             var enemydead = tm.app.AnimationSprite("enemydeadSS", 120, 120);

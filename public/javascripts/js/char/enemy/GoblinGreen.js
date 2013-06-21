@@ -34,10 +34,10 @@
 			this.dropItemList = [
 				{
 					itemName: "刀",
-					random: 12
+					random: 120
 				},{
 					itemName: "肉",
-					random: 5
+					random: 50
 				}
 			];
 		}

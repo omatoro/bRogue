@@ -101,12 +101,9 @@
 		},
 
 		getDropItem: function () {
-			// hpが0になったら死亡
-			if (this.hp <= 0) {
-				for (var i = 0; i < this.dropItemList.length; ++i) {
-					if (Math.rand(0, this.dropItemList[i].random) === 0) {
-						return this.dropItemList[i].itemName;
-					}
+			for (var i = 0; i < this.dropItemList.length; ++i) {
+				if (Math.rand(0, this.dropItemList[i].random) === 0) {
+					return this.dropItemList[i].itemName;
 				}
 			}
 			return null;
