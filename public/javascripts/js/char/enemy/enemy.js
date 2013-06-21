@@ -64,8 +64,11 @@
 			var slash = tm.app.AnimationSprite(ss, 120, 120);
             slash.position.set(0, 0);
             this.slash = slash;
-            this.attackDistanse = 50;
+            this.attackDistance = 50;
             this.addChild(slash);
+
+            // デバッグ用
+            // tm.app.CircleShape(10, 10, {fillStyle:"red"}).addChildTo(this).position.set(this.x, this.y);
 		},
 
 		getMaxHP:     function () { return this.maxhp; },
@@ -124,27 +127,50 @@
 
 		update: function (app) {
             this.autoMove();
+            this._attack(
+            		app, 
+            		this.position.clone(), 
+            		this.map.mapLeftTopToMapCenter(this.map.playerPosition.x, this.map.playerPosition.y));
 		},
 
 		_attack: function (app, enemyPosition, player) {
-			// プレイヤーとの距離が一定距離以内なら攻撃へのカウントアップを行う
-			// 一番近いプレイヤーを探す
-			var playerPosition = player.playerPosition.clone();
-			var closeAnotherPlayerPosition = ns.gameEvent.getCloseAnotherPlayerPosition(this.position.clone()).position.clone();
+			if (!enemyPosition) {
+				return ;
+			}
+			if (!player) {
+				return ;
+			}
 
-			var playerDistanse = playerPosition.distanse(enemyPosition);
-			var anotherPlayerDistanse = closeAnotherPlayerPosition.distanse(enemyPosition);
-			
-			if (anotherPlayerDistanse <= playerDistanse) {
+			/**
+			 * 他のプレイヤー＋プレイヤーの中から一番近いプレイヤーを探す
+			 * 他のプレイヤーが存在しない->プレイヤーが一番近いと判断
+			 * 他のプレイヤーが存在する->プレイヤーとどっちが近いか判断して処理を行う
+			 */
+			var closeAnotherPlayerPosition = ns.gameEvent.getCloseAnotherPlayerPosition(enemyPosition);
+			var playerPosition = player;
+			var playerDistance = playerPosition.distance(enemyPosition);
+			if (!closeAnotherPlayerPosition) {
+				// 他プレイヤーが存在しないので、プレイヤーが一番近いと判断する
 				var targetPlayerPosition = playerPosition;
-				var targetDistanse = playerDistanse;
+				var targetDistance = playerDistance;
 			}
 			else {
-				var targetPlayerPosition = closeAnotherPlayerPosition;
-				var targetDistanse = anotherPlayerDistanse;
+				// 他プレイヤーが存在するので、どっちが近いか比較して判断する
+				closeAnotherPlayerPosition = closeAnotherPlayerPosition.position.clone();
+				var anotherPlayerDistance = closeAnotherPlayerPosition.distance(enemyPosition);
+
+				if (anotherPlayerDistance <= playerDistance) {
+					var targetPlayerPosition = playerPosition;
+					var targetDistance = playerDistance;
+				}
+				else {
+					var targetPlayerPosition = closeAnotherPlayerPosition;
+					var targetDistance = anotherPlayerDistance;
+				}
 			}
 
-        	if (targetDistanse <= this.lengthToAttack) {
+			// 一定距離以内なら攻撃へのカウントアップを行う
+        	if (targetDistance <= this.lengthToAttack) {
         		// 攻撃へのカウントアップ
         		++this.attackTime;
         	}
@@ -162,8 +188,8 @@
             var attackDirect = targetPlayerPosition.normalize();
             
             // 攻撃の場所を計算する(画面上)
-            var distanseToAttack = this.attackDistanse;
-            var attackScreenPosition = tm.geom.Vector2.mul(attackDirect, distanseToAttack);
+            var distanceToAttack = this.attackDistance;
+            var attackScreenPosition = tm.geom.Vector2.mul(attackDirect, distanceToAttack);
 
             // 攻撃時のアニメーション
             this.slash.position.set(attackScreenPosition.x, attackScreenPosition.y);

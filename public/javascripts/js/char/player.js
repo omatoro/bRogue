@@ -25,10 +25,10 @@
 			this.maxmp = 10;
 			this.mp    = 10;
 
-			this._str = 100; // 攻撃力
+			this._str = 1; // 攻撃力
 			this._def = 1; // 防御力
 			// this._int = 40; // 魔力
-			this._agi = 100; // 素早さ // 初期値10くらい
+			this._agi = 10; // 素早さ // 初期値10くらい
 			this._luk = 1; // 運
 			this._vit = 1; // 体力
 			this._dex = 1; // 器用さ

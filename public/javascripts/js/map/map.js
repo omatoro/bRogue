@@ -83,6 +83,18 @@
             this._isHitStairs(app);
 		},
 
+        getPlayerPosition: function () {
+            var position = this.playerPosition.clone();
+            // position.y += 20;
+            return position;
+        },
+        addPlayerPosition: function (vector) {
+            this.playerPosition.add(vector);
+        },
+        setPlayerPosition: function (vector) {
+            this.playerPosition = vector;
+        },
+
         isNextStage: function () {
             return this._isNextStage;
         },
@@ -129,9 +141,9 @@
         setPlayer: function (initPosition) {
             // プレイヤーの位置を別として保持
             this.isPlayer = true;
-            this.playerPosition = tm.geom.Vector2(
-                this.width/2  + (ns.SCREEN_WIDTH/2  - initPosition.x),
-                this.height/2 + (ns.SCREEN_HEIGHT/2 - initPosition.y) + PLAYER_POSITION_Y);
+            this.setPlayerPosition(tm.geom.Vector2(
+                    this.width/2  + (ns.SCREEN_WIDTH/2  - initPosition.x),
+                    this.height/2 + (ns.SCREEN_HEIGHT/2 - initPosition.y) + PLAYER_POSITION_Y));
 
             // プレイヤーのヒット判定用にポイントを作成
             var playerElement = tm.app.Object2D();
@@ -279,9 +291,10 @@
             var playerVelocity = this.velocity.clone();
             playerVelocity.x *= -1;
             playerVelocity.y *= -1;
+            var playerPosition = this.getPlayerPosition();
             var isHit = this._isHitCollisionMap(
-                this.playerPosition.x,
-                this.playerPosition.y,
+                playerPosition.x,
+                playerPosition.y,
                 playerVelocity,
                 this.speed);
             if (isHit & HIT_UP)    { playerVelocity.y = 0; }
@@ -290,13 +303,13 @@
             if (isHit & HIT_RIGHT) { playerVelocity.x = 0; }
 
             // プレイやーの位置を更新
-            this.playerPosition.add(tm.geom.Vector2.mul(playerVelocity, this.speed));
+            this.addPlayerPosition(tm.geom.Vector2.mul(playerVelocity, this.speed));
 
             // プレイヤーの位置情報をサーバへ送信
             var player = app.currentScene.player;
 
             // イベントの送信
-            ns.gameEvent.movePlayer(this.playerPosition, player);
+            ns.gameEvent.movePlayer(this.getPlayerPosition(), player);
 
             // プレイヤーがいたらマップチップとのヒット判定を行うので、マップ移動用に移動量を返す
             playerVelocity.x *= -1;
@@ -340,7 +353,8 @@
         _isHitTreasureBox: function (app) {
             if (this.isPlayer) {
                 var items = this.itemGroup.children;
-                var playerPosition = this.mapLeftTopToMapCenter(this.playerPosition.x, this.playerPosition.y);
+                var playerPosition = this.getPlayerPosition();
+                playerPosition = this.mapLeftTopToMapCenter(playerPosition.x, playerPosition.y);
                 this.playerElement.position.set(playerPosition.x, playerPosition.y);
 
                 for (var i = 0; i < items.length; ++i) {
@@ -364,7 +378,8 @@
         // プレイヤーと階段とのヒット判定
         _isHitStairs: function (app) {
             if (this.isPlayer) {
-                var playerPosition = this.mapLeftTopToMapCenter(this.playerPosition.x, this.playerPosition.y);
+                var playerPosition = this.getPlayerPosition();
+                playerPosition = this.mapLeftTopToMapCenter(playerPosition.x, playerPosition.y);
                 this.playerElement.position.set(playerPosition.x, playerPosition.y);
 
                 if (this.stairs && this.stairs.isHitElementCircle(this.playerElement)) {

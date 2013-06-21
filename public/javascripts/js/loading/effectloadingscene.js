@@ -68,11 +68,11 @@
             }.bind(this));
         },
 
-        update: function () {
-            if (this.assets) {
-                this.bar.setBarLength((this.assets._loadedCounter - this.loadedCounter) * this.barUnit);
-            }
-        },
+        // update: function () {
+        //     if (this.assets) {
+        //         this.bar.setBarLength((this.assets._loadedCounter - this.loadedCounter) * this.barUnit);
+        //     }
+        // },
     });
     
     

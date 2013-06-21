@@ -214,7 +214,6 @@
                     closeDistance = distance;
                 }
             });
-
             return closePlayer;
         },
 

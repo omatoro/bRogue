@@ -83,7 +83,6 @@ Math = tmlib.Math;
 
 			// マップ上の位置
         	var mapEnemyPosition = tm.geom.Vector2(this.position.x, this.position.y);
-        	mapEnemyPosition.y += 35; // 位置を調整
 
         	// 一番近いプレイヤーを探す
         	var minDistanceToPlayer = INIT_MAX_LENGTH_TO_PLAYER;

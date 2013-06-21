@@ -56,7 +56,7 @@
         init : function(continuePlayer, continuePad) {
             this.superInit();
 
-            console.time("MainScene init");
+            // console.time("MainScene init");
 
             // コントローラーパッド
             var pad = continuePad || tm.app.Pad();
@@ -64,7 +64,6 @@
             this.pad = pad;
 
             // プレイヤー
-            console.dir(continuePlayer);
             var player = continuePlayer || ns.Player(pad);
             this.player = player;
             player.setInputPad(pad);
@@ -197,7 +196,18 @@
             this.fromJSON(UI_DATA.LABELS);
 
 
-            console.timeEnd("MainScene init");
+            // console.timeEnd("MainScene init");
+
+            // デバッグ用
+            // var testposition = this.map.mapLeftTopToMapCenter(this.map.getPlayerPosition().x, this.map.getPlayerPosition().y);
+            // var testposition = this.map.mapCenterToScreenTopLeft(testposition.x, testposition.y);
+            // tm.app.CircleShape(10, 10, {fillStyle:"red"}).
+            //         addChildTo(this).
+            //         position.set(testposition.x, testposition.y);
+
+            // tm.app.CircleShape(10, 10, {fillStyle:"yellow"}).
+            //         addChildTo(this).
+            //         position.set(this.player.x, this.player.y);
 
         },
 
