@@ -337,39 +337,6 @@
                 this._strokeRefresh(canvas, lineWidth, linePositionX, linePositionY, lineHSL, radius);
             }
         },
-
-        update: function () {
-            // ピッカーで何か選んだ時の動作
-            if (this.weaponButton.returnedData) {
-                this.player.equipWeapon(this.weaponButton.returnedData);
-                this._drawStatus();
-                this.weaponButton.returnedData = null;
-            }
-            if (this.armorButton.returnedData) {
-                this.player.equipArmor(this.armorButton.returnedData);
-                this._drawStatus();
-                this.armorButton.returnedData = null;
-            }
-            // 食事
-            if (this.medicineButton.returnedData) {
-                this.player.eatMedicine(this.medicineButton.returnedData);
-
-                var removeMedicineIte = 0
-                for (var i = 0; i < this.player.getItem().length; ++i) {
-                    var itemType = this.player.getItem()[i].type;
-                    if (itemType === "medicine") {
-                        ++removeMedicineIte;
-                        if (removeMedicineIte === this.medicineButton.ite) {
-                            // アイテム削除
-                            this.player.deleteItem(i);
-                        }
-                    }
-                }
-
-                this._drawStatus();
-                this.medicineButton.returnedData = null;
-            }
-        },
     });
 
     // ns.Status.OUT_STROKE_COLOR = "rgba(20, 40, 100, 0.5)";

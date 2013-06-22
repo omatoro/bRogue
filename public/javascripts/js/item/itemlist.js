@@ -304,7 +304,26 @@
 			if (item !== null) {
 				for (var i = 0; i < this.item.length; ++i) {
 					if (this.item[i].name === item) {
-						return this.item[i];
+						// オブジェクトのまま返すポインタになるのでコピーを返す
+						var data = this.item[i];
+						var result = {
+							name: data.name,
+							type: data.type,
+							summary: data.summary,
+							dropImage: data.dropImage,
+							status: {
+								hp:   data.status.hp   || 0,
+								aspd: data.status.aspd || 0,
+								dis:  data.status.dis  || 0,
+								str:  data.status.str  || 0,
+								def:  data.status.def  || 0,
+								agi:  data.status.agi  || 0,
+								luk:  data.status.luk  || 0,
+								vit:  data.status.vit  || 0,
+								dex:  data.status.dex  || 0
+							}
+						};
+						return result;
 					}
 				}
 			}

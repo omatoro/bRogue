@@ -50,6 +50,8 @@
 
 			this.equipedWeapon = null;
 			this.equipedArmor  = null;
+
+			this.itemIdManager = 100; // いずれID管理
 		},
 
 		getLevel: function ()		{ return this.level; },
@@ -82,16 +84,18 @@
 					type: item.type,
 					summary: item.summary,
 					dropImage: item.dropImage,
+					gettingId: item.gettingId,
 					status: {
-						hp: item.status.hp,
+						hp:   item.status.hp,
 
-						dis: item.status.dis,
-						agi: item.status.agi,
-						def: item.status.def,
-						dex: item.status.dex,
-						luk: item.status.luk,
-						str: item.status.str,
-						vit: item.status.vit,
+						aspd: item.status.aspd,
+						dis:  item.status.dis,
+						agi:  item.status.agi,
+						def:  item.status.def,
+						dex:  item.status.dex,
+						luk:  item.status.luk,
+						str:  item.status.str,
+						vit:  item.status.vit,
 					},
 				}
 				return result;
@@ -116,6 +120,7 @@
 				exp:   this.exp, // 取得経験値
 				nextLevelExp: this.nextLevelExp,
 
+				itemIdManager: this.itemIdManager,
 				item: [],
 				equipedWeapon: parseItem(this.equipedWeapon),
 				equipedArmor : parseItem(this.equipedArmor),
@@ -150,6 +155,7 @@
 			this.exp          = saveData.exp; // 取得経験値
 			this.nextLevelExp = saveData.nextLevelExp;
 
+			this.itemIdManager = saveData.itemIdManager,
 			this.item          = saveData.item;
 			this.equipedWeapon = saveData.equipedWeapon;
 			this.equipedArmor  = saveData.equipedArmor;
@@ -236,6 +242,7 @@
 		},
 
 		addItem: function (item) {
+			item.gettingId = ++this.itemIdManager;
 			this.item.push(item);
 		},
 
@@ -245,6 +252,14 @@
 
 		deleteItem: function (itemNum) {
 			this.item.splice(itemNum, 1);
+		},
+		deleteItemId: function (id) {
+			for (var i = 0, n = this.item.length; i < n; ++i) {
+				if (this.item[i].gettingId === id) {
+					this.item.splice(i, 1);
+					break;
+				}
+			}
 		},
 
 		equipWeapon: function (item) {
@@ -261,6 +276,7 @@
 				var result = {
 					dropImage: null,
 					name: "装備無し",
+					gettingId: null,
 					status: {
 						aspd: 0,
 						dis: 0,
@@ -291,6 +307,7 @@
 				var result = {
 					dropImage: null,
 					name: "装備無し",
+					gettingId: null,
 					status: {
 						aspd: 0,
 						str: 0,

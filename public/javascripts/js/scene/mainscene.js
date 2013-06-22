@@ -308,6 +308,7 @@
                             // アイテムドロップ
                             var itemData = this.itemList.get(enemy.getDropItem());
                             if (itemData !== null) {
+                                // マップ上にドロップアイテムを設置する(以後、マップクラスにてプレイヤーとのヒット判定を行う)
                                 var dropItem = ns.DropItem(itemData);
                                 dropItem.position.set(enemy.x, enemy.y);
                                 this.map.addItem(dropItem);
