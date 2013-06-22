@@ -21,6 +21,7 @@
             this.status = status;
         },
 
+        // @todo コードが重複
         update : function(app) {
             // ピッカーで何か選んだ時の動作
             var status = this.status;
