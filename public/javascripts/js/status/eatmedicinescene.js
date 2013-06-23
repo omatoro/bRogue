@@ -1,9 +1,9 @@
 /**
- * EquipToolScene
+ * EatMedicineScene
  */
 (function(ns) {
 
-    ns.EquipToolScene = tm.createClass({
+    ns.EatMedicineScene = tm.createClass({
         superClass : tm.app.Scene,
 
         init: function(parent) {
@@ -18,11 +18,11 @@
             var self = this;
 
             // [装備する]ボタン
-            var equipButton = tm.app.GlossyButton(280, 60, "gray", "装備する").addChildTo(this);
+            var equipButton = tm.app.GlossyButton(280, 60, "gray", "食べる").addChildTo(this);
             equipButton.position.set(200, 300);
             this.equipButton = equipButton;
             equipButton.addEventListener("pointingend", function(e) {
-                parent.pressedButton = ns.EquipToolScene.EQUIP;
+                parent.pressedButton = ns.EatMedicineScene.EAT;
                 e.app.popScene();
             });
 
@@ -31,7 +31,7 @@
             deleteButton.position.set(200, 450);
             this.deleteButton = deleteButton;
             deleteButton.addEventListener("pointingend", function(e) {
-                parent.pressedButton = ns.EquipToolScene.DELETE;
+                parent.pressedButton = ns.EatMedicineScene.DELETE;
                 e.app.popScene();
             });
 
@@ -40,14 +40,14 @@
             cancelButton.position.set(200, 550);
             this.cancelButton = cancelButton;
             cancelButton.addEventListener("pointingend", function(e) {
-                parent.pressedButton = ns.EquipToolScene.CANCEL;
+                parent.pressedButton = ns.EatMedicineScene.CANCEL;
                 e.app.popScene();
             });
         },
     });
 
-    ns.EquipToolScene.CANCEL = 1;
-    ns.EquipToolScene.EQUIP  = 2;
-    ns.EquipToolScene.DELETE = 3;
+    ns.EatMedicineScene.CANCEL = 1;
+    ns.EatMedicineScene.EAT    = 2;
+    ns.EatMedicineScene.DELETE = 3;
 
 })(game);

@@ -27,9 +27,17 @@
             var status = this.status;
             if (status.weaponButton.returnedData) {
                 // 装備を変更するかどうか選択する
-                if (!this.pressedEquipTool) {
-                    // ボタンが押されたら[pressedEquipTool]変数に何かが入る
-                    app.pushScene(ns.EquipToolScene(this));
+                if (!this.pressedButton) {
+                    // [装備無し]を選択したら捨てるボタンを生成しない
+                    if (status.weaponButton.returnedData.name === "装備無し") {
+                        // ボタンが押されたら[pressedButton]変数に何かが入る
+                        app.pushScene(ns.DefaultToolScene(this));
+                    }
+                    else {
+                        // ボタンが押されたら[pressedButton]変数に何かが入る
+                        app.pushScene(ns.EquipToolScene(this));
+                    }
+                    
                 }
                 else {
                     this._equalChangedTool(
@@ -41,9 +49,16 @@
             }
             if (status.armorButton.returnedData) {
                 // 装備を変更するかどうか選択する
-                if (!this.pressedEquipTool) {
-                    // ボタンが押されたら[pressedEquipTool]変数に何かが入る
-                    app.pushScene(ns.EquipToolScene(this));
+                if (!this.pressedButton) {
+                    // [装備無し]を選択したら捨てるボタンを生成しない
+                    if (status.armorButton.returnedData.name === "装備無し") {
+                        // ボタンが押されたら[pressedButton]変数に何かが入る
+                        app.pushScene(ns.DefaultToolScene(this));
+                    }
+                    else {
+                        // ボタンが押されたら[pressedButton]変数に何かが入る
+                        app.pushScene(ns.EquipToolScene(this));
+                    }
                 }
                 else {
                     this._equalChangedTool(
@@ -55,27 +70,34 @@
             }
             // 食事
             if (status.medicineButton.returnedData) {
-                var id = status.medicineButton.returnedData.gettingId;
-                status.player.eatMedicine(status.medicineButton.returnedData);
-                status.player.deleteItemId(id);
-                status._drawStatus();
-                status.medicineButton.returnedData = null;
+                // 装備を変更するかどうか選択する
+                if (!this.pressedButton) {
+                    // ボタンが押されたら[pressedButton]変数に何かが入る
+                    app.pushScene(ns.EatMedicineScene(this));
+                }
+                else {
+                    this._equalChangedTool(
+                            status,
+                            status.medicineButton,
+                            {gettingId: null},
+                            status.player.eatMedicine.bind(status.player));
+                }
             }
         },
 
         /**
          * 道具使用・装備・削除画面で選択後の処理
          */
-        _equalChangedTool: function (status, button, tools, equipFunc) {
-            switch (this.pressedEquipTool) {
+        _equalChangedTool: function (status, button, tools, fn) {
+            switch (this.pressedButton) {
                 case ns.EquipToolScene.CANCEL:
-                    this.pressedEquipTool = null;
+                    this.pressedButton = null;
                     button.returnedData = null;
                     break;
                 case ns.EquipToolScene.DELETE:
                     // 捨てる装備が装備中の場合
                     if (button.returnedData.gettingId === tools.gettingId) {
-                        equipFunc();
+                        fn();
                         var id = button.returnedData.gettingId;
                         status.player.deleteItemId(id);
                         // 表示を装備無しに変更
@@ -92,19 +114,26 @@
                     if (button.returnedData.name === "装備無し") {
                         // 何もしない
                     }
-                    this.pressedEquipTool = null;
+                    this.pressedButton = null;
                     button.returnedData = null;
                     break;
                 case ns.EquipToolScene.EQUIP:
-                    equipFunc(button.returnedData);
+                    fn(button.returnedData);
                     button.label.text = button.returnedData.name;
                     status._drawStatus();
-                    this.pressedEquipTool = null;
+                    this.pressedButton = null;
+                    button.returnedData = null;
+
+                    break;
+                case ns.EatMedicineScene.EAT:
+                    fn(button.returnedData);
+                    status._drawStatus();
+                    this.pressedButton = null;
                     button.returnedData = null;
 
                     break;
                 default :
-                    this.pressedEquipTool = null;
+                    this.pressedButton = null;
                     button.returnedData = null;
                     break;
             }

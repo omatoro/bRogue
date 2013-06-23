@@ -1,9 +1,9 @@
 /**
- * EquipToolScene
+ * DefaultToolScene
  */
 (function(ns) {
 
-    ns.EquipToolScene = tm.createClass({
+    ns.DefaultToolScene = tm.createClass({
         superClass : tm.app.Scene,
 
         init: function(parent) {
@@ -18,20 +18,11 @@
             var self = this;
 
             // [装備する]ボタン
-            var equipButton = tm.app.GlossyButton(280, 60, "gray", "装備する").addChildTo(this);
+            var equipButton = tm.app.GlossyButton(280, 60, "gray", "装備を外す").addChildTo(this);
             equipButton.position.set(200, 300);
             this.equipButton = equipButton;
             equipButton.addEventListener("pointingend", function(e) {
-                parent.pressedButton = ns.EquipToolScene.EQUIP;
-                e.app.popScene();
-            });
-
-            // [捨てる]ボタン
-            var deleteButton = tm.app.GlossyButton(280, 60, "gray", "捨てる").addChildTo(this);
-            deleteButton.position.set(200, 450);
-            this.deleteButton = deleteButton;
-            deleteButton.addEventListener("pointingend", function(e) {
-                parent.pressedButton = ns.EquipToolScene.DELETE;
+                parent.pressedButton = ns.DefaultToolScene.EQUIP;
                 e.app.popScene();
             });
 
@@ -40,14 +31,13 @@
             cancelButton.position.set(200, 550);
             this.cancelButton = cancelButton;
             cancelButton.addEventListener("pointingend", function(e) {
-                parent.pressedButton = ns.EquipToolScene.CANCEL;
+                parent.pressedButton = ns.DefaultToolScene.CANCEL;
                 e.app.popScene();
             });
         },
     });
 
-    ns.EquipToolScene.CANCEL = 1;
-    ns.EquipToolScene.EQUIP  = 2;
-    ns.EquipToolScene.DELETE = 3;
+    ns.DefaultToolScene.CANCEL = 1;
+    ns.DefaultToolScene.EQUIP  = 2;
 
 })(game);
