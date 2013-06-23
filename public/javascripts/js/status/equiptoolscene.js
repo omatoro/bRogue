@@ -17,6 +17,9 @@
 
             var self = this;
 
+            // 枠
+            ns.GlowLineBox({heightPadding:200}).addChildTo(this);
+
             // [装備する]ボタン
             var equipButton = tm.app.GlossyButton(280, 60, "gray", "装備する").addChildTo(this);
             equipButton.position.set(200, 300);
@@ -28,7 +31,7 @@
 
             // [捨てる]ボタン
             var deleteButton = tm.app.GlossyButton(280, 60, "gray", "捨てる").addChildTo(this);
-            deleteButton.position.set(200, 450);
+            deleteButton.position.set(200, 400);
             this.deleteButton = deleteButton;
             deleteButton.addEventListener("pointingend", function(e) {
                 parent.pressedButton = ns.EquipToolScene.DELETE;
@@ -37,7 +40,7 @@
 
             // [キャンセル]ボタン
             var cancelButton = tm.app.GlossyButton(280, 60, "gray", "キャンセル").addChildTo(this);
-            cancelButton.position.set(200, 550);
+            cancelButton.position.set(200, 500);
             this.cancelButton = cancelButton;
             cancelButton.addEventListener("pointingend", function(e) {
                 parent.pressedButton = ns.EquipToolScene.CANCEL;

@@ -15,6 +15,9 @@
             filter.canvas.clearColor("rgba(0, 0, 0, 0.75)");
             this.addChild(filter);
 
+            // 枠
+            ns.GlowLineBox({heightPadding:200}).addChildTo(this);
+
             var self = this;
 
             // [装備する]ボタン
@@ -28,7 +31,7 @@
 
             // [キャンセル]ボタン
             var cancelButton = tm.app.GlossyButton(280, 60, "gray", "キャンセル").addChildTo(this);
-            cancelButton.position.set(200, 550);
+            cancelButton.position.set(200, 400);
             this.cancelButton = cancelButton;
             cancelButton.addEventListener("pointingend", function(e) {
                 parent.pressedButton = ns.DefaultToolScene.CANCEL;

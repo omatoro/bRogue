@@ -99,18 +99,12 @@
     };
 
     ns.Status = tm.createClass({
-        superClass : tm.app.Shape,
+        superClass : ns.GlowLineBox,
 
         init: function(parent) {
-            this.superInit(ns.SCREEN_WIDTH, ns.SCREEN_HEIGHT);
-            this.setPosition(ns.SCREEN_WIDTH/2, ns.SCREEN_HEIGHT/2);
-
-            this.backgroundColor = "rgba(0, 0, 0, 0.0)";
-            this.alpha = 1.0;
-            
+            this.superInit();
             this.setInteractive(true);
             this.boundingType = "rect";
-            this._refresh();
 
             // プレーヤー
             this.player = parent.player;
@@ -268,84 +262,6 @@
             // this.statusVIT.text   = "VIT " + this.player.getVIT() + " + " + (this.player.getWeapon().status.vit + this.player.getArmor().status.vit);
             // this.statusDEX.text   = "DEX " + this.player.getDEX() + " + " + (this.player.getWeapon().status.dex + this.player.getArmor().status.dex);
         },
-        
-        _refresh: function() {
-            // 枠線の大きさ
-            var lineWidth = 2;
-
-            // 描画
-            var c = this.canvas;
-            c.resize(this.width, this.height);
-
-            // 描画モード
-            c.globalCompositeOperation = "lighter";
-
-            // 外枠
-            this._shineStroke(c, lineWidth, lineWidth + STATUS_TOPLEFT_X, lineWidth + STATUS_TOPLEFT_Y, 190, 80, 30, lineWidth/2);
-
-            // 描画モード
-            c.globalCompositeOperation = "source-over";
-
-            // 中身
-            c.fillStyle = "rgba(5,25,60,0.5)";
-            c.fillRoundRect(
-                lineWidth + STATUS_TOPLEFT_X, 
-                lineWidth + STATUS_TOPLEFT_Y, 
-                STATUS_WIDTH, 
-                STATUS_HEIGHT, 
-                lineWidth*2);
-            // this._strokeRefresh(c, lineWidth, lineWidth*2, lineWidth*2, ns.Status.IN_STROKE_COLOR,  lineWidth/2);
-
-
-            // var grad = tm.graphics.LinearGradient(0, 0, 0, this.height);
-
-            // // グラデーション
-            // grad.addColorStop(0.0, ns.Status.BACK_GRADIENT_COLOR_TOP);
-            // grad.addColorStop(0.5, ns.Status.BACK_GRADIENT_COLOR_CENTER);
-            // grad.addColorStop(0.5, ns.Status.BACK_GRADIENT_COLOR_BOTTOM);
-            // grad.addColorStop(1.0, ns.Status.BACK_GRADIENT_COLOR_BOTTOM);
-            // c.setGradient(grad);
-            // c.fillRect(lineWidth, lineWidth, this.width-lineWidth*2, this.height-lineWidth*2, lineWidth*4);
-        },
-
-        _strokeRefresh: function (canvas, lineWidth, linePositionX, linePositionY, color, radius) {
-            // 外枠
-            radius = radius || 0; // 角丸の大きさ
-            canvas.strokeStyle   = color;
-            canvas.lineWidth     = lineWidth;
-            canvas.fillStyle     = color;
-
-            if (radius === 0) {
-                canvas.strokeStyle+= lineWidth/2;
-                canvas.strokeRect(linePositionX, linePositionY, STATUS_WIDTH-(linePositionX*2), STATUS_HEIGHT-(linePositionY*2));
-                // canvas.clip();
-            }
-            else {
-                canvas.strokeRoundRect(linePositionX, linePositionY, STATUS_WIDTH, STATUS_HEIGHT, lineWidth*2);
-                //canvas.clip(); // 以下描画時のimageデータをくり抜くため、上記処理が上書きされない
-            }
-        },
-
-        _shineStroke: function (canvas, lineWidth, linePositionX, linePositionY, h, s, l, radius) {
-            var lineHSL   = tm.graphics.Color.createStyleHSL(h, s-50, l+50);
-            var shadowHSL = tm.graphics.Color.createStyleHSL(h, s, l);
-
-            // 影を濃くする
-            for (var i = 0; i < 12; ++i) {
-                // 影
-                canvas.setShadow(shadowHSL, 0, 0, 40);
-                this._strokeRefresh(canvas, lineWidth, linePositionX, linePositionY, lineHSL, radius);
-            }
-        },
     });
-
-    // ns.Status.OUT_STROKE_COLOR = "rgba(20, 40, 100, 0.5)";
-    ns.Status.OUT_STROKE_COLOR = "rgba(255, 255, 255, 1.0)";
-    // ns.Status.IN_STROKE_COLOR  = "rgba(20, 80, 180, 0.5)";
-    ns.Status.IN_STROKE_COLOR  = "rgba(255, 0, 0, 1.0)";
-
-    ns.Status.BACK_GRADIENT_COLOR_TOP    = "rgba(120, 160, 245, 0.5)";
-    ns.Status.BACK_GRADIENT_COLOR_CENTER = "rgba(55, 120, 220, 0.5)";
-    ns.Status.BACK_GRADIENT_COLOR_BOTTOM = "rgba(35, 95, 220, 0.5)";
 
 })(game);
