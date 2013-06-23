@@ -5,50 +5,8 @@
  */
 (function(ns) {
 
-    // var EVENT_NAME_LIST = [
-    //     "attackPlayer",
-    //     "noWeaponAttackPlayer",
-    //     "equipWeapon",
-    //     "equipArmor",
-    //     "killDragon",
-    //     "eatMedicine",
-    //     "getAllItem",
-    //     "getAllWeapon",
-    //     "getAllArmor",
-    //     "getAllMedicine",
-    //     "perfectComplete",
-    //     "gameClear",
-    //     "gameOver",
-    //     "gameStart",
-    //     "oneShotOneKill",
-    //     "damagePlayer",
-    //     "hitPlayer"
-    // ];
-
-    // var ACHIEVE = {
-    //     "ドラゴンキラー",
-    //     "持たざるもの",
-    //     "拳法家",
-    //     "はだかの勇者",
-    //     "節約家",
-    //     "コレクター",
-    //     "武器屋",
-    //     "防具屋",
-    //     "薬屋",
-    //     "完全制覇",
-    //     "スピードキング",
-    //     "一撃必殺",
-    //     "多撃必倒",
-    //     "鉄壁の守り",
-    //     "忍",
-    //     "不殺",
-    //     "リベンジャー",
-    //     "",
-    //     "",
-    //     "",
-    // };
-
-    var EMIT_MOVEPOINT_TIME = 30;
+    var EMIT_MOVEPOINT_TIME  = 30;
+    var EMIT_ENEMY_DATA_TIME = 30;
 
     ns.GameEventManager = tm.createClass({
 
@@ -60,6 +18,9 @@
             // 移動ポイントを送信するタイミング
             this.frameMoveEmit = EMIT_MOVEPOINT_TIME;
             this.currentFrame = 0;
+
+            // 敵情報を取得するメッセージを送るタイミング
+            this.timerEmitEnemyData = 0;
 
             // 移動したかどうか調べる用
             this.prePlayerPosition = tm.geom.Vector2(0, 0);
@@ -79,12 +40,6 @@
             // 接続完了のメッセージ取得
             socket.on("connected", function (data) {
                 console.log("connected");
-                // socket.emit("getMapData");
-                // // mapデータ取得
-                // socket.on("gotMapData", function (data) {
-                //     console.log("gotMapData");
-                //     this.mapData = data;
-                // }.bind(self));
             });
 
             // 途中：マップ情報は随時受け取るようにしたい
@@ -236,8 +191,12 @@
         },
 
         getAndSendEnemyData: function (stairsNum) {
-            // console.dir(this.enemyData);
-            this.socket.emit("getEnemyData", stairsNum);
+            // 一定の時間が経過したかどうか
+            ++this.timerEmitEnemyData;
+            if (this.timerEmitEnemyData >= EMIT_ENEMY_DATA_TIME) {
+                this.timerEmitEnemyData = 0;
+                this.socket.emit("getEnemyData", stairsNum);
+            }
             return this.enemyData;
         },
 
