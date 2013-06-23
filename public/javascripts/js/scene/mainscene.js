@@ -393,12 +393,12 @@
                 saveData: saveData
             };
 
-            localStorage["RoguePlus"] = JSON.stringify(memorizeData);
+            localStorage["b-rogue"] = JSON.stringify(memorizeData);
         },
 
         _loadSaveData: function () {
             // ローカルストレージからデータを取得
-            var loadLocalStorage = localStorage["RoguePlus"];
+            var loadLocalStorage = localStorage["b-rogue"];
             if (loadLocalStorage) {
                 return JSON.parse(loadLocalStorage);
             }
@@ -408,7 +408,7 @@
         },
 
         _deleteSaveData: function () {
-            localStorage.removeItem("RoguePlus");
+            localStorage.removeItem("b-rogue");
         },
     });
 

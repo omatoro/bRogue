@@ -8,7 +8,7 @@
 
         init : function() {
             this.superInit({
-                title :  "RoguePlus",
+                title :  "b-rogue",
                 width :  ns.SCREEN_WIDTH,
                 height : ns.SCREEN_HEIGHT
             });
@@ -27,7 +27,7 @@
             // var equipButton = tm.app.GlossyButton(200, 60, "gray", "データ削除").addChildTo(this);
             // equipButton.position.set(ns.SCREEN_WIDTH-200, ns.SCREEN_HEIGHT-200);
             // equipButton.addEventListener("pointingend", function(e) {
-            //     localStorage.removeItem("RoguePlus");
+            //     localStorage.removeItem("b-rogue");
             // });
 
             this.addEventListener("pointingend", function(e) {
@@ -56,7 +56,7 @@
         // MainSceneと処理もろかぶり...　あとで考える
         _loadSaveData: function () {
             // ローカルストレージからデータを取得
-            var loadLocalStorage = localStorage["RoguePlus"];
+            var loadLocalStorage = localStorage["b-rogue"];
             if (loadLocalStorage) {
                 return JSON.parse(loadLocalStorage);
             }
