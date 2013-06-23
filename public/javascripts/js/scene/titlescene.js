@@ -24,11 +24,11 @@
             ns.STAIRS = stairs;
 
             // デバッグ用
-            var equipButton = tm.app.GlossyButton(200, 60, "gray", "データ削除").addChildTo(this);
-            equipButton.position.set(ns.SCREEN_WIDTH-200, ns.SCREEN_HEIGHT-200);
-            equipButton.addEventListener("pointingend", function(e) {
-                localStorage.removeItem("RoguePlus");
-            });
+            // var equipButton = tm.app.GlossyButton(200, 60, "gray", "データ削除").addChildTo(this);
+            // equipButton.position.set(ns.SCREEN_WIDTH-200, ns.SCREEN_HEIGHT-200);
+            // equipButton.addEventListener("pointingend", function(e) {
+            //     localStorage.removeItem("RoguePlus");
+            // });
 
             this.addEventListener("pointingend", function(e) {
                 // シーンの切り替え
