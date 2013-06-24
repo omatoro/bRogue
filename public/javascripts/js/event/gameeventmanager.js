@@ -197,6 +197,7 @@
                 this.timerEmitEnemyData = 0;
                 this.socket.emit("getEnemyData", stairsNum);
             }
+            console.dir(this.enemyData);
             return this.enemyData;
         },
 
