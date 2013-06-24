@@ -162,11 +162,13 @@
             var closeDistance = 9999;
             var closePlayer = null;
             this.anotherPlayerGroup.children.each(function () {
-                var myPosition = this.position.clone();
-                var distance = myPosition.distance(position);
-                if (distance < closeDistance) {
-                    closePlayer = this;
-                    closeDistance = distance;
+                if (this.position) {
+                    var myPosition = this.position.clone();
+                    var distance = myPosition.distance(position);
+                    if (distance < closeDistance) {
+                        closePlayer = this;
+                        closeDistance = distance;
+                    }
                 }
             });
             return closePlayer;
