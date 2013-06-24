@@ -1,17 +1,19 @@
 /**
  * SmallBatGreen
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.SmallBatGreen = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
-		init: function (player, map) {
-			this.superInit("SmallBatGreen", {
-				width:  120/6,
-				height: 96/4,
-				count:  24,
-			}, 3, player, map);
+		init: function () {
+			this.superInit();
 
 			this.maxhp = 40;
 			this.hp    = 40;
@@ -43,4 +45,4 @@
 		}
 	});
 
-})(game);
+})(exports);

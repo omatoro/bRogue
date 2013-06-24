@@ -1,17 +1,19 @@
 /**
  * ZombieRed
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.ZombieRed = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
-		init: function (player, map) {
-			this.superInit("ZombieRed", {
-				width:  96/6,
-				height: 80/4,
-				count:  24,
-			}, 3, player, map);
+		init: function () {
+			this.superInit();
 
 			this.maxhp = 5;
 			this.hp    = 5;
@@ -40,4 +42,4 @@
 		}
 	});
 
-})(game);
+})(exports);

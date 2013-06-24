@@ -1,17 +1,19 @@
 /**
  * GoblinGreen
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.GoblinGreen = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
-		init: function (player, map) {
-			this.superInit("GoblinGreen", {
-				width:  108/6,
-				height: 72/4,
-				count:  24,
-			}, 3, player, map);
+		init: function () {
+			this.superInit();
 
 			this.maxhp = 80;
 			this.hp    = 80;
@@ -43,4 +45,4 @@
 		}
 	});
 
-})(game);
+})(exports);

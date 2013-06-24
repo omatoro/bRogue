@@ -25,7 +25,7 @@
 			this.maxmp = 10;
 			this.mp    = 10;
 
-			this._str = 1; // 攻撃力
+			this._str = 8000; // 攻撃力
 			this._def = 1; // 防御力
 			// this._int = 40; // 魔力
 			this._agi = 10; // 素早さ // 初期値10くらい
@@ -237,7 +237,7 @@
 				++this.level;
 				this.nextLevelExp = Math.ceil(this.nextLevelExp * 1.4);
 				this.levelUp(app);
-				this.addExp(0);
+				this.addExp(0, app);
 			}
 		},
 

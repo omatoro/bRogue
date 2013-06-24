@@ -1,17 +1,19 @@
 /**
  * SmallBatBlack
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.SmallBatBlack = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
-		init: function (player, map) {
-			this.superInit("SmallBatBlack", {
-				width:  120/6,
-				height: 96/4,
-				count:  24,
-			}, 3, player, map);
+		init: function () {
+			this.superInit();
 
 			this.maxhp = 10;
 			this.hp    = 10;
@@ -46,4 +48,4 @@
 		}
 	});
 
-})(game);
+})(exports);

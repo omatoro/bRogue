@@ -1,17 +1,19 @@
 /**
  * SkeltonNormal
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.SkeltonNormal = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
-		init: function (player, map) {
-			this.superInit("SkeltonNormal", {
-				width:  96/6,
-				height: 80/4,
-				count:  24,
-			}, 3, player, map);
+		init: function () {
+			this.superInit();
 
 			this.maxhp = 40;
 			this.hp    = 40;
@@ -49,4 +51,4 @@
 		}
 	});
 
-})(game);
+})(exports);

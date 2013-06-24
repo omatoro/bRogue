@@ -1,17 +1,19 @@
 /**
  * HarypyNormal
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.HarypyNormal = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
-		init: function (player, map) {
-			this.superInit("HarypyNormal", {
-				width:  144/6,
-				height: 104/4,
-				count:  24,
-			}, 3, player, map);
+		init: function () {
+			this.superInit();
 
 			this.maxhp = 50;
 			this.hp    = 50;
@@ -43,4 +45,4 @@
 		}
 	});
 
-})(game);
+})(exports);

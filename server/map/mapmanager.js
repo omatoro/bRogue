@@ -178,12 +178,13 @@ var MapFileJSON  = require('./../map/mapfilesample');
 
                 // 敵の数が減ったら生成する
                 for (var i = 0, n = this.mapdatas[j].mapEnemyInfo.length; i < n; ++i) {
-                    if (this.mapdatas[j].mapEnemyInfo[i].num > enemies.data.length) { // enemies.data[i].length // まだ敵の種類を作ってないから
+                    var enemyTypeNum = enemies.getEnemyNum(this.mapdatas[j].mapEnemyInfo[i].enemy);
+                    if (this.mapdatas[j].mapEnemyInfo[i].num > enemyTypeNum) {
                         var enemyMapPosition = this.createFirstEnemyPosition(
-                                this.mapdatas[j].mapEnemyInfo, // 一体だけ生成
+                                this.mapdatas[j].mapEnemyInfo,
                                 this.mapdatas[j].walkMapNum,
                                 this.mapdatas[j].collision,
-                                enemies.data.length,
+                                enemyTypeNum,
                                 isCreateSomething);
 
                         this.enemyManager[j].createEnemy(enemyMapPosition);

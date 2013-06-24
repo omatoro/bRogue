@@ -1,17 +1,19 @@
 /**
  * GolemNormal
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.GolemNormal = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
-		init: function (player, map) {
-			this.superInit("GolemNormal", {
-				width:  132/6,
-				height: 104/4,
-				count:  24,
-			}, 3, player, map);
+		init: function () {
+			this.superInit();
 
 			this.maxhp = 5;
 			this.hp    = 5;
@@ -40,4 +42,4 @@
 		}
 	});
 
-})(game);
+})(exports);

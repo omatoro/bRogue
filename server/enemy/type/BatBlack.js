@@ -1,17 +1,19 @@
 /**
  * BatBlack
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.BatBlack = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
-		init: function (player, map) {
-			this.superInit("BatBlack", {
-				width:  180/6,
-				height: 112/4,
-				count:  24,
-			}, 3, player, map);
+		init: function () {
+			this.superInit();
 
 			this.maxhp = 25;
 			this.hp    = 25;
@@ -46,4 +48,4 @@
 		}
 	});
 
-})(game);
+})(exports);

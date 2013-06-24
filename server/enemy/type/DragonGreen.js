@@ -1,17 +1,19 @@
 /**
  * DragonGreen
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.DragonGreen = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
-		init: function (player, map) {
-			this.superInit("DragonGreen", {
-				width:  228/6,
-				height: 120/4,
-				count:  24,
-			}, 3, player, map);
+		init: function () {
+			this.superInit();
 
 			this.maxhp = 260;
 			this.hp    = 260;
@@ -43,4 +45,4 @@
 		}
 	});
 
-})(game);
+})(exports);

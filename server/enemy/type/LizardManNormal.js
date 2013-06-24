@@ -1,17 +1,19 @@
 /**
  * LizardManNormal
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.LizardManNormal = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
-		init: function (player, map) {
-			this.superInit("LizardManNormal", {
-				width:  120/6,
-				height: 72/4,
-				count:  24,
-			}, 3, player, map);
+		init: function () {
+			this.superInit();
 
 			this.maxhp = 60;
 			this.hp    = 60;
@@ -46,4 +48,4 @@
 		}
 	});
 
-})(game);
+})(exports);

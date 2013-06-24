@@ -1,17 +1,19 @@
 /**
  * BatGreen
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.BatGreen = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
-		init: function (player, map) {
-			this.superInit("BatGreen", {
-				width:  180/6,
-				height: 112/4,
-				count:  24,
-			}, 3, player, map);
+		init: function () {
+			this.superInit();
 
 			this.maxhp = 70;
 			this.hp    = 70;
@@ -40,4 +42,4 @@
 		}
 	});
 
-})(game);
+})(exports);

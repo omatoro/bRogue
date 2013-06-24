@@ -12,7 +12,7 @@ var Enemy = require('./../enemy.js').Enemy;
 	ns.SlimeGreen = tm.createClass({
 		superClass : Enemy,
 
-		init: function (player, map) {
+		init: function () {
 			this.superInit();
 
 			this.maxhp = 5;
