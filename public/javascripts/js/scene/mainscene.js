@@ -130,23 +130,19 @@
                 }
                 attackTiming.resetAnimation(player.getAttackSpeed());
 
-                // 攻撃の方向を調べる
-                var attackAngle = player.attack();
-                var attackVelocity = tm.geom.Vector2(0,0).setDegree(attackAngle, 1);
-                attackVelocity.y *= -1;
                 // 攻撃の場所を計算する()画面上
-                var distanse = 50 + (player.getDistanse() * 20);
-                var attackScreenPosition = player.position.clone().add(tm.geom.Vector2.mul(attackVelocity, distanse));
+                var distanse = player.getLastDistanse();
+                var attackScreenPosition = player.getAttackPosition();
 
                 // 攻撃時のアニメーション
-                slash.position.set(attackScreenPosition.x, attackScreenPosition.y);
+                slash.position.set(attackScreenPosition.x + player.x, attackScreenPosition.y + player.y);
                 slash.gotoAndPlay("slash");
 
                 // 攻撃するポイントを作成
-                var attackMapPosition = map.playerPosition.clone().add(tm.geom.Vector2.mul(attackVelocity, distanse));
-                attackMapPosition = map.mapLeftTopToMapCenter(attackMapPosition.x, attackMapPosition.y-20);
+                var attackMapPosition = map.playerPosition.clone().add(player.getAttackPosition());
+                attackMapPosition = map.mapLeftTopToMapCenter(attackMapPosition.x, attackMapPosition.y-40);
                 var attackElement = tm.app.Object2D();
-                attackElement.radius = 20;
+                attackElement.radius = player.attackRange;
                 attackElement.position.set(attackMapPosition.x, attackMapPosition.y);
 
                 // 攻撃が当たっているか調べる

@@ -51,7 +51,20 @@
 			this.equipedWeapon = null;
 			this.equipedArmor  = null;
 
-			this.itemIdManager = 100; // いずれID管理
+			this.itemIdManager = 100;
+
+			// 攻撃可能個所をマーク
+			this.baseAttackDistanse = 50;
+			this.attackRange = 20;
+            this.attackMark = tm.app.CircleShape(
+            		this.attackRange + 20, // 大きめに見せる
+            		this.attackRange + 20, 
+            		{fillStyle:"rgba(255,0,0,0.3)"}).addChildTo(this);
+            this.attackMark.tweener.
+	            to({"alpha": 0.7}, 200).
+	            fadeIn(600).
+	            wait(200).
+	            setLoop(true);
 		},
 
 		getLevel: function ()		{ return this.level; },
@@ -352,8 +365,30 @@
 			return this.angle;
 		},
 
+		moveAttackMark: function () {
+            var attackVelocity = this.velocity.clone();
+            // attackVelocity.y *= -1;
+            // 攻撃の場所を計算する()画面上
+            var distanse = this.getLastDistanse();
+            var attackScreenPosition = tm.geom.Vector2.mul(attackVelocity, distanse).add({x:0, y:20});
+			this.attackMark.position.set(attackScreenPosition.x, attackScreenPosition.y);
+
+			this.lastDistanse = distanse;
+
+			return attackScreenPosition;
+		},
+
+		getAttackPosition: function () {
+			return this.attackMark.position.clone();
+		},
+
+		getLastDistanse: function () {
+			return this.baseAttackDistanse + (this.getDistanse() * 20);
+		},
+
 		update: function (app) {
 			this.inputAnimation(app);
+			this.moveAttackMark();
 		}
 	});
 

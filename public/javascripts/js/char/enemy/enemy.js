@@ -69,6 +69,7 @@
 
             // デバッグ用
             // tm.app.CircleShape(10, 10, {fillStyle:"red"}).addChildTo(this).position.set(this.x, this.y);
+            // tm.app.CircleShape(this.getBoundingCircle().x, this.getBoundingCircle().y, {fillStyle:"rgba(0,0,255,0.5)"}).addChildTo(this).position.set(this.x, this.y);
 		},
 
 		getMaxHP:     function () { return this.maxhp; },
