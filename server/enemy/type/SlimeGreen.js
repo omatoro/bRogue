@@ -1,17 +1,19 @@
 /**
  * SlimeGreen
  */
+
+var tmlib = require('tmlib');
+var tm = tmlib.tm;
+Math = tmlib.Math;
+var Enemy = require('./../enemy.js').Enemy;
+
 (function(ns) {
 
 	ns.SlimeGreen = tm.createClass({
-		superClass : ns.Enemy,
+		superClass : Enemy,
 
 		init: function (player, map) {
-			this.superInit("SlimeGreen", {
-				width:  96/6,
-				height: 80/4,
-				count:  24,
-			}, 3, player, map);
+			this.superInit();
 
 			this.maxhp = 5;
 			this.hp    = 5;
@@ -34,16 +36,16 @@
 			this.dropItemList = [
 				{
 					itemName: "雑草",
-					random: 2
+					random: 20
 				},{
 					itemName: "モンスターの液体",
-					random: 2
+					random: 20
 				},{
 					itemName: "布の服",
-					random: 2
+					random: 20
 				}
 			];
 		}
 	});
 
-})(game);
+})(exports);

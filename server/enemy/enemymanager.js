@@ -8,6 +8,11 @@ Math = tmlib.Math;
 
 var Enemy = require('./enemy').Enemy;
 
+var SlimeGreen = require('./type/SlimeGreen.js').SlimeGreen;
+
+
+
+
 (function(ns) {
 
 	var MAP_CHIP_SIZE = 64;
@@ -41,6 +46,11 @@ var Enemy = require('./enemy').Enemy;
 				enemy.position.set(x, y);
 				enemy.id = enemyMapPositions[i].id;
 				enemy.className = enemyMapPositions[i].name;
+
+				if (enemyMapPositions[i].name === "SlimeGreen") {
+					console.log("GREEN!!!");
+					enemy = SlimeGreen();
+				}
 
 				this.data.push(enemy);
 			}
