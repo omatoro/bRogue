@@ -10,6 +10,9 @@
         ns.app.resize(ns.SCREEN_WIDTH, ns.SCREEN_HEIGHT); // 画面サイズに合わせる
         ns.app.fitWindow(); // リサイズ対応
         ns.app.background = "rgb(0, 0, 0)"; // 背景色をセット
+        ns.app.canvas.context.imageSmoothingEnabled = false;
+        ns.app.canvas.context.mozImageSmoothingEnabled = false;
+        ns.app.canvas.context.webkitImageSmoothingEnabled = false;
 
         // デバッグ時のみ
         if (ns.DEBUG === true) {

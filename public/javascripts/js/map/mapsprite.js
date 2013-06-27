@@ -24,6 +24,10 @@
             this.currentFrame = 0;
             this.currentFrameIndex = 0;
 
+            this.canvas.context.imageSmoothingEnabled = false;
+            this.canvas.context.mozImageSmoothingEnabled = false;
+            this.canvas.context.webkitImageSmoothingEnabled = false;
+            
             this.createMap();
         },
 
