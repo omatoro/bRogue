@@ -33,6 +33,12 @@
             // Oauth認証できてたらロード画像を追加(アイコン)
             ns.twitter.addUserIcon(MAIN_ASSET);
 
+            // 次に遷移するシーン
+            var nextScene = ns.MainScene;
+            if (!ns.twitter.isLogin()) {
+                nextScene = ns.LoginScene;
+            }
+
             this.addEventListener("pointingend", function(e) {
                 // シーンの切り替え
                 var loadingScene = ns.AsyncLoading({
@@ -40,7 +46,7 @@
                     height:       e.app.height,
                     assets:       MAIN_ASSET,
                     loadingScene: ns.EffectLoadingScene,
-                    nextScene:    ns.MainScene,
+                    nextScene:    nextScene,
                 },function (postLoadingFunc) {
                     var self = this;
                     var socket = self.socket;
