@@ -1,2 +1,0 @@
-{"ts":1369400359753,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
-{"contributors":[],"silentsave":false,"ts":1369400507647,"patch":[[{"diffs":[[1,"１：git remote add heroku-target git@heroku.com:deploy.git\nheroku-target:何でもいい remote名\ndeploy.git:デプロイでcloud9上から作った名前\n\n２：ファイルを用意\npackage.json\nProcfile：中身は　web: node app.js　だけでいい\n\n３：あとはgitと同じ\ngit add .  -> 全部追加 git add -u は差分のみ\ngit commit -m \"コミット名\"\ngit push heroku-target master\n\nこれで終わり"]],"start1":0,"start2":0,"length1":0,"length2":284}]],"length":284,"saved":false}
