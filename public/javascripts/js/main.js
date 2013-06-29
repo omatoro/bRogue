@@ -31,6 +31,9 @@
         // イベント管理クラスの作成
         ns.gameEvent = ns.GameEventManager();
 
+        // Twitter連携クラスを作成
+        ns.twitter = ns.TwitterManager();
+
         // tmlibの実行
         ns.app.run();
 

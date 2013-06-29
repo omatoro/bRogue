@@ -34,6 +34,12 @@
         <script src="/javascripts/js/resource.js"></script>
         <script src="/javascripts/js/param.js"></script>
 
+        <!-- Twitter Oauth 認証時のデータをJavaScriptで利用できるようにする -->
+        <% if (user) { %>
+            <script> game.OAUTH = <%- JSON.stringify(user) %>; </script> 
+        <% } %>
+        <script src="/javascripts/js/twitter/twittermanager.js"></script>
+
         <!-- drag & picker -->
         <script src="http://rawgithub.com/omatoro/tmlib.js_drag/master/extend_inputClass/drag.js"></script>
         <script src="/javascripts/js/iphonepicker/iphonepicker.js"></script>

@@ -30,6 +30,9 @@
             //     localStorage.removeItem("b-rogue");
             // });
 
+            // Oauth認証できてたらロード画像を追加(アイコン)
+            ns.twitter.addUserIcon(MAIN_ASSET);
+
             this.addEventListener("pointingend", function(e) {
                 // シーンの切り替え
                 var loadingScene = ns.AsyncLoading({

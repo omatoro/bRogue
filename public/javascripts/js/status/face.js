@@ -12,7 +12,12 @@
             this._refresh();
 
             // 画像
-            var face = tm.app.Sprite("playerFace", 192, 192);
+            if (ns.twitter.isLogin()) {
+                var face = tm.app.Sprite(ns.twitter.getIconName(), 192, 192);
+            }
+            else {
+                var face = tm.app.Sprite("playerFace", 192, 192);
+            }
             face.position.set(0, 0);
 
             // 画面に追加
