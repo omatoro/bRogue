@@ -10,7 +10,7 @@
             this.superInit();
 
             this.addEventListener("pointingend", function(e) {
-                window.open('/auth/twitter', null);
+                window.open('/auth/twitter');
             });
         },
     });
