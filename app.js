@@ -334,10 +334,12 @@ passport.deserializeUser(function (obj, done) { done(null, obj); });
 
 //ここからTwitter認証の記述
 var twitter  = require("./server/oauth/test"); // キーを記述するファイル
+// var twitter  = require("./server/oauth/brogue"); // キーを記述するファイル
 var ts = new TwitterStrategy({
 	consumerKey: twitter.consumerKey,
 	consumerSecret: twitter.consumerSecret,
 	callbackURL: "http://192.168.1.202:8001/auth/twitter/callback"},
+	// callbackURL: "http://brogue.testcoding.net/auth/twitter/callback"},
 	function(token, tokenSecret, profile, done) {
 		profile.twitter_token = token;
 		profile.twitter_token_secret = tokenSecret;
